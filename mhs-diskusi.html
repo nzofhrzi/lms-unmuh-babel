@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>Diskusi — LMS Praktis</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; margin: 0; }
+
+    /* SIDEBAR */
+    .sidebar { width: 255px; min-height: 100vh; background: #0f172a; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 200; transition: transform 0.28s ease; }
+    .sidebar-brand { padding: 1.4rem 1.3rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 11px; }
+    .brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg,#3b82f6,#10b981); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: white; flex-shrink: 0; }
+    .brand-name { color: white; font-weight: 800; font-size: 0.98rem; line-height: 1.1; }
+    .brand-name small { display: block; font-size: 0.65rem; font-weight: 500; color: rgba(255,255,255,0.38); letter-spacing: 0.6px; text-transform: uppercase; margin-top: 2px; }
+    .sidebar-role { margin: 0.9rem 1.1rem 0.4rem; padding: 7px 11px; border-radius: 9px; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07); }
+    .sidebar-role i { font-size: 0.88rem; }
+    .sidebar-role span { font-size: 0.76rem; font-weight: 600; color: rgba(255,255,255,0.65); }
+    .sidebar-nav { flex: 1; padding: 0.4rem 0.7rem; overflow-y: auto; }
+    .nav-section { font-size: 0.66rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 12px 8px 5px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 11px; border-radius: 9px; color: rgba(255,255,255,0.52); font-size: 0.86rem; font-weight: 500; text-decoration: none; transition: all 0.15s; margin-bottom: 2px; cursor: pointer; }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: white; }
+    .nav-item.active { background: rgba(59,130,246,0.18); color: #93c5fd; font-weight: 600; }
+    .nav-item i { font-size: 1rem; width: 19px; flex-shrink: 0; }
+    .sidebar-footer { padding: 0.9rem 1.1rem; border-top: 1px solid rgba(255,255,255,0.07); }
+    .user-card { display: flex; align-items: center; gap: 9px; padding: 9px; border-radius: 10px; background: rgba(255,255,255,0.05); margin-bottom: 9px; }
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#3b82f6,#10b981); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
+    .user-info { flex: 1; overflow: hidden; }
+    .user-name { color: white; font-size: 0.82rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-nim  { color: rgba(255,255,255,0.38); font-size: 0.7rem; }
+    .btn-logout { width: 100%; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 9px; color: #f87171; font-size: 0.82rem; font-weight: 600; padding: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .btn-logout:hover { background: rgba(239,68,68,0.18); }
+
+    /* OVERLAY + MAIN */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 190; }
+    .overlay.show { display: block; }
+    .main-wrapper { margin-left: 255px; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { height: 58px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 1.5rem; gap: 12px; position: sticky; top: 0; z-index: 100; }
+    .topbar-title { font-weight: 700; font-size: 0.98rem; color: #0f172a; flex: 1; }
+    .topbar-date { font-size: 0.78rem; color: #94a3b8; }
+    .btn-hmbg { background: none; border: none; font-size: 1.3rem; color: #64748b; cursor: pointer; padding: 4px; display: none; }
+    .main-content { flex: 1; padding: 1.8rem; }
+
+    /* COMPONENTS */
+    .page-header { margin-bottom: 1.5rem; }
+    .page-header h3 { font-size: 1.3rem; font-weight: 800; color: #0f172a; margin: 0 0 4px; }
+    .page-header p { color: #64748b; font-size: 0.84rem; margin: 0; }
+
+    .card-lms { background: white; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: none; }
+    .card-lms .card-body { padding: 1.3rem; }
+
+    .badge-role { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 0.74rem; font-weight: 600; }
+    .badge-mhs { background: #eff6ff; color: #2563eb; }
+    .badge-dsn { background: #ecfdf5; color: #059669; }
+    .badge-adm { background: #f5f3ff; color: #7c3aed; }
+
+    .btn-primary-lms { background: linear-gradient(135deg,#1d4ed8,#2563eb); border: none; border-radius: 9px; padding: 7px 18px; font-size: 0.85rem; font-weight: 700; color: white; display: inline-flex; align-items: center; gap: 7px; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s; box-shadow: 0 3px 10px rgba(37,99,235,0.25); }
+    .btn-primary-lms:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(37,99,235,0.35); }
+    .btn-secondary-lms { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 9px; padding: 7px 18px; font-size: 0.85rem; font-weight: 600; color: #475569; display: inline-flex; align-items: center; gap: 7px; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s; }
+    .btn-secondary-lms:hover { background: #f1f5f9; }
+
+    .tbl { width: 100%; border-collapse: collapse; }
+    .tbl thead th { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; padding: 10px 14px; border-bottom: 1px solid #f1f5f9; white-space: nowrap; }
+    .tbl tbody td { padding: 11px 14px; font-size: 0.85rem; color: #334155; border-bottom: 1px solid #f8fafc; vertical-align: middle; }
+    .tbl tbody tr:hover td { background: #fafbfc; }
+    .tbl tbody tr:last-child td { border-bottom: none; }
+
+    .empty-state { text-align: center; padding: 3rem 2rem; }
+    .empty-state i { font-size: 2.5rem; color: #cbd5e1; }
+    .empty-state p { color: #94a3b8; font-size: 0.86rem; margin-top: 10px; }
+
+    #loadingScreen { position: fixed; inset: 0; background: #f1f5f9; display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 12px; }
+    #loadingScreen p { color: #64748b; font-size: 0.88rem; margin: 0; }
+
+    @media (max-width: 767px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-wrapper { margin-left: 0; }
+      .btn-hmbg { display: block; }
+      .main-content { padding: 1rem; }
+      .topbar { padding: 0 1rem; }
+    }
+    .forum-item { padding: 9px 11px; border-radius: 9px; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 9px; margin-bottom: 3px; }
+    .forum-item:hover { background: #f8fafc; }
+    .forum-item.active { background: rgba(59,130,246,0.08); }
+    .forum-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+    .forum-name { font-size: 0.83rem; font-weight: 600; color: #0f172a; }
+    .forum-count { font-size: 0.72rem; color: #94a3b8; }
+    .msg-bubble { display: flex; gap: 9px; }
+    .msg-bubble.mine { flex-direction: row-reverse; }
+    .msg-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white; flex-shrink: 0; }
+    .msg-content { max-width: 70%; }
+    .msg-name { font-size: 0.7rem; color: #94a3b8; margin-bottom: 3px; }
+    .msg-bubble.mine .msg-name { text-align: right; }
+    .msg-text { padding: 9px 12px; border-radius: 12px; font-size: 0.84rem; line-height: 1.5; }
+    .msg-bubble:not(.mine) .msg-text { background: #f1f5f9; color: #0f172a; border-radius: 4px 12px 12px 12px; }
+    .msg-bubble.mine .msg-text { background: linear-gradient(135deg,#1d4ed8,#2563eb); color: white; border-radius: 12px 4px 12px 12px; }
+    .msg-time { font-size: 0.68rem; color: #94a3b8; margin-top: 3px; }
+    .msg-bubble.mine .msg-time { text-align: right; }
+  </style>
+</head>
+<body>
+
+<div id="loadingScreen">
+  <div class="spinner-border" style="color:#3b82f6;" role="status"></div>
+  <p>Memuat halaman...</p>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+    <div class="brand-name">LMS Praktis <small>Sistem Perkuliahan</small></div>
+  </div>
+  <div class="sidebar-role" id="sidebarRole">
+    <i class="bi bi-person" style="color:#3b82f6;"></i>
+    <span>Memuat...</span>
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav"></nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar" id="userAvatar">?</div>
+      <div class="user-info">
+        <div class="user-name" id="userName">—</div>
+        <div class="user-nim" id="userNim">—</div>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="doLogout()">
+      <i class="bi bi-box-arrow-left"></i> Keluar
+    </button>
+  </div>
+</aside>
+
+<div class="main-wrapper">
+  <div class="topbar">
+    <button class="btn-hmbg" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+    <span class="topbar-title">Diskusi</span>
+    <span class="topbar-date" id="topbarDate"></span>
+  </div>
+  <main class="main-content">
+    <div class="page-header">
+      <h3><i class="bi bi-chat-dots me-2" style="color:#8b5cf6;"></i>Forum Diskusi</h3>
+      <p>Diskusikan materi perkuliahan bersama dosen dan teman</p>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="card-lms mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3" style="font-size:0.85rem;">Mata Kuliah</h6>
+            <div id="forumList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card-lms" style="min-height:500px;">
+          <div class="card-body d-flex flex-column" style="height:500px;">
+            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+              <h6 class="fw-bold mb-0" id="forumTitle">Pilih mata kuliah</h6>
+              <span id="forumSub" style="font-size:0.76rem;color:#94a3b8;"></span>
+            </div>
+            <div id="msgList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px;"></div>
+            <div class="mt-3 d-flex gap-2" id="replyBox" style="display:none!important;">
+              <input type="text" id="msgInput" class="form-control" style="border-radius:10px;font-size:0.86rem;" placeholder="Tulis pesan..." />
+              <button class="btn-primary-lms flex-shrink-0" onclick="kirimPesan()"><i class="bi bi-send"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="shared.js"></script>
+<script>
+const sb = getSB()
+
+async function init() {
+  const session = await requireAuth(sb)
+  if (!session) return
+  const { role, nama, nim } = await getProfile(sb, session.user.id)
+  buildSidebar(role, nama, nim, 'mhs-diskusi.html')
+  setTopbarDate()
+  hideLoading()
+  if (typeof onReady === 'function') onReady(session, role, nama, nim)
+}
+
+async function doLogout() { await handleLogout(sb) }
+
+init()
+
+const FORUMS = [
+  { id: 1, nama: 'Kalkulus I', kode: 'MKU101', color: '#eff6ff', fg: '#2563eb', icon: 'bi-calculator' },
+  { id: 2, nama: 'Fisika Dasar', kode: 'MKU102', color: '#ecfdf5', fg: '#059669', icon: 'bi-globe' },
+  { id: 3, nama: 'Algoritma & Pemrograman', kode: 'TIF201', color: '#fff7ed', fg: '#d97706', icon: 'bi-code-slash' },
+  { id: 4, nama: 'Basis Data', kode: 'TIF202', color: '#f5f3ff', fg: '#7c3aed', icon: 'bi-database' },
+]
+
+const DEMO_MSGS = {
+  1: [
+    { nama: 'Dr. Ahmad Fauzi', teks: 'Selamat datang di forum Kalkulus I! Silakan ajukan pertanyaan seputar materi.', waktu: '09:00', mine: false, color: '#059669' },
+    { nama: 'Budi Setiawan', teks: 'Pak, untuk turunan fungsi komposit, apakah selalu menggunakan chain rule?', waktu: '09:15', mine: false, color: '#2563eb' },
+    { nama: 'Dr. Ahmad Fauzi', teks: 'Betul sekali, chain rule digunakan ketika fungsi merupakan komposisi dua atau lebih fungsi.', waktu: '09:20', mine: false, color: '#059669' },
+    { nama: 'Saya', teks: 'Pak, ada contoh soal latihan tambahan?', waktu: '09:45', mine: true, color: '#2563eb' },
+  ],
+  2: [
+    { nama: 'Dr. Siti Rahayu', teks: 'Forum Fisika Dasar. Diskusikan materi gelombang dan optika di sini.', waktu: '08:00', mine: false, color: '#059669' },
+  ]
+}
+
+let activeForumId = null
+let currentUser = 'Saya'
+
+function onReady(session, role, nama) {
+  currentUser = nama
+  const list = document.getElementById('forumList')
+  list.innerHTML = FORUMS.map(f => `
+    <div class="forum-item" id="fitem-${f.id}" onclick="openForum(${f.id})">
+      <div class="forum-icon" style="background:${f.color};color:${f.fg};"><i class="bi ${f.icon}"></i></div>
+      <div>
+        <div class="forum-name">${f.nama}</div>
+        <div class="forum-count">${(DEMO_MSGS[f.id]||[]).length} pesan</div>
+      </div>
+    </div>`).join('')
+}
+
+function openForum(id) {
+  activeForumId = id
+  document.querySelectorAll('.forum-item').forEach(el => el.classList.remove('active'))
+  document.getElementById('fitem-' + id).classList.add('active')
+  const f = FORUMS.find(x => x.id === id)
+  document.getElementById('forumTitle').textContent = f.nama
+  document.getElementById('forumSub').textContent = f.kode
+  document.getElementById('replyBox').style.display = 'flex'
+  renderMsgs(id)
+}
+
+function renderMsgs(id) {
+  const msgs = DEMO_MSGS[id] || []
+  const list = document.getElementById('msgList')
+  if (!msgs.length) { list.innerHTML = '<div class="empty-state" style="margin:auto;"><i class="bi bi-chat"></i><p>Belum ada pesan.</p></div>'; return }
+  list.innerHTML = msgs.map(m => `
+    <div class="msg-bubble ${m.mine ? 'mine' : ''}">
+      <div class="msg-avatar" style="background:${m.color};">${m.nama[0]}</div>
+      <div class="msg-content">
+        <div class="msg-name">${m.nama}</div>
+        <div class="msg-text">${m.teks}</div>
+        <div class="msg-time">${m.waktu}</div>
+      </div>
+    </div>`).join('')
+  list.scrollTop = list.scrollHeight
+}
+
+function kirimPesan() {
+  const inp = document.getElementById('msgInput')
+  const teks = inp.value.trim()
+  if (!teks || !activeForumId) return
+  if (!DEMO_MSGS[activeForumId]) DEMO_MSGS[activeForumId] = []
+  const now = new Date()
+  DEMO_MSGS[activeForumId].push({
+    nama: currentUser || 'Saya', teks, mine: true,
+    waktu: now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0'),
+    color: '#2563eb'
+  })
+  inp.value = ''
+  renderMsgs(activeForumId)
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') kirimPesan() })
+</script>
+</body>
+</html>
