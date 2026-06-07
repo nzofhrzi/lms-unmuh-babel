@@ -152,9 +152,9 @@
 const sb = getSB()
 
 async function init() {
-  const session = await requireAuth(sb)
-  if (!session) return
-  const { role, nama, nim } = await getProfile(sb, session.user.id)
+  const result = await requireRole(sb, ['dosen', 'admin'])
+  if (!result) return
+  const { session, role, nama, nim } = result
   buildSidebar(role, nama, nim, 'dsn-mata-kuliah.html')
   setTopbarDate()
   hideLoading()

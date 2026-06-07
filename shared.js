@@ -9,7 +9,7 @@ function getSB() {
   return supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
 }
 
-// ---- Menu per role (href harus sesuai nama file yang ada) ----
+// ---- Menu per role ----
 const MENUS = {
   mahasiswa: [
     { label: 'Dashboard',   icon: 'bi-house',           href: 'dashboard.html' },
@@ -27,10 +27,10 @@ const MENUS = {
     { label: 'Diskusi',        icon: 'bi-chat-dots',       href: 'dsn-diskusi.html' },
   ],
   admin: [
-    { label: 'Dashboard',      icon: 'bi-house',           href: 'dashboard.html' },
-    { label: 'Kelola User',    icon: 'bi-people',          href: 'adm-user.html' },
-    { label: 'Kelola Matkul',  icon: 'bi-journal-bookmark',href: 'adm-matkul.html' },
-    { label: 'Hasil & Data',   icon: 'bi-bar-chart-line',  href: 'adm-hasil.html' },
+    { label: 'Dashboard',      icon: 'bi-house',            href: 'dashboard.html' },
+    { label: 'Kelola User',    icon: 'bi-people',           href: 'adm-user.html' },
+    { label: 'Kelola Matkul',  icon: 'bi-journal-bookmark', href: 'adm-matkul.html' },
+    { label: 'Hasil & Data',   icon: 'bi-bar-chart-line',   href: 'adm-hasil.html' },
   ],
 }
 
@@ -40,7 +40,7 @@ const ROLE_INFO = {
   admin:     { label: 'Administrator', color: '#7c3aed', icon: 'bi-shield-lock' },
 }
 
-// Bangun sidebar berdasarkan role & halaman aktif
+// ---- Bangun sidebar ----
 function buildSidebar(role, nama, nim, activeHref) {
   const ri    = ROLE_INFO[role] || ROLE_INFO.mahasiswa
   const menus = MENUS[role]    || MENUS.mahasiswa
@@ -61,7 +61,6 @@ function buildSidebar(role, nama, nim, activeHref) {
   if (!nav) return
   nav.innerHTML = '<div class="nav-section">Menu Utama</div>'
   menus.forEach(m => {
-    // Cocokkan href: nama file akhir path
     const curFile = window.location.pathname.split('/').pop() || 'dashboard.html'
     const isActive = m.href === activeHref || m.href === curFile
     nav.innerHTML += `
@@ -71,7 +70,7 @@ function buildSidebar(role, nama, nim, activeHref) {
   })
 }
 
-// Cek sesi — redirect ke login kalau tidak ada
+// ---- Cek sesi ----
 async function requireAuth(sb) {
   const { data: { session }, error } = await sb.auth.getSession()
   if (error || !session) {
@@ -81,38 +80,45 @@ async function requireAuth(sb) {
   return session
 }
 
-// Ambil profil user; cache di sessionStorage agar tidak berulang kali hit DB
+// ---- Ambil profil — SELALU dari Supabase, bukan hanya sessionStorage ----
 async function getProfile(sb, userId) {
-  let role = sessionStorage.getItem('userRole')
-  let nama = sessionStorage.getItem('userName')
-  let nim  = sessionStorage.getItem('userNim')
+  // Coba ambil dari Supabase dulu (sumber kebenaran)
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('role, nama, nim')
+    .eq('id', userId)
+    .single()
 
-  if (!role) {
-    const { data: profile, error } = await sb
-      .from('profiles')
-      .select('role,nama,nim')
-      .eq('id', userId)
-      .single()
-
-    if (profile && !error) {
-      role = profile.role
-      nama = profile.nama
-      nim  = profile.nim
-      sessionStorage.setItem('userRole', role || 'mahasiswa')
-      sessionStorage.setItem('userName', nama || '')
-      sessionStorage.setItem('userNim',  nim  || '')
-    } else {
-      // Fallback: baca dari email
-      role = 'mahasiswa'
+  if (profile && !error && profile.role) {
+    // Simpan ke sessionStorage sebagai cache
+    sessionStorage.setItem('userRole', profile.role)
+    sessionStorage.setItem('userName', profile.nama || '')
+    sessionStorage.setItem('userNim',  profile.nim  || '')
+    return {
+      role: profile.role,
+      nama: profile.nama || 'Pengguna',
+      nim:  profile.nim  || ''
     }
   }
-  return {
-    role: role || 'mahasiswa',
-    nama: nama || 'Pengguna',
-    nim:  nim  || ''
+
+  // Fallback ke sessionStorage kalau query gagal (offline / RLS)
+  const cachedRole = sessionStorage.getItem('userRole')
+  const cachedNama = sessionStorage.getItem('userName')
+  const cachedNim  = sessionStorage.getItem('userNim')
+
+  if (cachedRole) {
+    return {
+      role: cachedRole,
+      nama: cachedNama || 'Pengguna',
+      nim:  cachedNim  || ''
+    }
   }
+
+  // Terakhir: fallback default
+  return { role: 'mahasiswa', nama: 'Pengguna', nim: '' }
 }
 
+// ---- Logout ----
 async function handleLogout(sb) {
   await sb.auth.signOut()
   sessionStorage.clear()
@@ -163,7 +169,23 @@ function showToast(msg, type = 'success') {
   }, 3000)
 }
 
-// Animasi toast
 const _toastStyle = document.createElement('style')
 _toastStyle.textContent = `@keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}`
 document.head.appendChild(_toastStyle)
+
+// ---- Proteksi halaman berdasarkan role ----
+// roleAllowed: array role yang boleh akses, misal ['admin'] atau ['dosen','admin']
+async function requireRole(sb, roleAllowed) {
+  const session = await requireAuth(sb)
+  if (!session) return null
+
+  const { role, nama, nim } = await getProfile(sb, session.user.id)
+
+  if (!roleAllowed.includes(role)) {
+    // Role tidak sesuai — redirect ke dashboard
+    window.location.replace('dashboard.html')
+    return null
+  }
+
+  return { session, role, nama, nim }
+}

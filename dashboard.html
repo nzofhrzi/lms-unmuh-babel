@@ -359,34 +359,34 @@
       return
     }
 
-    // Ambil data dari sessionStorage (sudah diset saat login)
-    let role  = sessionStorage.getItem('userRole') || 'mahasiswa'
-    let nama  = sessionStorage.getItem('userName') || 'Pengguna'
-    let nim   = sessionStorage.getItem('userNim')  || session.user.email
+    // SELALU ambil dari Supabase agar role selalu akurat
+    let role = 'mahasiswa'
+    let nama = 'Pengguna'
+    let nim  = session.user.email
 
-    // Kalau sessionStorage kosong (misal buka tab baru), ambil dari Supabase
-    if (!sessionStorage.getItem('userRole')) {
-      const { data: profile } = await sb
-        .from('profiles')
-        .select('role, nama, nim')
-        .eq('id', session.user.id)
-        .single()
-      if (profile) {
-        role = profile.role
-        nama = profile.nama || nama
-        nim  = profile.nim  || nim
-        sessionStorage.setItem('userRole', role)
-        sessionStorage.setItem('userName', nama)
-        sessionStorage.setItem('userNim',  nim)
-      }
+    const { data: profile } = await sb
+      .from('profiles')
+      .select('role, nama, nim')
+      .eq('id', session.user.id)
+      .single()
+
+    if (profile) {
+      role = profile.role  || 'mahasiswa'
+      nama = profile.nama  || nama
+      nim  = profile.nim   || nim
+      // Update cache
+      sessionStorage.setItem('userRole', role)
+      sessionStorage.setItem('userName', nama)
+      sessionStorage.setItem('userNim',  nim)
+    } else {
+      // Fallback ke sessionStorage kalau Supabase gagal
+      role = sessionStorage.getItem('userRole') || 'mahasiswa'
+      nama = sessionStorage.getItem('userName') || 'Pengguna'
+      nim  = sessionStorage.getItem('userNim')  || nim
     }
 
     renderUI(role, nama, nim)
-
-    // Load stat cards
     await loadStats(sb, role, session.user.id)
-
-    // Sembunyikan loading
     document.getElementById('loadingScreen').style.display = 'none'
   }
 

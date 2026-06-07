@@ -391,11 +391,12 @@
       .single()
 
     if (profile) {
-      sessionStorage.setItem('userRole', profile.role)
-      sessionStorage.setItem('userName', profile.nama || '')
-      sessionStorage.setItem('userNim',  profile.nim  || nim)
+      sessionStorage.setItem('userRole', profile.role  || 'mahasiswa')
+      sessionStorage.setItem('userName', profile.nama  || '')
+      sessionStorage.setItem('userNim',  profile.nim   || nim)
     }
 
+    // Redirect ke dashboard (sidebar otomatis sesuai role)
     window.location.replace('dashboard.html')
   }
 
