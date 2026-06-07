@@ -193,7 +193,7 @@
                 </select>
               </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-3" id="passWrap">
               <label class="form-label fw-semibold" style="font-size:0.82rem;">Password Awal</label>
               <input type="password" class="form-control" id="uPass" style="border-radius:9px;font-size:0.85rem;" placeholder="Min. 6 karakter" />
             </div>
@@ -208,6 +208,7 @@
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="shared.js"></script>
 <script>
@@ -266,19 +267,28 @@ function filterUser() {
 }
 
 function openTambah() {
+  currentEditId = null
   document.getElementById('modalUserTitle').textContent = 'Tambah User Baru'
   document.getElementById('uNama').value = ''
   document.getElementById('uNim').value  = ''
   document.getElementById('uPass').value = ''
+  document.getElementById('uRole').value = 'mahasiswa'
+  document.getElementById('passWrap').style.display = 'block'
   new bootstrap.Modal(document.getElementById('modalUser')).show()
 }
 
+let currentEditId = null
+
 function editUser(id) {
+  currentEditId = id
   const u = allUsers.find(x => x.id === id)
+  if (!u) return
   document.getElementById('modalUserTitle').textContent = 'Edit User'
   document.getElementById('uNama').value = u.nama
   document.getElementById('uNim').value  = u.nim
   document.getElementById('uRole').value = u.role
+  document.getElementById('uPass').value = ''
+  document.getElementById('passWrap').style.display = 'none'
   new bootstrap.Modal(document.getElementById('modalUser')).show()
 }
 
@@ -287,10 +297,22 @@ function simpanUser() {
   const nim  = document.getElementById('uNim').value.trim()
   const role = document.getElementById('uRole').value
   if (!nama || !nim) { showToast('Nama dan NIM wajib diisi', 'error'); return }
-  allUsers.push({ id: Date.now(), nim, nama, role, email: nim + '@kampus.ac.id' })
+
+  if (currentEditId) {
+    // Update existing
+    const u = allUsers.find(x => x.id === currentEditId)
+    if (u) { u.nama = nama; u.nim = nim; u.role = role; u.email = nim + '@kampus.ac.id' }
+    showToast('Data user berhasil diperbarui!', 'success')
+  } else {
+    // Tambah baru
+    const pass = document.getElementById('uPass').value
+    if (!pass || pass.length < 6) { showToast('Password minimal 6 karakter', 'error'); return }
+    allUsers.push({ id: Date.now(), nim, nama, role, email: nim + '@kampus.ac.id' })
+    showToast('User berhasil ditambahkan!', 'success')
+  }
+
   bootstrap.Modal.getInstance(document.getElementById('modalUser')).hide()
   renderUsers(allUsers)
-  showToast('User berhasil ditambahkan!', 'success')
 }
 
 function hapusUser(id) {

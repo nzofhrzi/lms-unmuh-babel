@@ -89,6 +89,7 @@
     .grade-B { color: #2563eb; font-weight: 700; }
     .grade-C { color: #d97706; font-weight: 700; }
     .grade-D { color: #dc2626; font-weight: 700; }
+    .grade-E { color: #94a3b8; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -190,15 +191,23 @@ init()
 
 const HASIL_DATA = {
   1: [
-    { nim:'2201001', nama:'Ahmad Fauzan',   hadir:14, tugas:88, uts:80, uas:85 },
-    { nim:'2201002', nama:'Bella Safitri',  hadir:16, tugas:92, uts:88, uas:90 },
-    { nim:'2201003', nama:'Cahyo Nugroho',  hadir:12, tugas:75, uts:70, uas:72 },
-    { nim:'2201004', nama:'Diana Pertiwi',  hadir:15, tugas:95, uts:91, uas:93 },
-    { nim:'2201005', nama:'Eko Prasetyo',   hadir:10, tugas:60, uts:55, uas:58 },
-    { nim:'2201006', nama:'Fitri Handayani',hadir:16, tugas:89, uts:85, uas:87 },
-    { nim:'2201007', nama:'Gilang Ramadhan',hadir:13, tugas:78, uts:74, uas:76 },
-    { nim:'2201008', nama:'Hana Kusuma',    hadir:16, tugas:96, uts:93, uas:95 },
-  ]
+    { nim:'2201001', nama:'Ahmad Fauzan',    hadir:14, tugas:88, uts:80, uas:85 },
+    { nim:'2201002', nama:'Bella Safitri',   hadir:16, tugas:92, uts:88, uas:90 },
+    { nim:'2201003', nama:'Cahyo Nugroho',   hadir:12, tugas:75, uts:70, uas:72 },
+    { nim:'2201004', nama:'Diana Pertiwi',   hadir:15, tugas:95, uts:91, uas:93 },
+    { nim:'2201005', nama:'Eko Prasetyo',    hadir:10, tugas:60, uts:55, uas:58 },
+    { nim:'2201006', nama:'Fitri Handayani', hadir:16, tugas:89, uts:85, uas:87 },
+    { nim:'2201007', nama:'Gilang Ramadhan', hadir:13, tugas:78, uts:74, uas:76 },
+    { nim:'2201008', nama:'Hana Kusuma',     hadir:16, tugas:96, uts:93, uas:95 },
+  ],
+  2: [
+    { nim:'2202001', nama:'Ivan Setiawan',   hadir:15, tugas:82, uts:78, uas:80 },
+    { nim:'2202002', nama:'Julia Marlina',   hadir:16, tugas:90, uts:86, uas:88 },
+    { nim:'2202003', nama:'Kevin Pratama',   hadir:11, tugas:65, uts:60, uas:62 },
+    { nim:'2202004', nama:'Lina Susanti',    hadir:14, tugas:87, uts:83, uas:85 },
+    { nim:'2202005', nama:'Muhamad Rizki',   hadir:16, tugas:94, uts:90, uas:92 },
+    { nim:'2202006', nama:'Nina Kartika',    hadir:10, tugas:55, uts:50, uas:52 },
+  ],
 }
 
 function calcNA(row) { return Math.round(row.tugas*0.3 + row.uts*0.3 + row.uas*0.4) }

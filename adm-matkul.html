@@ -163,7 +163,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius:16px;border:none;">
           <div class="modal-header border-0 pb-0">
-            <h6 class="modal-title fw-bold">Tambah Mata Kuliah</h6>
+            <h6 class="modal-title fw-bold" id="mkModalTitle">Tambah Mata Kuliah</h6>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
@@ -205,6 +205,7 @@
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="shared.js"></script>
 <script>
@@ -245,7 +246,7 @@ function renderMK(list) {
     <td style="font-size:0.83rem;">${m.dosen || '—'}</td>
     <td style="font-size:0.83rem;">${m.mhs}</td>
     <td>
-      <button class="btn-icon me-1" title="Edit"><i class="bi bi-pencil"></i></button>
+      <button class="btn-icon me-1" title="Edit" onclick="editMK(${m.id})"><i class="bi bi-pencil"></i></button>
       <button class="btn-icon del" title="Hapus" onclick="hapusMK(${m.id})"><i class="bi bi-trash"></i></button>
     </td>
   </tr>`).join('')
@@ -256,20 +257,48 @@ function filterMK() {
   renderMK(allMK.filter(m => m.nama.toLowerCase().includes(q) || m.kode.toLowerCase().includes(q)))
 }
 
+let currentMKEditId = null
+
 function openTambahMatkul() {
+  currentMKEditId = null
+  document.getElementById('mkModalTitle').textContent = 'Tambah Mata Kuliah'
+  document.getElementById('mkKode').value  = ''
+  document.getElementById('mkNama').value  = ''
+  document.getElementById('mkSks').value   = '3'
+  document.getElementById('mkDosen').value = ''
+  new bootstrap.Modal(document.getElementById('modalMK')).show()
+}
+
+function editMK(id) {
+  currentMKEditId = id
+  const m = allMK.find(x => x.id === id)
+  if (!m) return
+  document.getElementById('mkModalTitle').textContent = 'Edit Mata Kuliah'
+  document.getElementById('mkKode').value  = m.kode
+  document.getElementById('mkNama').value  = m.nama
+  document.getElementById('mkSks').value   = String(m.sks)
+  document.getElementById('mkDosen').value = m.dosen || ''
   new bootstrap.Modal(document.getElementById('modalMK')).show()
 }
 
 function simpanMK() {
-  const kode = document.getElementById('mkKode').value.trim()
-  const nama = document.getElementById('mkNama').value.trim()
-  const sks  = document.getElementById('mkSks').value
+  const kode  = document.getElementById('mkKode').value.trim()
+  const nama  = document.getElementById('mkNama').value.trim()
+  const sks   = document.getElementById('mkSks').value
   const dosen = document.getElementById('mkDosen').value
   if (!kode || !nama) { showToast('Kode dan nama wajib diisi', 'error'); return }
-  allMK.push({ id: Date.now(), kode, nama, sks: parseInt(sks), dosen, mhs: 0 })
+
+  if (currentMKEditId) {
+    const m = allMK.find(x => x.id === currentMKEditId)
+    if (m) { m.kode = kode; m.nama = nama; m.sks = parseInt(sks); m.dosen = dosen }
+    showToast('Mata kuliah berhasil diperbarui!', 'success')
+  } else {
+    allMK.push({ id: Date.now(), kode, nama, sks: parseInt(sks), dosen, mhs: 0 })
+    showToast('Mata kuliah berhasil ditambahkan!', 'success')
+  }
+
   bootstrap.Modal.getInstance(document.getElementById('modalMK')).hide()
   renderMK(allMK)
-  showToast('Mata kuliah berhasil ditambahkan!', 'success')
 }
 
 function hapusMK(id) {

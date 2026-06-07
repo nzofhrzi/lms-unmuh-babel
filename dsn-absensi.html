@@ -259,7 +259,18 @@ function setAllStatus(status) {
 }
 
 async function simpanAbsensi() {
-  showToast('Absensi berhasil disimpan! ✅', 'success')
+  const matkulId  = document.getElementById('absMatkul').value
+  const tanggal   = document.getElementById('absTanggal').value
+  const list      = MHS_LIST[matkulId] || []
+
+  if (!tanggal) { showToast('Pilih tanggal absensi terlebih dahulu', 'error'); return }
+  if (!list.length) { showToast('Pilih mata kuliah terlebih dahulu', 'error'); return }
+
+  // Collect status from statusMap
+  const hadir  = Object.values(statusMap).filter(s => s === 'hadir').length
+  const alpha  = Object.values(statusMap).filter(s => s === 'alpha').length
+
+  showToast(`Absensi disimpan! ${hadir} hadir, ${alpha} alpha ✅`, 'success')
 }
 </script>
 </body>

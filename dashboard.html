@@ -299,24 +299,25 @@
   // ============================================================
   const MENUS = {
     mahasiswa: [
-      { label: 'Dashboard',   icon: 'bi-house',           href: 'dashboard.html',           active: true },
-      { label: 'Mata Kuliah', icon: 'bi-book',            href: 'mata-kuliah.html' },
-      { label: 'Tugas',       icon: 'bi-clipboard-check', href: 'tugas.html' },
-      { label: 'Absensi',     icon: 'bi-calendar-check',  href: 'absensi.html' },
-      { label: 'Diskusi',     icon: 'bi-chat-dots',       href: 'diskusi.html' },
+      { label: 'Dashboard',   icon: 'bi-house',           href: 'dashboard.html',      active: true },
+      { label: 'Mata Kuliah', icon: 'bi-book',            href: 'mhs-mata-kuliah.html' },
+      { label: 'Tugas',       icon: 'bi-clipboard-check', href: 'mhs-tugas.html' },
+      { label: 'Absensi',     icon: 'bi-calendar-check',  href: 'mhs-absensi.html' },
+      { label: 'Diskusi',     icon: 'bi-chat-dots',       href: 'mhs-diskusi.html' },
     ],
     dosen: [
-      { label: 'Dashboard',      icon: 'bi-house',           href: 'dashboard.html',                active: true },
-      { label: 'Mata Kuliah',    icon: 'bi-book',            href: 'dosen-mata-kuliah.html' },
-      { label: 'Upload Tugas',   icon: 'bi-cloud-upload',    href: 'dosen-upload-tugas.html' },
-      { label: 'Kelola Absensi', icon: 'bi-person-check',    href: 'dosen-absensi.html' },
-      { label: 'Hasil & Data',   icon: 'bi-bar-chart-line',  href: 'dosen-hasil.html' },
+      { label: 'Dashboard',      icon: 'bi-house',           href: 'dashboard.html',         active: true },
+      { label: 'Mata Kuliah',    icon: 'bi-book',            href: 'dsn-mata-kuliah.html' },
+      { label: 'Upload Tugas',   icon: 'bi-cloud-upload',    href: 'dsn-upload-tugas.html' },
+      { label: 'Kelola Absensi', icon: 'bi-person-check',    href: 'dsn-absensi.html' },
+      { label: 'Hasil & Data',   icon: 'bi-bar-chart-line',  href: 'dsn-hasil.html' },
+      { label: 'Diskusi',        icon: 'bi-chat-dots',       href: 'dsn-diskusi.html' },
     ],
     admin: [
-      { label: 'Dashboard',    icon: 'bi-house',          href: 'dashboard.html',         active: true },
-      { label: 'Kelola User',  icon: 'bi-people',         href: 'admin-user.html' },
-      { label: 'Kelola Matkul',icon: 'bi-journal-bookmark',href: 'admin-matkul.html' },
-      { label: 'Hasil & Data', icon: 'bi-bar-chart-line', href: 'admin-hasil.html' },
+      { label: 'Dashboard',      icon: 'bi-house',            href: 'dashboard.html',   active: true },
+      { label: 'Kelola User',    icon: 'bi-people',           href: 'adm-user.html' },
+      { label: 'Kelola Matkul',  icon: 'bi-journal-bookmark', href: 'adm-matkul.html' },
+      { label: 'Hasil & Data',   icon: 'bi-bar-chart-line',   href: 'adm-hasil.html' },
     ],
   }
 
@@ -382,8 +383,57 @@
 
     renderUI(role, nama, nim)
 
+    // Load stat cards
+    await loadStats(sb, role, session.user.id)
+
     // Sembunyikan loading
     document.getElementById('loadingScreen').style.display = 'none'
+  }
+
+  // ============================================================
+  // LOAD STATS
+  // ============================================================
+  const DEMO_STATS = {
+    mahasiswa: [6, 3, 1, 2],
+    dosen:     [3, 8, 2, 42],
+    admin:     [48, 12, 6, 40],
+  }
+
+  async function loadStats(sb, role, userId) {
+    const stats   = STATS[role] || STATS.mahasiswa
+    const demo    = DEMO_STATS[role] || DEMO_STATS.mahasiswa
+    const getCard = i => document.getElementById('statVal' + i)
+
+    // Tampilkan nilai demo dulu (agar tidak kosong)
+    demo.forEach((v, i) => { const el = getCard(i); if (el) el.textContent = v })
+
+    // Coba load dari Supabase
+    try {
+      if (role === 'mahasiswa') {
+        const [{ count: mkCount }, { count: tugasCount }] = await Promise.all([
+          sb.from('enrollments').select('*', { count: 'exact', head: true }).eq('mahasiswa_id', userId),
+          sb.from('tugas').select('*', { count: 'exact', head: true }),
+        ])
+        if (mkCount    !== null) { const el = getCard(0); if (el) el.textContent = mkCount }
+        if (tugasCount !== null) { const el = getCard(1); if (el) el.textContent = tugasCount }
+      } else if (role === 'dosen') {
+        const [{ count: mkCount }, { count: tugasCount }] = await Promise.all([
+          sb.from('mata_kuliah').select('*', { count: 'exact', head: true }).eq('dosen_id', userId),
+          sb.from('tugas').select('*', { count: 'exact', head: true }).eq('dosen_id', userId),
+        ])
+        if (mkCount    !== null) { const el = getCard(0); if (el) el.textContent = mkCount }
+        if (tugasCount !== null) { const el = getCard(1); if (el) el.textContent = tugasCount }
+      } else if (role === 'admin') {
+        const [{ count: userCount }, { count: mkCount }] = await Promise.all([
+          sb.from('profiles').select('*', { count: 'exact', head: true }),
+          sb.from('mata_kuliah').select('*', { count: 'exact', head: true }),
+        ])
+        if (userCount !== null) { const el = getCard(0); if (el) el.textContent = userCount }
+        if (mkCount   !== null) { const el = getCard(1); if (el) el.textContent = mkCount }
+      }
+    } catch (_) {
+      // Tetap pakai nilai demo jika query gagal
+    }
   }
 
   // ============================================================
@@ -420,7 +470,7 @@
     const stats     = STATS[role] || STATS.mahasiswa
     const cardWrap  = document.getElementById('statCards')
     cardWrap.innerHTML = ''
-    stats.forEach(s => {
+    stats.forEach((s, idx) => {
       cardWrap.innerHTML += `
         <div class="col-6 col-lg-3">
           <div class="stat-card">
@@ -428,7 +478,7 @@
               <i class="bi ${s.icon}"></i>
             </div>
             <div>
-              <div class="stat-val">—</div>
+              <div class="stat-val" id="statVal${idx}">—</div>
               <div class="stat-lbl">${s.label}</div>
             </div>
           </div>

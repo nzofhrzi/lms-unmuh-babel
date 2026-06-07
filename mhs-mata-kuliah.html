@@ -220,7 +220,7 @@ function renderMatkul(list) {
     const [bg, fg] = COLORS[i % COLORS.length]
     const icon = ICONS[i % ICONS.length]
     return `<div class="col-sm-6 col-xl-4">
-      <a class="matkul-card" href="mhs-detail-matkul.html?id=${mk.id}">
+      <div class="matkul-card" style="cursor:default;">
         <div class="matkul-header">
           <div class="matkul-icon" style="background:${bg};color:${fg};"><i class="bi ${icon}"></i></div>
           <div class="matkul-name">${mk.nama}</div>
@@ -228,9 +228,9 @@ function renderMatkul(list) {
         </div>
         <div class="matkul-footer">
           <span class="matkul-info"><i class="bi bi-person-workspace"></i>${mk.dosen || 'Belum diassign'}</span>
-          <span class="matkul-info"><i class="bi bi-chevron-right"></i></span>
+          <span class="matkul-info"><i class="bi bi-book-open"></i>${mk.sks || '?'} SKS</span>
         </div>
-      </a>
+      </div>
     </div>`
   }).join('')
 }

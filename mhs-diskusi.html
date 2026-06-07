@@ -273,7 +273,7 @@ function kirimPesan() {
   renderMsgs(activeForumId)
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Enter') kirimPesan() })
+document.getElementById('msgInput').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); kirimPesan() } })
 </script>
 </body>
 </html>

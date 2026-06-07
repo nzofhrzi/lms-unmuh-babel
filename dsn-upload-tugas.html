@@ -265,15 +265,39 @@ function renderTugasList() {
 }
 
 function simpanTugas() {
-  const matkul = document.getElementById('tgsMatkul')
-  const judul  = document.getElementById('tgsJudul').value.trim()
-  const dl     = document.getElementById('tgsDeadline').value
-  if (!matkul.value || !judul || !dl) { showToast('Lengkapi semua field wajib', 'error'); return }
-  tugasList.unshift({ id: Date.now(), judul, matkul: matkul.options[matkul.selectedIndex].text, deadline: dl, dikumpul: 0, total: 40 })
+  const matkul  = document.getElementById('tgsMatkul')
+  const judul   = document.getElementById('tgsJudul').value.trim()
+  const tanggal = document.getElementById('tgsTanggal').value
+  const dl      = document.getElementById('tgsDeadline').value
+
+  if (!matkul.value || !judul || !dl) {
+    showToast('Mata kuliah, judul, dan deadline wajib diisi', 'error')
+    return
+  }
+  if (tanggal && dl && dl < tanggal) {
+    showToast('Deadline tidak boleh sebelum tanggal dibuka', 'error')
+    return
+  }
+
+  tugasList.unshift({
+    id: Date.now(),
+    judul,
+    matkul: matkul.options[matkul.selectedIndex].text,
+    deadline: dl,
+    dikumpul: 0,
+    total: 40
+  })
   renderTugasList()
   showToast('Tugas berhasil diterbitkan! 🎉', 'success')
+
+  // Reset form
+  matkul.value = ''
   document.getElementById('tgsJudul').value = ''
   document.getElementById('tgsDeskripsi').value = ''
+  document.getElementById('tgsDeadline').value = ''
+  const dz = document.getElementById('dropZone')
+  dz.querySelector('p').textContent = 'Drag & drop atau klik untuk unggah'
+  document.getElementById('tgsFile').value = ''
 }
 
 function hapusTugas(id) {
