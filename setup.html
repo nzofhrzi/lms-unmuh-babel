@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup LMS Unmuh</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 32px 24px;
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid #334155;
+  }
+  .logo {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .logo .icon {
+    width: 56px; height: 56px;
+    background: #2563eb18;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 1.6rem;
+  }
+  h1 { font-size: 1.3rem; font-weight: 700; color: #f1f5f9; }
+  p.sub { font-size: 0.82rem; color: #64748b; margin-top: 4px; }
+
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 6px; font-weight: 500; }
+  input {
+    width: 100%; padding: 10px 14px;
+    background: #0f172a; border: 1px solid #334155;
+    border-radius: 10px; color: #f1f5f9; font-size: 0.9rem;
+    outline: none;
+  }
+  input:focus { border-color: #2563eb; }
+
+  .btn {
+    width: 100%; padding: 12px;
+    background: #2563eb; color: white;
+    border: none; border-radius: 10px;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #1d4ed8; }
+  .btn:disabled { background: #334155; cursor: not-allowed; }
+
+  .result {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 0.83rem;
+    line-height: 1.6;
+    display: none;
+  }
+  .result.ok  { background: #052e16; border: 1px solid #166534; color: #86efac; }
+  .result.err { background: #2d0a0a; border: 1px solid #991b1b; color: #fca5a5; }
+
+  .result pre {
+    margin-top: 10px;
+    background: #00000030;
+    padding: 10px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 0.78rem;
+  }
+
+  .note {
+    margin-top: 20px;
+    padding: 12px;
+    background: #1a1a2e;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    color: #64748b;
+    border: 1px solid #2d2d4e;
+  }
+  .note b { color: #94a3b8; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="icon">🎓</div>
+    <h1>Setup LMS Unmuh</h1>
+    <p class="sub">Inisialisasi data awal — jalankan sekali saja</p>
+  </div>
+
+  <div class="field">
+    <label>URL Aplikasi Vercel</label>
+    <input type="url" id="appUrl" placeholder="https://lms-unmuh-babel.vercel.app" />
+  </div>
+
+  <div class="field">
+    <label>Setup Key (SETUP_KEY di Vercel ENV)</label>
+    <input type="text" id="setupKey" placeholder="Contoh: setup-lms-2024" />
+  </div>
+
+  <div class="field">
+    <label>NIM Admin</label>
+    <input type="text" id="adminNim" value="admin001" />
+  </div>
+
+  <div class="field">
+    <label>Password Admin</label>
+    <input type="password" id="adminPass" value="Admin123!" />
+  </div>
+
+  <button class="btn" id="btnSetup" onclick="runSetup()">🚀 Jalankan Setup</button>
+
+  <div class="result" id="result"></div>
+
+  <div class="note">
+    <b>⚠️ Catatan:</b> Halaman ini hanya bisa dijalankan <b>sekali</b>. 
+    Setelah berhasil, hapus atau amankan file <code>setup.html</code> dari repo.
+  </div>
+</div>
+
+<script>
+async function runSetup() {
+  const appUrl   = document.getElementById('appUrl').value.trim().replace(/\/$/, '')
+  const setupKey = document.getElementById('setupKey').value.trim()
+  const adminNim  = document.getElementById('adminNim').value.trim()
+  const adminPass = document.getElementById('adminPass').value.trim()
+
+  const res = document.getElementById('result')
+  const btn = document.getElementById('btnSetup')
+
+  res.style.display = 'none'
+
+  if (!appUrl || !setupKey) {
+    res.className = 'result err'
+    res.style.display = 'block'
+    res.innerHTML = '❌ URL aplikasi dan Setup Key wajib diisi.'
+    return
+  }
+
+  btn.disabled = true
+  btn.textContent = '⏳ Memproses...'
+
+  try {
+    const response = await fetch(`${appUrl}/api/setup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-setup-key': setupKey
+      },
+      body: JSON.stringify({ admin_nim: adminNim, admin_password: adminPass })
+    })
+
+    const data = await response.json()
+
+    if (response.ok && data.success) {
+      res.className = 'result ok'
+      res.innerHTML = `✅ <b>Setup berhasil!</b><br><br>
+Login dengan:<br>
+• NIM: <b>${adminNim}</b><br>
+• Password: <b>${adminPass}</b><br><br>
+Program studi yang dibuat:<br>
+${(data.prodi || []).map(p => `• ${p.kode} — ${p.nama}`).join('<br>')}
+<pre>${JSON.stringify(data, null, 2)}</pre>`
+    } else {
+      res.className = 'result err'
+      res.innerHTML = `❌ <b>Error:</b> ${data.error || 'Unknown error'}<pre>${JSON.stringify(data, null, 2)}</pre>`
+    }
+  } catch(err) {
+    res.className = 'result err'
+    res.innerHTML = `❌ <b>Gagal terhubung:</b> ${err.message}<br><br>
+Pastikan:<br>
+• URL Vercel benar<br>
+• Aplikasi sudah ter-deploy<br>
+• ENV variables sudah diset`
+  }
+
+  res.style.display = 'block'
+  btn.disabled = false
+  btn.textContent = '🚀 Jalankan Setup'
+}
+
+// Auto-fill URL dari current domain jika diakses dari Vercel
+const host = window.location.hostname
+if (host !== 'localhost' && host !== '127.0.0.1') {
+  document.getElementById('appUrl').value = window.location.origin
+}
+</script>
+</body>
+</html>
