@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "kode": "IF101",
+    "nama": "Algoritma dan Pemrograman",
+    "sks": 3
+  },
+  {
+    "id": 2,
+    "kode": "IF102",
+    "nama": "Basis Data",
+    "sks": 3
+  }
+]
