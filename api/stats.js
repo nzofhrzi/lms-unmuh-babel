@@ -1,28 +1,62 @@
-const { getFile } = require("./github");
+const {
+  readJsonFile
+} = require("./github");
 
-module.exports = async (req, res) => {
-  try {
+module.exports =
+async function(req,res){
+
+  try{
+
     const [
       matkul,
       tugas,
       absensi,
       diskusi
     ] = await Promise.all([
-      getFile("data/matkul.json"),
-      getFile("data/tugas.json"),
-      getFile("data/absensi.json"),
-      getFile("data/diskusi.json")
+
+      readJsonFile(
+        "data/matkul.json"
+      ),
+
+      readJsonFile(
+        "data/tugas.json"
+      ),
+
+      readJsonFile(
+        "data/absensi.json"
+      ),
+
+      readJsonFile(
+        "data/diskusi.json"
+      )
+
     ]);
 
-    res.json({
-      totalMatkul: matkul.length,
-      totalTugas: tugas.length,
-      totalAbsensi: absensi.length,
-      totalDiskusi: diskusi.length
+    return res.json({
+
+      totalMatkul:
+        matkul.length,
+
+      totalTugas:
+        tugas.length,
+
+      totalAbsensi:
+        absensi.length,
+
+      totalDiskusi:
+        diskusi.length
+
     });
-  } catch (e) {
-    res.status(500).json({
-      error: e.message
-    });
+
+  }catch(error){
+
+    return res
+      .status(500)
+      .json({
+        success:false,
+        message:error.message
+      });
+
   }
-};
+
+}
