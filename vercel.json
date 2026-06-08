@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/*.js": {
+      "includeFiles": "api/_github.js,api/_jwt.js"
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" }
   ],
