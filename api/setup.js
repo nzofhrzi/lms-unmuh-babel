@@ -5,7 +5,7 @@
 
 const crypto = require('crypto')
 const { v4: uuidv4 } = require('uuid')
-const { readCollection, writeCollection, writeFile, readFile } = require('../_github')
+const { readCollection, writeCollection, writeFile, readFile } = require('./_github')
 
 function hashPass(pass) {
   return crypto.createHash('sha256').update(pass + process.env.JWT_SECRET).digest('hex')
