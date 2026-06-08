@@ -4,6 +4,7 @@
   "description": "LMS Unmuh Babel — GitHub + Vercel Backend",
   "engines": { "node": ">=18" },
   "dependencies": {
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "jsonwebtoken": "^9.0.2"
   }
 }
