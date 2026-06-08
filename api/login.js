@@ -1,34 +1,73 @@
-const { getFile } = require("./github");
+const {
+  readJsonFile
+} = require("./github");
 
-module.exports = async (req, res) => {
-  try {
-    const { nim, password } = req.body;
+module.exports =
+async function(req,res){
 
-    const users = await getFile("data/users.json");
+  if(req.method!=="POST"){
 
-    const user = users.find(
-      u =>
-        u.nim === nim &&
-        u.password === password
-    );
-
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "Login gagal"
+    return res
+      .status(405)
+      .json({
+        success:false,
+        message:"Method not allowed"
       });
+
+  }
+
+  try{
+
+    const {
+      nim,
+      password
+    } = req.body;
+
+    const users =
+      await readJsonFile(
+        "data/users.json"
+      );
+
+    const user =
+      users.find(
+        u =>
+          u.nim === nim &&
+          u.password === password
+      );
+
+    if(!user){
+
+      return res
+        .status(401)
+        .json({
+          success:false,
+          message:
+            "NIM atau password salah"
+        });
+
     }
 
-    delete user.password;
+    const result = {
+      id:user.id,
+      nama:user.nama,
+      nim:user.nim,
+      role:user.role
+    };
 
     return res.json({
-      success: true,
-      user
+      success:true,
+      user:result
     });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err.message
-    });
+
+  }catch(error){
+
+    return res
+      .status(500)
+      .json({
+        success:false,
+        message:error.message
+      });
+
   }
-};
+
+}
