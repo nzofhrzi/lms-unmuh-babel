@@ -1,3 +1,8 @@
 {
-  "version": 2
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/login", "destination": "/api/login.js" },
+    { "source": "/api/profile", "destination": "/api/profile.js" },
+    { "source": "/api/stats", "destination": "/api/stats.js" }
+  ]
 }
