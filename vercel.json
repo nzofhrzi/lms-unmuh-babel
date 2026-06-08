@@ -1,15 +1,10 @@
 {
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin",  "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type,Authorization,x-setup-key" }
-      ]
-    }
-  ]
+  "name": "lms-unmuh",
+  "version": "1.0.0",
+  "description": "LMS Unmuh Babel — GitHub + Vercel Backend",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "uuid": "^9.0.1",
+    "jsonwebtoken": "^9.0.2"
+  }
 }
