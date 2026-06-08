@@ -1,0 +1,9 @@
+{
+  "name": "lms-unmuh",
+  "version": "1.0.0",
+  "description": "LMS Unmuh Babel — GitHub + Vercel Backend",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "uuid": "^9.0.1"
+  }
+}

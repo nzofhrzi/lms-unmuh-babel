@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kelola User — LMS Unmuh Babel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#f1f5f9;margin:0}
+    .sidebar{width:255px;min-height:100vh;background:#0f172a;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:200;transition:transform .28s ease}
+    .sidebar-brand{padding:1.4rem 1.3rem 1rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:11px}
+    .brand-icon{width:40px;height:40px;background:linear-gradient(135deg,#3b82f6,#10b981);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;flex-shrink:0}
+    .brand-name{color:#fff;font-weight:800;font-size:.98rem;line-height:1.1}
+    .brand-name small{display:block;font-size:.65rem;font-weight:500;color:rgba(255,255,255,.38);letter-spacing:.6px;text-transform:uppercase;margin-top:2px}
+    .sidebar-role{margin:.9rem 1.1rem .4rem;padding:7px 11px;border-radius:9px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07)}
+    .sidebar-role i{font-size:.88rem}.sidebar-role span{font-size:.76rem;font-weight:600;color:rgba(255,255,255,.65)}
+    .sidebar-nav{flex:1;padding:.4rem .7rem;overflow-y:auto}
+    .nav-section{font-size:.66rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 8px 5px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:9px;color:rgba(255,255,255,.52);font-size:.86rem;font-weight:500;text-decoration:none;transition:all .15s;margin-bottom:2px}
+    .nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+    .nav-item.active{background:rgba(59,130,246,.18);color:#93c5fd;font-weight:600}
+    .nav-item i{font-size:1rem;width:19px;flex-shrink:0}
+    .sidebar-footer{padding:.9rem 1.1rem;border-top:1px solid rgba(255,255,255,.07)}
+    .user-card{display:flex;align-items:center;gap:9px;padding:9px;border-radius:10px;background:rgba(255,255,255,.05);margin-bottom:9px}
+    .user-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#10b981);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;font-weight:700;flex-shrink:0}
+    .user-info{flex:1;overflow:hidden}
+    .user-name{color:#fff;font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .user-nim{color:rgba(255,255,255,.38);font-size:.7rem}
+    .btn-logout{width:100%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:9px;color:#f87171;font-size:.82rem;font-weight:600;padding:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+    .btn-logout:hover{background:rgba(239,68,68,.18)}
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190}
+    .overlay.show{display:block}
+    .main-wrapper{margin-left:255px;min-height:100vh;display:flex;flex-direction:column}
+    .topbar{height:58px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 1.5rem;gap:12px;position:sticky;top:0;z-index:100}
+    .topbar-title{font-weight:700;font-size:.98rem;color:#0f172a;flex:1}
+    .topbar-date{font-size:.78rem;color:#94a3b8}
+    .btn-hmbg{background:none;border:none;font-size:1.3rem;color:#64748b;cursor:pointer;padding:4px;display:none}
+    .main-content{flex:1;padding:1.8rem}
+    .page-header{margin-bottom:1.5rem}
+    .page-header h3{font-size:1.3rem;font-weight:800;color:#0f172a;margin:0 0 4px}
+    .page-header p{color:#64748b;font-size:.84rem;margin:0}
+    .card-lms{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:none}
+    .card-lms .card-body{padding:1.3rem}
+    .btn-primary-lms{background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:9px;padding:7px 18px;font-size:.85rem;font-weight:700;color:#fff;display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:0 3px 10px rgba(37,99,235,.25)}
+    .btn-primary-lms:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(37,99,235,.35)}
+    .btn-primary-lms:disabled{opacity:.6;cursor:not-allowed;transform:none}
+    .tbl{width:100%;border-collapse:collapse}
+    .tbl thead th{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;padding:10px 14px;border-bottom:1px solid #f1f5f9;white-space:nowrap}
+    .tbl tbody td{padding:11px 14px;font-size:.85rem;color:#334155;border-bottom:1px solid #f8fafc;vertical-align:middle}
+    .tbl tbody tr:hover td{background:#fafbfc}
+    .tbl tbody tr:last-child td{border-bottom:none}
+    .badge-role{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.74rem;font-weight:600}
+    .badge-mhs{background:#eff6ff;color:#2563eb}
+    .badge-dsn{background:#ecfdf5;color:#059669}
+    .badge-adm{background:#f5f3ff;color:#7c3aed}
+    .btn-icon{width:30px;height:30px;border-radius:7px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.82rem}
+    .btn-icon:hover{background:#f1f5f9;color:#0f172a}
+    .btn-icon.del:hover{background:#fef2f2;border-color:#fecaca;color:#dc2626}
+    .empty-state{text-align:center;padding:3rem 2rem}
+    .empty-state i{font-size:2.5rem;color:#cbd5e1}
+    .empty-state p{color:#94a3b8;font-size:.86rem;margin-top:10px}
+    #loadingScreen{position:fixed;inset:0;background:#f1f5f9;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:12px}
+    #loadingScreen p{color:#64748b;font-size:.88rem;margin:0}
+    @media(max-width:767px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-wrapper{margin-left:0}.btn-hmbg{display:block}.main-content{padding:1rem}.topbar{padding:0 1rem}}
+  </style>
+</head>
+<body>
+
+<div id="loadingScreen">
+  <div class="spinner-border" style="color:#3b82f6;" role="status"></div>
+  <p>Memuat data user...</p>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+    <div class="brand-name">LMS Unmuh Babel <small>Sistem Perkuliahan</small></div>
+  </div>
+  <div class="sidebar-role" id="sidebarRole"><i class="bi bi-person" style="color:#3b82f6;"></i><span>Memuat...</span></div>
+  <nav class="sidebar-nav" id="sidebarNav"></nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar" id="userAvatar">?</div>
+      <div class="user-info">
+        <div class="user-name" id="userName">—</div>
+        <div class="user-nim" id="userNim">—</div>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="doLogout()"><i class="bi bi-box-arrow-left"></i> Keluar</button>
+  </div>
+</aside>
+
+<div class="main-wrapper">
+  <div class="topbar">
+    <button class="btn-hmbg" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+    <span class="topbar-title">Kelola User</span>
+    <span class="topbar-date" id="topbarDate"></span>
+  </div>
+  <main class="main-content">
+    <div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div>
+        <h3><i class="bi bi-people me-2 text-primary"></i>Kelola User</h3>
+        <p>Tambah dan kelola akun mahasiswa, dosen, dan admin</p>
+      </div>
+      <button class="btn-primary-lms" onclick="openTambah()">
+        <i class="bi bi-plus-lg"></i> Tambah User
+      </button>
+    </div>
+
+    <!-- Filter -->
+    <div class="card-lms mb-3">
+      <div class="card-body d-flex gap-2 flex-wrap align-items-center">
+        <input type="text" id="searchInput" class="form-control" style="max-width:220px;border-radius:9px;font-size:.85rem;" placeholder="Cari nama / NIM..." oninput="filterUsers()" />
+        <select id="filterRole" class="form-select" style="max-width:160px;border-radius:9px;font-size:.85rem;" onchange="filterUsers()">
+          <option value="">Semua Role</option>
+          <option value="mahasiswa">Mahasiswa</option>
+          <option value="dosen">Dosen</option>
+          <option value="admin">Admin</option>
+        </select>
+        <select id="filterProdi" class="form-select" style="max-width:200px;border-radius:9px;font-size:.85rem;" onchange="filterUsers()">
+          <option value="">Semua Prodi</option>
+        </select>
+        <span class="ms-auto" style="font-size:.82rem;color:#94a3b8;" id="userCount"></span>
+      </div>
+    </div>
+
+    <!-- Tabel -->
+    <div class="card-lms">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>NIM / NIDN</th>
+                <th>Nama</th>
+                <th>Role</th>
+                <th>Prodi</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Tambah/Edit User -->
+<div class="modal fade" id="modalUser" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:16px;border:none;">
+      <div class="modal-header border-0 pb-0">
+        <h6 class="modal-title fw-bold" id="modalUserTitle">Tambah User Baru</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label fw-semibold" style="font-size:.82rem;">NIM / NIDN</label>
+          <input type="text" class="form-control" id="uNim" style="border-radius:9px;font-size:.85rem;" placeholder="Contoh: 250241114 atau NIDN0001" />
+          <div class="form-text">Email login otomatis: NIM@kampus.ac.id</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold" style="font-size:.82rem;">Nama Lengkap</label>
+          <input type="text" class="form-control" id="uNama" style="border-radius:9px;font-size:.85rem;" placeholder="Nama lengkap..." />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold" style="font-size:.82rem;">Role</label>
+          <select class="form-select" id="uRole" style="border-radius:9px;font-size:.85rem;" onchange="toggleProdi()">
+            <option value="mahasiswa">Mahasiswa</option>
+            <option value="dosen">Dosen</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="mb-3" id="prodiWrap">
+          <label class="form-label fw-semibold" style="font-size:.82rem;">Program Studi</label>
+          <select class="form-select" id="uProdi" style="border-radius:9px;font-size:.85rem;">
+            <option value="">Pilih prodi...</option>
+          </select>
+        </div>
+        <div class="mb-3" id="passWrap">
+          <label class="form-label fw-semibold" style="font-size:.82rem;">Password</label>
+          <input type="password" class="form-control" id="uPass" style="border-radius:9px;font-size:.85rem;" placeholder="Min. 6 karakter" />
+        </div>
+        <div id="modalError" class="alert alert-danger d-none" style="font-size:.83rem;border-radius:9px;"></div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-light" style="border-radius:9px;" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn-primary-lms" id="btnSimpan" onclick="simpanUser()">
+          <i class="bi bi-check-lg"></i> Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="shared.js"></script>
+<script>
+let allUsers  = []
+let allProdi  = []
+let currentEditId = null
+let currentToken  = null
+
+async function init() {
+  const user = await requireRole(['admin'])
+  if (!user) return
+  const { id: uid, role, nama, nim } = user
+
+  buildSidebar(role, nama, nim, 'adm-user.html')
+  setTopbarDate()
+
+  // Load prodi untuk filter & modal
+  const prodiList = await apiFetch('/api/prodi')
+  allProdi = prodiList || []
+
+  // Isi select prodi di filter
+  const filterProdi = document.getElementById('filterProdi')
+  allProdi.forEach(p => {
+    filterProdi.innerHTML += `<option value="${p.id}">${p.kode} — ${p.nama}</option>`
+  })
+
+  // Isi select prodi di modal
+  const uProdi = document.getElementById('uProdi')
+  allProdi.forEach(p => {
+    uProdi.innerHTML += `<option value="${p.id}">${p.kode} — ${p.nama}</option>`
+  })
+
+  await loadUsers()
+  hideLoading()
+}
+
+async function doLogout() { await handleLogout() }
+
+async function loadUsers() {
+  document.getElementById('userTableBody').innerHTML = `
+    <tr><td colspan="6" class="text-center py-4" style="color:#94a3b8;font-size:.85rem;">
+      <div class="spinner-border spinner-border-sm me-2"></div>Memuat...
+    </td></tr>`
+
+  try {
+    const data = await apiFetch('/api/users')
+    // Join prodi data
+    allUsers = data.map(u => ({
+      ...u,
+      prodi: allProdi.find(p => p.id === u.prodi_id) || null
+    }))
+    filterUsers()
+  } catch(err) {
+    showToast('Gagal memuat data user: ' + err.message, 'error')
+  }
+}
+
+function filterUsers() {
+  const q     = document.getElementById('searchInput').value.toLowerCase()
+  const role  = document.getElementById('filterRole').value
+  const prodi = document.getElementById('filterProdi').value
+
+  let list = allUsers.filter(u => {
+    const matchQ     = !q || (u.nama||'').toLowerCase().includes(q) || (u.nim||'').toLowerCase().includes(q)
+    const matchRole  = !role  || u.role === role
+    const matchProdi = !prodi || u.prodi_id === prodi
+    return matchQ && matchRole && matchProdi
+  })
+
+  document.getElementById('userCount').textContent = `${list.length} user`
+  renderTable(list)
+}
+
+function renderTable(list) {
+  const body = document.getElementById('userTableBody')
+  if (!list.length) {
+    body.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><p>Belum ada user.</p></div></td></tr>`
+    return
+  }
+
+  const badgeClass = { mahasiswa:'badge-mhs', dosen:'badge-dsn', admin:'badge-adm' }
+  const badgeIcon  = { mahasiswa:'bi-person-badge', dosen:'bi-person-workspace', admin:'bi-shield-lock' }
+
+  body.innerHTML = list.map((u, i) => `
+    <tr>
+      <td style="color:#94a3b8;font-size:.78rem;">${i+1}</td>
+      <td style="font-family:monospace;font-size:.82rem;">${u.nim || '—'}</td>
+      <td class="fw-semibold">${u.nama || '—'}</td>
+      <td>
+        <span class="badge-role ${badgeClass[u.role]||'badge-mhs'}">
+          <i class="bi ${badgeIcon[u.role]||'bi-person'}"></i>${u.role}
+        </span>
+      </td>
+      <td style="font-size:.82rem;color:#64748b;">${u.prodi ? u.prodi.kode : '—'}</td>
+      <td>
+        <button class="btn-icon me-1" title="Edit" onclick="editUser('${u.id}')"><i class="bi bi-pencil"></i></button>
+        <button class="btn-icon del" title="Hapus" onclick="hapusUser('${u.id}','${(u.nama||'').replace(/'/g,'')}')"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>`).join('')
+}
+
+function openTambah() {
+  currentEditId = null
+  document.getElementById('modalUserTitle').textContent = 'Tambah User Baru'
+  document.getElementById('uNim').value  = ''
+  document.getElementById('uNama').value = ''
+  document.getElementById('uRole').value = 'mahasiswa'
+  document.getElementById('uPass').value = ''
+  document.getElementById('uNim').disabled  = false
+  document.getElementById('uPass').disabled = false
+  document.getElementById('passWrap').style.display = 'block'
+  document.getElementById('modalError').classList.add('d-none')
+  toggleProdi()
+  new bootstrap.Modal(document.getElementById('modalUser')).show()
+}
+
+function editUser(id) {
+  currentEditId = id
+  const u = allUsers.find(x => x.id === id)
+  if (!u) return
+  document.getElementById('modalUserTitle').textContent = 'Edit User'
+  document.getElementById('uNim').value   = u.nim  || ''
+  document.getElementById('uNama').value  = u.nama || ''
+  document.getElementById('uRole').value  = u.role || 'mahasiswa'
+  document.getElementById('uProdi').value = u.prodi_id || ''
+  document.getElementById('uNim').disabled  = true   // NIM tidak bisa diubah
+  document.getElementById('passWrap').style.display = 'none' // password tidak diubah di sini
+  document.getElementById('modalError').classList.add('d-none')
+  toggleProdi()
+  new bootstrap.Modal(document.getElementById('modalUser')).show()
+}
+
+function toggleProdi() {
+  const role = document.getElementById('uRole').value
+  // Sembunyikan prodi untuk admin
+  document.getElementById('prodiWrap').style.display = role === 'admin' ? 'none' : 'block'
+}
+
+async function simpanUser() {
+  const nim    = document.getElementById('uNim').value.trim()
+  const nama   = document.getElementById('uNama').value.trim()
+  const role   = document.getElementById('uRole').value
+  const prodi  = document.getElementById('uProdi').value || null
+  const pass   = document.getElementById('uPass').value
+
+  const errEl  = document.getElementById('modalError')
+  const btnEl  = document.getElementById('btnSimpan')
+
+  errEl.classList.add('d-none')
+
+  if (!nim || !nama) { errEl.textContent = 'NIM dan nama wajib diisi'; errEl.classList.remove('d-none'); return }
+
+  if (currentEditId) {
+    // ---- MODE EDIT: update via API ----
+    btnEl.disabled = true
+    btnEl.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan...'
+
+    try {
+      await apiFetch('/api/users', { method: 'PUT', body: JSON.stringify({ id: currentEditId, nama, role, prodi_id: prodi }) })
+      btnEl.disabled = false
+      btnEl.innerHTML = '<i class="bi bi-check-lg"></i> Simpan'
+      showToast('Data user berhasil diperbarui!', 'success')
+    } catch(err) {
+      btnEl.disabled = false
+      btnEl.innerHTML = '<i class="bi bi-check-lg"></i> Simpan'
+      errEl.textContent = err.message; errEl.classList.remove('d-none'); return
+    }
+
+  } else {
+    // ---- MODE TAMBAH: panggil Edge Function ----
+    if (!pass || pass.length < 6) { errEl.textContent = 'Password minimal 6 karakter'; errEl.classList.remove('d-none'); return }
+
+    btnEl.disabled = true
+    btnEl.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Membuat akun...'
+
+    try {
+      const result = await apiFetch('/api/users', {method:'POST', body:JSON.stringify({ nim, nama, password: pass, role, prodi_id: prodi })})
+      btnEl.disabled = false
+      btnEl.innerHTML = '<i class="bi bi-check-lg"></i> Simpan'
+      showToast(result.message || 'User berhasil dibuat!', 'success')
+    } catch(err) {
+      btnEl.disabled = false
+      btnEl.innerHTML = '<i class="bi bi-check-lg"></i> Simpan'
+      errEl.textContent = err.message; errEl.classList.remove('d-none'); return
+    }
+  }
+
+  bootstrap.Modal.getInstance(document.getElementById('modalUser')).hide()
+  await loadUsers()
+}
+
+async function hapusUser(id, nama) {
+  if (!confirm(`Hapus user "${nama}"?\n\nAksi ini tidak bisa dibatalkan.`)) return
+
+  const result = await apiFetch('/api/users', {method:'DELETE', body:JSON.stringify({ id })})
+
+  if (result.error) { showToast(result.error, 'error'); return }
+  showToast('User berhasil dihapus', 'info')
+  await loadUsers()
+}
+
+init()
+</script>
+</body>
+</html>
