@@ -1,23 +1,53 @@
-const { getFile } = require("./github");
+const {
+  readJsonFile
+} = require("./github");
 
-module.exports = async (req, res) => {
-  const nim = req.query.nim;
+module.exports =
+async function(req,res){
 
-  const users = await getFile(
-    "data/users.json"
-  );
+  try{
 
-  const user = users.find(
-    x => x.nim === nim
-  );
+    const nim =
+      req.query.nim;
 
-  if (!user) {
-    return res.status(404).json({
-      success: false
+    const users =
+      await readJsonFile(
+        "data/users.json"
+      );
+
+    const user =
+      users.find(
+        u => u.nim === nim
+      );
+
+    if(!user){
+
+      return res
+        .status(404)
+        .json({
+          success:false,
+          message:
+            "User tidak ditemukan"
+        });
+
+    }
+
+    return res.json({
+      id:user.id,
+      nama:user.nama,
+      nim:user.nim,
+      role:user.role
     });
+
+  }catch(error){
+
+    return res
+      .status(500)
+      .json({
+        success:false,
+        message:error.message
+      });
+
   }
 
-  delete user.password;
-
-  res.json(user);
-};
+}
