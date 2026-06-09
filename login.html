@@ -527,7 +527,9 @@
             </svg>
           </div>
         </div>
-      </div><div id="pass-group">
+      </div>
+
+      <div id="pass-group">
         <div class="form-group">
           <label for="pass-input">Password</label>
           <div class="input-wrap">
@@ -536,7 +538,6 @@
               id="pass-input"
               placeholder="Masukkan password Anda"
               autocomplete="current-password"
-              required
             />
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
@@ -548,7 +549,9 @@
             </button>
           </div>
         </div>
-      </div><div class="form-group" id="admin-key-group" style="display:none">
+      </div>
+
+      <div class="form-group" id="admin-key-group" style="display:none">
         <label for="admin-key-input">Admin Key</label>
         <div class="input-wrap">
           <input
@@ -583,11 +586,13 @@
 
   // Redirect jika sudah login
   (async () => {
-    const user = Auth.getUser();
-    if (user) {
-      const verified = await Auth.verify();
-      if (verified) Auth.redirectToDashboard(verified.role);
-    }
+    try {
+      const user = Auth.getUser();
+      if (user) {
+        const verified = await Auth.verify();
+        if (verified) Auth.redirectToDashboard(verified.role);
+      }
+    } catch(e) { console.log(e); }
   })();
 
   function selectRole(role) {
@@ -598,7 +603,6 @@
     const label = document.getElementById('nim-label');
     const input = document.getElementById('nim-input');
     const adminKeyGroup = document.getElementById('admin-key-group');
-    const adminKeyInput = document.getElementById('admin-key-input');
 
     const config = {
       mahasiswa: { label: 'Nomor Induk Mahasiswa (NIM)', placeholder: 'Masukkan NIM Anda' },
@@ -610,11 +614,11 @@
     input.placeholder   = config[role].placeholder;
     input.value         = '';
 
-    // Tampilkan / sembunyikan field sesuai role
     const isAdmin = role === 'admin';
     adminKeyGroup.style.display = isAdmin ? 'block' : 'none';
     document.getElementById('nim-group').style.display  = isAdmin ? 'none' : 'block';
     document.getElementById('pass-group').style.display = isAdmin ? 'none' : 'block';
+    
     const btnText = document.querySelector('.btn-text');
     if (btnText) btnText.textContent = isAdmin ? 'Masuk sebagai Admin' : 'Masuk';
 
@@ -654,26 +658,32 @@
     btn.disabled = true;
 
     try {
-      // ── ALUR ADMIN: hanya admin key ──
+      // ── LOGIKAL BARU: Alur Admin dipisahkan di paling atas ──
       if (selectedRole === 'admin') {
         if (!adminKey) {
           showAlert('Admin Key wajib diisi.');
+          btn.classList.remove('loading');
+          btn.disabled = false;
           return;
         }
-        // Verifikasi admin key dengan memanggil list-users (jika berhasil = key valid)
+        
         const res = await fetch('/api/auth/list-users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
           body: JSON.stringify({ key: adminKey })
         });
+        
         if (!res.ok) {
           showAlert('Admin Key salah atau tidak valid.');
+          btn.classList.remove('loading');
+          btn.disabled = false;
           return;
         }
-        // Simpan admin key & buat sesi admin minimal
+        
         sessionStorage.setItem('lms_admin_key', adminKey);
-        // Buat dummy session agar requireLogin tidak redirect
-        Auth.setSession('admin-key-auth', { id: 'admin', nim_nip: 'ADMIN', nama: 'Administrator', role: 'admin' });
+        if (typeof Auth !== 'undefined' && Auth.setSession) {
+          Auth.setSession('admin-key-auth', { id: 'admin', nim_nip: 'ADMIN', nama: 'Administrator', role: 'admin' });
+        }
         window.location.href = '/admin/dashboard.html';
         return;
       }
@@ -681,6 +691,8 @@
       // ── ALUR MAHASISWA / DOSEN ──
       if (!nim_nip || !password) {
         showAlert('Harap isi NIM/NIP dan password.');
+        btn.classList.remove('loading');
+        btn.disabled = false;
         return;
       }
 
@@ -689,6 +701,8 @@
       if (user.role !== selectedRole) {
         Auth.clearSession();
         showAlert(`Akun ini terdaftar sebagai ${getRoleLabel(user.role)}, bukan ${getRoleLabel(selectedRole)}.`);
+        btn.classList.remove('loading');
+        btn.disabled = false;
         return;
       }
 
@@ -696,7 +710,6 @@
 
     } catch (err) {
       showAlert(err.message || 'Login gagal. Periksa kembali kredensial Anda.');
-    } finally {
       btn.classList.remove('loading');
       btn.disabled = false;
     }
