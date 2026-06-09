@@ -1,3 +1,14 @@
 {
-  "matkul": []
+  "matkul": [
+    {
+      "id": "mk_1781006313065",
+      "nama": "Atletik",
+      "kode": "PJKR25001",
+      "jurusan": "Pendidikan Jasmani Kesehatan dan Rekreasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Ratno Purnamasari, M. Pd.",
+      "created_at": "2026-06-09T11:58:33.065Z"
+    }
+  ]
 }
