@@ -1,232 +1,234 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Mahasiswa — LMS</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Mahasiswa — LMS Unmuh Babel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --navy:#0F2A5E; --blue:#1B4FBF; --blue-light:#2563EB; --blue-pale:#EFF4FF; --blue-mid:#BFCFEE;
-      --gold:#C9A84C; --white:#FFFFFF;
-      --gray-50:#F8FAFC; --gray-100:#F1F5F9; --gray-200:#E2E8F0; --gray-300:#CBD5E1;
-      --gray-500:#64748B; --gray-700:#334155; --gray-900:#0F172A;
-      --green:#16A34A; --green-pale:#F0FDF4;
-      --red:#DC2626; --red-pale:#FEF2F2;
-      --yellow:#D97706; --yellow-pale:#FFFBEB;
-      --sidebar-w:256px; --topbar-h:64px;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#0F2A5E;--blue:#1B4FBF;--blue-light:#2563EB;--blue-pale:#EFF4FF;--blue-mid:#BFCFEE;
+      --gold:#C9A84C;--white:#FFFFFF;
+      --gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-300:#CBD5E1;
+      --gray-500:#64748B;--gray-700:#334155;--gray-900:#0F172A;
+      --green:#16A34A;--green-pale:#F0FDF4;
+      --red:#DC2626;--red-pale:#FEF2F2;
+      --yellow:#D97706;--yellow-pale:#FFFBEB;
+      --sidebar-w:256px;--topbar-h:64px;
     }
-    html,body { height:100%; font-family:'Inter',sans-serif; background:var(--gray-50); color:var(--gray-700); }
+    html,body{height:100%;font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700)}
 
     /* SIDEBAR */
-    .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; background:var(--navy); display:flex; flex-direction:column; z-index:100; transition:transform .3s cubic-bezier(.4,0,.2,1); }
-    .sidebar-logo { padding:20px 20px 16px; border-bottom:1px solid rgba(255,255,255,.08); display:flex; align-items:center; gap:12px; }
-    .logo-icon { width:40px; height:40px; background:var(--gold); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .logo-icon svg { width:22px; height:22px; fill:white; }
-    .logo-text .name { font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:800; color:var(--white); line-height:1.2; }
-    .logo-text .sub  { font-size:10px; color:var(--blue-mid); text-transform:uppercase; letter-spacing:.5px; }
-    .sidebar-user { margin:16px 12px; background:rgba(255,255,255,.07); border-radius:12px; padding:12px; display:flex; align-items:center; gap:10px; }
-    .avatar { width:38px; height:38px; border-radius:10px; background:var(--blue-light); display:flex; align-items:center; justify-content:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:15px; color:white; flex-shrink:0; }
-    .sidebar-user .uname { font-size:13px; font-weight:600; color:var(--white); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .sidebar-user .uid   { font-size:11px; color:var(--blue-mid); }
-    .sidebar-nav { flex:1; padding:8px 12px; overflow-y:auto; }
-    .nav-section { margin-bottom:20px; }
-    .nav-label { font-size:10px; font-weight:700; color:rgba(191,207,238,.5); text-transform:uppercase; letter-spacing:1px; padding:0 8px; margin-bottom:6px; }
-    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; transition:background .15s; font-size:14px; font-weight:500; color:var(--blue-mid); border:none; background:none; width:100%; text-align:left; font-family:'Inter',sans-serif; }
-    .nav-item svg { width:18px; height:18px; flex-shrink:0; }
-    .nav-item:hover { background:rgba(255,255,255,.07); color:white; }
-    .nav-item.active { background:var(--blue-light); color:white; font-weight:600; }
-    .nav-badge { margin-left:auto; background:var(--gold); color:white; font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px; }
-    .sidebar-footer { padding:12px; border-top:1px solid rgba(255,255,255,.08); }
-    .btn-logout { width:100%; display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; border:none; background:none; color:rgba(191,207,238,.6); font-size:13px; font-weight:500; cursor:pointer; font-family:'Inter',sans-serif; transition:all .15s; }
-    .btn-logout:hover { background:rgba(220,38,38,.15); color:#FCA5A5; }
-    .btn-logout svg { width:17px; height:17px; }
-    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:99; }
+    .sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--navy);display:flex;flex-direction:column;z-index:100;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+    .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px}
+    .logo-icon{width:40px;height:40px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-icon svg{width:22px;height:22px;fill:white}
+    .logo-text .name{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:var(--white);line-height:1.2}
+    .logo-text .sub{font-size:10px;color:var(--blue-mid);text-transform:uppercase;letter-spacing:.5px}
+    .sidebar-user{margin:16px 12px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px}
+    .avatar{width:38px;height:38px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:white;flex-shrink:0}
+    .uname{font-size:13px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .uid{font-size:11px;color:var(--blue-mid)}
+    .sidebar-nav{flex:1;padding:8px 12px;overflow-y:auto}
+    .nav-section{margin-bottom:20px}
+    .nav-label{font-size:10px;font-weight:700;color:rgba(191,207,238,.5);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .15s;font-size:14px;font-weight:500;color:var(--blue-mid);border:none;background:none;width:100%;text-align:left;font-family:'Inter',sans-serif}
+    .nav-item svg{width:18px;height:18px;flex-shrink:0}
+    .nav-item:hover{background:rgba(255,255,255,.07);color:white}
+    .nav-item.active{background:var(--blue-light);color:white;font-weight:600}
+    .nav-badge{margin-left:auto;background:var(--gold);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+    .sidebar-footer{padding:12px;border-top:1px solid rgba(255,255,255,.08)}
+    .btn-logout{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;color:rgba(191,207,238,.6);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+    .btn-logout:hover{background:rgba(220,38,38,.15);color:#FCA5A5}
+    .btn-logout svg{width:17px;height:17px}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
 
     /* TOPBAR */
-    .topbar { position:fixed; top:0; left:var(--sidebar-w); right:0; height:var(--topbar-h); background:var(--white); border-bottom:1px solid var(--gray-200); display:flex; align-items:center; padding:0 24px; z-index:90; gap:16px; }
-    .topbar-hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; color:var(--gray-500); border-radius:8px; }
-    .topbar-hamburger:hover { background:var(--gray-100); }
-    .topbar-hamburger svg { width:22px; height:22px; }
-    .topbar-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:17px; font-weight:800; color:var(--navy); flex:1; }
-    .topbar-right { display:flex; align-items:center; gap:10px; }
-    .topbar-notif { width:38px; height:38px; background:var(--gray-100); border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--gray-500); position:relative; transition:background .15s; }
-    .topbar-notif:hover { background:var(--blue-pale); color:var(--blue); }
-    .topbar-notif svg { width:18px; height:18px; }
-    .notif-dot { position:absolute; top:7px; right:7px; width:8px; height:8px; background:var(--red); border-radius:50%; border:2px solid white; }
-    .topbar-avatar { width:38px; height:38px; border-radius:10px; background:var(--blue-light); display:flex; align-items:center; justify-content:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:14px; color:white; cursor:pointer; }
+    .topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--topbar-h);background:var(--white);border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 24px;z-index:90;gap:16px}
+    .topbar-hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--gray-500);border-radius:8px}
+    .topbar-hamburger svg{width:22px;height:22px}
+    .topbar-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--navy);flex:1}
+    .topbar-right{display:flex;align-items:center;gap:10px}
+    .topbar-avatar{width:38px;height:38px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:white}
 
     /* MAIN */
-    .main { margin-left:var(--sidebar-w); padding-top:var(--topbar-h); min-height:100vh; }
-    .content { padding:28px 28px 48px; display:none; }
-    .content.active { display:block; }
+    .main{margin-left:var(--sidebar-w);padding-top:var(--topbar-h);min-height:100vh}
+    .content{padding:28px 28px 48px;display:none}
+    .content.active{display:block}
+    .page-header{margin-bottom:24px}
+    .page-header h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:4px}
+    .page-header p{font-size:14px;color:var(--gray-500)}
 
-    /* PAGE HEADER */
-    .page-header { margin-bottom:24px; }
-    .page-header h2 { font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:var(--navy); margin-bottom:4px; }
-    .page-header p { font-size:14px; color:var(--gray-500); }
+    /* CARDS */
+    .card{background:var(--white);border-radius:14px;border:1px solid var(--gray-200);overflow:hidden}
+    .card-header{padding:18px 20px 14px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+    .card-header h4{font-size:14px;font-weight:700;color:var(--navy)}
+    .card-body{padding:16px 20px}
 
     /* WELCOME BANNER */
-    .welcome-banner { background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%); border-radius:16px; padding:28px 32px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; overflow:hidden; position:relative; }
-    .welcome-banner::after { content:''; position:absolute; right:-40px; top:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.05); }
-    .welcome-text h3 { font-family:'Plus Jakarta Sans',sans-serif; font-size:20px; font-weight:800; color:white; margin-bottom:6px; }
-    .welcome-text p { font-size:13px; color:var(--blue-mid); line-height:1.6; }
-    .welcome-badge { background:var(--gold); color:white; font-size:12px; font-weight:700; padding:6px 14px; border-radius:20px; white-space:nowrap; flex-shrink:0; position:relative; z-index:1; }
+    .welcome-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border-radius:16px;padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+    .welcome-banner::after{content:'';position:absolute;right:-40px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05)}
+    .welcome-text h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:white;margin-bottom:6px}
+    .welcome-text p{font-size:13px;color:var(--blue-mid);line-height:1.6}
+    .welcome-badge{background:var(--gold);color:white;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;flex-shrink:0;position:relative;z-index:1}
 
     /* STATS */
-    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
-    .stat-card { background:var(--white); border-radius:14px; padding:20px; border:1px solid var(--gray-200); }
-    .stat-card .sc-label { font-size:12px; font-weight:600; color:var(--gray-500); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
-    .stat-card .sc-num { font-family:'Plus Jakarta Sans',sans-serif; font-size:28px; font-weight:800; color:var(--navy); line-height:1; margin-bottom:6px; }
-    .stat-card .sc-sub { font-size:12px; color:var(--gray-500); }
-    .sc-icon { float:right; width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; }
-    .sc-icon svg { width:18px; height:18px; }
-    .sc-blue   { background:var(--blue-pale);   color:var(--blue); }
-    .sc-green  { background:var(--green-pale);  color:var(--green); }
-    .sc-yellow { background:var(--yellow-pale); color:var(--yellow); }
-    .sc-red    { background:var(--red-pale);    color:var(--red); }
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .stat-card{background:var(--white);border-radius:14px;padding:20px;border:1px solid var(--gray-200)}
+    .sc-label{font-size:12px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+    .sc-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--navy);line-height:1;margin-bottom:6px}
+    .sc-sub{font-size:12px;color:var(--gray-500)}
+    .sc-icon{float:right;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+    .sc-icon svg{width:18px;height:18px}
+    .sc-blue{background:var(--blue-pale);color:var(--blue)}
+    .sc-green{background:var(--green-pale);color:var(--green)}
+    .sc-yellow{background:var(--yellow-pale);color:var(--yellow)}
+    .sc-red{background:var(--red-pale);color:var(--red)}
+    .sc-gold{background:#FEF3C7;color:var(--gold)}
 
     /* TWO COL */
-    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-    .card { background:var(--white); border-radius:14px; border:1px solid var(--gray-200); overflow:hidden; }
-    .card-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; justify-content:space-between; }
-    .card-header h4 { font-size:14px; font-weight:700; color:var(--navy); }
-    .card-header a { font-size:12px; color:var(--blue-light); text-decoration:none; font-weight:600; }
-    .card-body { padding:16px 20px; }
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 
-    /* TUGAS ITEM (beranda) */
-    .tugas-item { display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-bottom:1px solid var(--gray-100); }
-    .tugas-item:last-child { border-bottom:none; padding-bottom:0; }
-    .tugas-dot { width:8px; height:8px; border-radius:50%; margin-top:5px; flex-shrink:0; }
-    .dot-red { background:var(--red); } .dot-yellow { background:var(--yellow); } .dot-green { background:var(--green); }
-    .tugas-info { flex:1; }
-    .tugas-info .t-name { font-size:13px; font-weight:600; color:var(--gray-900); margin-bottom:2px; }
-    .tugas-info .t-matkul { font-size:11px; color:var(--gray-500); }
-    .tugas-deadline { font-size:11px; font-weight:600; padding:3px 9px; border-radius:20px; white-space:nowrap; }
-    .dl-red    { background:var(--red-pale);    color:var(--red); }
-    .dl-yellow { background:var(--yellow-pale); color:var(--yellow); }
-    .dl-green  { background:var(--green-pale);  color:var(--green); }
+    /* TUGAS ITEM BERANDA */
+    .tugas-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100)}
+    .tugas-item:last-child{border-bottom:none;padding-bottom:0}
+    .tugas-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+    .dot-red{background:var(--red)}
+    .dot-yellow{background:var(--yellow)}
+    .dot-green{background:var(--green)}
+    .dot-gray{background:var(--gray-300)}
+    .tugas-info{flex:1}
+    .t-name{font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:2px}
+    .t-matkul{font-size:11px;color:var(--gray-500)}
+    .tugas-deadline{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+    .dl-red{background:var(--red-pale);color:var(--red)}
+    .dl-yellow{background:var(--yellow-pale);color:var(--yellow)}
+    .dl-green{background:var(--green-pale);color:var(--green)}
+    .dl-gray{background:var(--gray-100);color:var(--gray-500)}
 
-    /* JADWAL */
-    .jadwal-item { display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--gray-100); align-items:center; }
-    .jadwal-item:last-child { border-bottom:none; }
-    .jadwal-time { text-align:center; flex-shrink:0; width:52px; }
-    .jadwal-time .jt-time { font-size:12px; font-weight:700; color:var(--navy); }
-    .jadwal-time .jt-dur  { font-size:10px; color:var(--gray-500); }
-    .jadwal-bar { width:3px; border-radius:4px; align-self:stretch; flex-shrink:0; }
-    .jadwal-info .ji-name { font-size:13px; font-weight:600; color:var(--gray-900); margin-bottom:2px; }
-    .jadwal-info .ji-room { font-size:11px; color:var(--gray-500); }
-
-    /* MATA KULIAH */
-    .matkul-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
-    .matkul-card { background:var(--white); border-radius:14px; border:1px solid var(--gray-200); overflow:hidden; cursor:pointer; transition:transform .15s,box-shadow .15s; }
-    .matkul-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(15,42,94,.1); }
-    .matkul-cover { height:6px; }
-    .matkul-body { padding:18px; }
-    .matkul-kode { font-size:11px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
-    .matkul-nama { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:4px; }
-    .matkul-dosen { font-size:12px; color:var(--gray-500); margin-bottom:14px; }
-    .matkul-footer { display:flex; gap:8px; }
-    .matkul-chip { font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; background:var(--blue-pale); color:var(--blue); }
-    .matkul-chip.green { background:var(--green-pale); color:var(--green); }
+    /* MATKUL LIST */
+    .matkul-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .matkul-card{background:var(--white);border-radius:14px;border:1px solid var(--gray-200);overflow:hidden;transition:transform .15s,box-shadow .15s}
+    .matkul-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,42,94,.1)}
+    .matkul-cover{height:6px}
+    .matkul-body{padding:16px 18px}
+    .matkul-kode{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+    .matkul-nama{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+    .matkul-dosen{font-size:12px;color:var(--gray-500);margin-bottom:12px}
+    .matkul-footer{display:flex;gap:8px;flex-wrap:wrap}
+    .matkul-chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--blue-pale);color:var(--blue)}
+    .matkul-chip.green{background:var(--green-pale);color:var(--green)}
 
     /* TUGAS PAGE */
-    .tugas-filter { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
-    .filter-btn { padding:7px 16px; border-radius:20px; border:1.5px solid var(--gray-200); font-size:13px; font-weight:600; cursor:pointer; background:white; color:var(--gray-500); font-family:'Inter',sans-serif; transition:all .15s; }
-    .filter-btn.active { background:var(--navy); color:white; border-color:var(--navy); }
-    .tugas-list { display:flex; flex-direction:column; gap:12px; }
-    .tugas-card { background:var(--white); border-radius:14px; border:1px solid var(--gray-200); padding:18px 20px; display:flex; align-items:center; gap:16px; }
-    .tugas-card-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .tugas-card-icon svg { width:22px; height:22px; }
-    .tugas-card-info { flex:1; }
-    .tugas-card-info .tc-name { font-size:14px; font-weight:700; color:var(--navy); margin-bottom:3px; }
-    .tugas-card-info .tc-meta { font-size:12px; color:var(--gray-500); }
-    .tugas-card-right { text-align:right; }
-    .status-pill { display:inline-block; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; margin-bottom:4px; }
-    .pill-red    { background:var(--red-pale);    color:var(--red); }
-    .pill-yellow { background:var(--yellow-pale); color:var(--yellow); }
-    .pill-green  { background:var(--green-pale);  color:var(--green); }
-    .pill-gray   { background:var(--gray-100);    color:var(--gray-500); }
-    .tc-deadline { font-size:11px; color:var(--gray-500); }
-
-    /* ABSENSI */
-    .absensi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
-    .absensi-card { background:white; border-radius:14px; border:1px solid var(--gray-200); overflow:hidden; }
-    .absensi-card-header { padding:16px 18px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; gap:12px; }
-    .absensi-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .absensi-icon svg { width:20px; height:20px; }
-    .absensi-matkul { font-size:14px; font-weight:700; color:var(--navy); }
-    .absensi-dosen  { font-size:12px; color:var(--gray-500); }
-    .absensi-body { padding:16px 18px; }
-    .progress-row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px; }
-    .progress-row .pr-label { color:var(--gray-500); font-weight:500; }
-    .progress-row .pr-val   { font-weight:700; color:var(--navy); }
-    .progress-bar { height:8px; border-radius:4px; background:var(--gray-100); overflow:hidden; margin-bottom:14px; }
-    .progress-fill { height:100%; border-radius:4px; transition:width .6s ease; }
-    .absensi-detail { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-    .abs-item { text-align:center; padding:8px; border-radius:10px; background:var(--gray-50); }
-    .abs-item .ai-num { font-family:'Plus Jakarta Sans',sans-serif; font-size:18px; font-weight:800; margin-bottom:2px; }
-    .abs-item .ai-label { font-size:10px; color:var(--gray-500); font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
+    .tugas-filter{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+    .filter-btn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--gray-200);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--gray-500);font-family:'Inter',sans-serif;transition:all .15s}
+    .filter-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+    .tugas-list{display:flex;flex-direction:column;gap:12px}
+    .tugas-card{display:flex;align-items:center;gap:14px;background:var(--white);border-radius:14px;border:1px solid var(--gray-200);padding:16px 20px;transition:box-shadow .15s}
+    .tugas-card:hover{box-shadow:0 4px 16px rgba(15,42,94,.08)}
+    .tugas-card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .tugas-card-icon svg{width:20px;height:20px}
+    .tugas-card-info{flex:1}
+    .tc-name{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
+    .tc-meta{font-size:12px;color:var(--gray-500)}
+    .tugas-card-right{text-align:right;flex-shrink:0}
+    .tc-deadline{font-size:11px;color:var(--gray-500);margin-top:4px}
+    .status-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block}
+    .pill-red{background:var(--red-pale);color:var(--red)}
+    .pill-yellow{background:var(--yellow-pale);color:var(--yellow)}
+    .pill-green{background:var(--green-pale);color:var(--green)}
+    .pill-gray{background:var(--gray-100);color:var(--gray-500)}
+    .pill-blue{background:var(--blue-pale);color:var(--blue)}
 
     /* DISKUSI */
-    .diskusi-layout { display:grid; grid-template-columns:280px 1fr; gap:20px; height:calc(100vh - var(--topbar-h) - 80px); min-height:500px; }
-    .diskusi-rooms { background:white; border-radius:14px; border:1px solid var(--gray-200); overflow:hidden; display:flex; flex-direction:column; }
-    .diskusi-rooms-header { padding:16px 18px; border-bottom:1px solid var(--gray-100); font-size:13px; font-weight:700; color:var(--navy); }
-    .diskusi-room-list { flex:1; overflow-y:auto; }
-    .diskusi-room { padding:14px 18px; border-bottom:1px solid var(--gray-100); cursor:pointer; transition:background .15s; }
-    .diskusi-room:hover  { background:var(--gray-50); }
-    .diskusi-room.active { background:var(--blue-pale); }
-    .dr-name { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:2px; }
-    .dr-last { font-size:11px; color:var(--gray-500); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .diskusi-room.active .dr-name { color:var(--blue); }
-    .diskusi-chat { background:white; border-radius:14px; border:1px solid var(--gray-200); overflow:hidden; display:flex; flex-direction:column; }
-    .chat-header { padding:16px 20px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; gap:12px; }
-    .chat-header-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
-    .chat-header-icon svg { width:18px; height:18px; }
-    .chat-matkul { font-size:14px; font-weight:700; color:var(--navy); }
-    .chat-sub    { font-size:11px; color:var(--gray-500); }
-    .chat-messages { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; }
-    .chat-msg { display:flex; gap:10px; }
-    .chat-msg.me { flex-direction:row-reverse; }
-    .msg-avatar { width:32px; height:32px; border-radius:8px; background:var(--blue-light); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; align-self:flex-end; }
-    .msg-avatar.dosen-av { background:var(--gold); }
-    .msg-bubble { max-width:65%; padding:10px 14px; border-radius:14px; font-size:13px; line-height:1.55; }
-    .chat-msg:not(.me) .msg-bubble { background:var(--gray-100); color:var(--gray-700); border-bottom-left-radius:4px; }
-    .chat-msg.me .msg-bubble { background:var(--blue-light); color:white; border-bottom-right-radius:4px; }
-    .msg-time { font-size:10px; opacity:.6; margin-top:4px; }
-    .chat-msg.me .msg-time { text-align:right; }
-    .msg-sender { font-size:11px; font-weight:700; color:var(--gray-500); margin-bottom:4px; }
-    .chat-input-area { padding:14px 16px; border-top:1px solid var(--gray-100); display:flex; gap:10px; align-items:flex-end; }
-    .chat-input { flex:1; padding:10px 14px; border:1.5px solid var(--gray-200); border-radius:10px; font-size:13px; font-family:'Inter',sans-serif; resize:none; outline:none; transition:border-color .2s; line-height:1.5; max-height:100px; }
-    .chat-input:focus { border-color:var(--blue-light); }
-    .btn-send { width:40px; height:40px; background:var(--blue); color:white; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; flex-shrink:0; }
-    .btn-send:hover { background:var(--blue-light); }
-    .btn-send svg { width:18px; height:18px; }
+    .diskusi-layout{display:grid;grid-template-columns:260px 1fr;gap:20px;height:calc(100vh - var(--topbar-h) - 80px);min-height:500px}
+    .diskusi-rooms{background:white;border-radius:14px;border:1px solid var(--gray-200);overflow:hidden;display:flex;flex-direction:column}
+    .diskusi-rooms-header{padding:16px 18px;border-bottom:1px solid var(--gray-100);font-size:13px;font-weight:700;color:var(--navy)}
+    .diskusi-room-list{flex:1;overflow-y:auto}
+    .diskusi-room{padding:14px 18px;border-bottom:1px solid var(--gray-100);cursor:pointer;transition:background .15s}
+    .diskusi-room:hover{background:var(--gray-50)}
+    .diskusi-room.active{background:var(--blue-pale)}
+    .dr-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+    .dr-last{font-size:11px;color:var(--gray-500)}
+    .diskusi-room.active .dr-name{color:var(--blue)}
+    .diskusi-chat{background:white;border-radius:14px;border:1px solid var(--gray-200);overflow:hidden;display:flex;flex-direction:column}
+    .chat-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:12px}
+    .chat-icon{width:36px;height:36px;border-radius:10px;background:var(--blue-pale);display:flex;align-items:center;justify-content:center}
+    .chat-icon svg{width:18px;height:18px;color:var(--blue-light)}
+    .chat-matkul{font-size:14px;font-weight:700;color:var(--navy)}
+    .chat-sub{font-size:11px;color:var(--gray-500)}
+    .chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+    .chat-msg{display:flex;gap:10px}
+    .chat-msg.me{flex-direction:row-reverse}
+    .msg-avatar{width:32px;height:32px;border-radius:8px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;flex-shrink:0;align-self:flex-end}
+    .msg-avatar.dosen-av{background:var(--gold)}
+    .msg-bubble{max-width:65%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.55}
+    .chat-msg:not(.me) .msg-bubble{background:var(--gray-100);color:var(--gray-700);border-bottom-left-radius:4px}
+    .chat-msg.me .msg-bubble{background:var(--navy);color:white;border-bottom-right-radius:4px}
+    .msg-sender{font-size:11px;font-weight:700;color:var(--gray-500);margin-bottom:4px}
+    .msg-time{font-size:10px;color:var(--gray-500);margin-top:4px}
+    .chat-msg.me .msg-time{text-align:right}
+    .chat-input-area{padding:14px 16px;border-top:1px solid var(--gray-100);display:flex;gap:10px;align-items:flex-end}
+    .chat-input{flex:1;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;resize:none;outline:none;transition:border-color .2s;max-height:100px}
+    .chat-input:focus{border-color:var(--blue-light)}
+    .btn-send{width:40px;height:40px;background:var(--navy);color:white;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+    .btn-send:hover{background:var(--blue)}
+    .btn-send svg{width:18px;height:18px}
+    .chat-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--gray-500);font-size:13px;text-align:center;padding:20px}
 
-    /* MOBILE */
-    @media(max-width:768px) {
-      .sidebar { transform:translateX(-100%); }
-      .sidebar.open { transform:translateX(0); }
-      .sidebar-overlay.open { display:block; }
-      .topbar { left:0; padding:0 16px; }
-      .topbar-hamburger { display:flex; align-items:center; justify-content:center; }
-      .main { margin-left:0; }
-      .content { padding:20px 16px 40px; }
-      .stats-grid { grid-template-columns:repeat(2,1fr); }
-      .two-col { grid-template-columns:1fr; }
-      .matkul-grid { grid-template-columns:1fr; }
-      .absensi-grid { grid-template-columns:1fr; }
-      .diskusi-layout { grid-template-columns:1fr; height:auto; }
-      .diskusi-rooms { max-height:220px; }
-      .welcome-badge { display:none; }
+    /* PROFIL */
+    .profil-wrap{max-width:560px}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:12px;font-weight:600;color:var(--gray-500);margin-bottom:5px}
+    .form-input{width:100%;height:42px;padding:0 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;background:white;color:var(--gray-700)}
+    .form-input:focus{border-color:var(--blue-light)}
+    .btn-md{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none;background:var(--blue);color:white;transition:background .15s}
+    .btn-md:hover{background:var(--blue-light)}
+
+    /* LOADING & EMPTY STATES */
+    .loading-row{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--gray-500);font-size:13px;gap:10px}
+    .spinner{width:20px;height:20px;border:2px solid var(--gray-200);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .empty-state{text-align:center;padding:48px 20px;color:var(--gray-500)}
+    .empty-state .es-icon{font-size:40px;margin-bottom:12px;display:block}
+    .empty-state p{font-size:13px;line-height:1.6}
+    .empty-state strong{color:var(--gray-700)}
+
+    /* ALERT */
+    .alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;display:none}
+    .alert-error{background:var(--red-pale);color:var(--red);border:1px solid #FECACA}
+    .alert-success{background:var(--green-pale);color:var(--green);border:1px solid #BBF7D0}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--gray-900);color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateY(0)}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0)}
+      .sidebar-overlay{display:block}
+      .sidebar-overlay.open{display:block;opacity:1;pointer-events:auto}
+      .topbar{left:0}
+      .topbar-hamburger{display:flex}
+      .main{margin-left:0}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .two-col{grid-template-columns:1fr}
+      .content{padding:20px 16px 40px}
+      .welcome-banner{flex-direction:column;align-items:flex-start;gap:16px;padding:22px}
+      .diskusi-layout{grid-template-columns:1fr;height:auto}
+      .diskusi-rooms{height:180px}
+    }
+    @media(max-width:480px){
+      .stats-grid{grid-template-columns:1fr 1fr}
     }
   </style>
 </head>
 <body>
 
+<!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <!-- SIDEBAR -->
@@ -236,47 +238,38 @@
       <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
     </div>
     <div class="logo-text">
-      <div class="name">Unmuh Babel</div>
+      <div class="name">LMS Unmuh Babel</div>
       <div class="sub">Portal Mahasiswa</div>
     </div>
   </div>
   <div class="sidebar-user">
     <div class="avatar" id="sb-avatar">—</div>
-    <div style="overflow:hidden">
+    <div>
       <div class="uname" id="sb-nama">Memuat...</div>
-      <div class="uid"   id="sb-nim">—</div>
+      <div class="uid" id="sb-nim">—</div>
     </div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">
       <div class="nav-label">Menu Utama</div>
       <button class="nav-item active" onclick="showPage('beranda')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        Beranda
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Beranda
       </button>
       <button class="nav-item" onclick="showPage('matkul')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
-        Mata Kuliah
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>Mata Kuliah
       </button>
       <button class="nav-item" onclick="showPage('tugas')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-        Tugas
-        <span class="nav-badge">3</span>
-      </button>
-      <button class="nav-item" onclick="showPage('absensi')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-        Absensi
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Tugas
+        <span class="nav-badge" id="badge-tugas" style="display:none">0</span>
       </button>
       <button class="nav-item" onclick="showPage('diskusi')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-        Diskusi
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>Diskusi
       </button>
     </div>
     <div class="nav-section">
       <div class="nav-label">Akun</div>
       <button class="nav-item" onclick="showPage('profil')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>
-        Profil Saya
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Profil Saya
       </button>
     </div>
   </nav>
@@ -295,248 +288,181 @@
   </button>
   <div class="topbar-title" id="topbar-title">Beranda</div>
   <div class="topbar-right">
-    <button class="topbar-notif">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-      <span class="notif-dot"></span>
-    </button>
     <div class="topbar-avatar" id="top-avatar">—</div>
   </div>
 </header>
 
+<!-- MAIN -->
 <main class="main">
 
-  <!-- BERANDA -->
+  <!-- ═══════════════ BERANDA ═══════════════ -->
   <div class="content active" id="page-beranda">
     <div class="page-header">
       <h2 id="greeting">Selamat Datang</h2>
-      <p>Semester ini kamu memiliki 5 mata kuliah aktif.</p>
+      <p id="sub-greeting">Ringkasan aktivitas perkuliahan kamu.</p>
     </div>
     <div class="welcome-banner">
       <div class="welcome-text">
-        <h3 id="banner-nama">Halo, Mahasiswa! 👋</h3>
-        <p>Kamu memiliki <strong style="color:white">3 tugas</strong> yang belum dikumpulkan<br>dan jadwal kuliah hari ini dimulai pukul 08.00.</p>
+        <h3 id="banner-nama">Halo! 👋</h3>
+        <p id="banner-desc">Sedang memuat data...</p>
       </div>
-      <div class="welcome-badge" id="banner-sem">Semester 4</div>
+      <div class="welcome-badge" id="banner-sem">—</div>
     </div>
     <div class="stats-grid">
       <div class="stat-card">
         <div class="sc-icon sc-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div>
         <div class="sc-label">Mata Kuliah</div>
-        <div class="sc-num">5</div>
+        <div class="sc-num" id="stat-matkul">—</div>
         <div class="sc-sub">Aktif semester ini</div>
       </div>
       <div class="stat-card">
         <div class="sc-icon sc-yellow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
         <div class="sc-label">Tugas Aktif</div>
-        <div class="sc-num">3</div>
+        <div class="sc-num" id="stat-tugas">—</div>
         <div class="sc-sub">Belum dikumpulkan</div>
       </div>
       <div class="stat-card">
-        <div class="sc-icon sc-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
-        <div class="sc-label">Absensi Rata-rata</div>
-        <div class="sc-num">87%</div>
-        <div class="sc-sub">Kehadiran keseluruhan</div>
+        <div class="sc-icon sc-gold"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+        <div class="sc-label">Jurusan</div>
+        <div class="sc-num" style="font-size:14px;margin-top:4px" id="stat-jurusan">—</div>
+        <div class="sc-sub" id="stat-fakultas">—</div>
       </div>
       <div class="stat-card">
-        <div class="sc-icon sc-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
-        <div class="sc-label">Diskusi</div>
-        <div class="sc-num">5</div>
-        <div class="sc-sub">Ruang aktif</div>
+        <div class="sc-icon sc-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+        <div class="sc-label">Semester</div>
+        <div class="sc-num" id="stat-semester">—</div>
+        <div class="sc-sub">Tahun Akademik aktif</div>
       </div>
     </div>
     <div class="two-col">
       <div class="card">
         <div class="card-header">
-          <h4>Tugas Mendekat</h4>
-          <a href="#" onclick="showPage('tugas');return false">Lihat semua</a>
+          <h4>Tugas Mendekati Deadline</h4>
+          <a href="#" onclick="showPage('tugas');return false" style="font-size:12px;color:var(--blue);text-decoration:none;font-weight:600">Lihat semua</a>
         </div>
-        <div class="card-body">
-          <div class="tugas-item">
-            <div class="tugas-dot dot-red"></div>
-            <div class="tugas-info"><div class="t-name">Laporan Praktikum Jaringan</div><div class="t-matkul">Jaringan Komputer</div></div>
-            <div class="tugas-deadline dl-red">Besok</div>
-          </div>
-          <div class="tugas-item">
-            <div class="tugas-dot dot-yellow"></div>
-            <div class="tugas-info"><div class="t-name">UTS Essay — Pancasila</div><div class="t-matkul">Pendidikan Pancasila</div></div>
-            <div class="tugas-deadline dl-yellow">3 hari</div>
-          </div>
-          <div class="tugas-item">
-            <div class="tugas-dot dot-green"></div>
-            <div class="tugas-info"><div class="t-name">Tugas 3 — Normalisasi DB</div><div class="t-matkul">Basis Data</div></div>
-            <div class="tugas-deadline dl-green">7 hari</div>
-          </div>
+        <div class="card-body" id="beranda-tugas">
+          <div class="loading-row"><div class="spinner"></div> Memuat tugas...</div>
         </div>
       </div>
       <div class="card">
         <div class="card-header">
-          <h4>Jadwal Hari Ini</h4>
-          <span style="font-size:12px;color:var(--gray-500)" id="tgl-hari"></span>
+          <h4>Mata Kuliah Saya</h4>
+          <a href="#" onclick="showPage('matkul');return false" style="font-size:12px;color:var(--blue);text-decoration:none;font-weight:600">Lihat semua</a>
         </div>
-        <div class="card-body">
-          <div class="jadwal-item">
-            <div class="jadwal-time"><div class="jt-time">08.00</div><div class="jt-dur">100 mnt</div></div>
-            <div class="jadwal-bar" style="background:var(--blue-light)"></div>
-            <div class="jadwal-info"><div class="ji-name">Basis Data</div><div class="ji-room">Ruang B-201 · Dr. Budi S.</div></div>
-          </div>
-          <div class="jadwal-item">
-            <div class="jadwal-time"><div class="jt-time">10.00</div><div class="jt-dur">100 mnt</div></div>
-            <div class="jadwal-bar" style="background:var(--gold)"></div>
-            <div class="jadwal-info"><div class="ji-name">Pemrograman Web</div><div class="ji-room">Lab Komputer A · Dr. Budi S.</div></div>
-          </div>
-          <div class="jadwal-item">
-            <div class="jadwal-time"><div class="jt-time">13.00</div><div class="jt-dur">100 mnt</div></div>
-            <div class="jadwal-bar" style="background:var(--green)"></div>
-            <div class="jadwal-info"><div class="ji-name">Jaringan Komputer</div><div class="ji-room">Ruang C-101 · M. Ridwan, S.T.</div></div>
-          </div>
+        <div class="card-body" id="beranda-matkul">
+          <div class="loading-row"><div class="spinner"></div> Memuat mata kuliah...</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MATA KULIAH -->
+  <!-- ═══════════════ MATA KULIAH ═══════════════ -->
   <div class="content" id="page-matkul">
-    <div class="page-header"><h2>Mata Kuliah</h2><p>5 mata kuliah aktif — Semester 4, T.A. 2025/2026</p></div>
-    <div class="matkul-grid">
-      <div class="matkul-card"><div class="matkul-cover" style="background:var(--blue-light)"></div><div class="matkul-body"><div class="matkul-kode">TI2401</div><div class="matkul-nama">Basis Data</div><div class="matkul-dosen">Dr. Budi Santoso, M.T.</div><div class="matkul-footer"><span class="matkul-chip">3 SKS</span><span class="matkul-chip green">Aktif</span></div></div></div>
-      <div class="matkul-card"><div class="matkul-cover" style="background:var(--gold)"></div><div class="matkul-body"><div class="matkul-kode">TI2402</div><div class="matkul-nama">Pemrograman Web</div><div class="matkul-dosen">Dr. Budi Santoso, M.T.</div><div class="matkul-footer"><span class="matkul-chip">3 SKS</span><span class="matkul-chip green">Aktif</span></div></div></div>
-      <div class="matkul-card"><div class="matkul-cover" style="background:#16A34A"></div><div class="matkul-body"><div class="matkul-kode">TI2403</div><div class="matkul-nama">Jaringan Komputer</div><div class="matkul-dosen">M. Ridwan, S.T., M.Kom.</div><div class="matkul-footer"><span class="matkul-chip">3 SKS</span><span class="matkul-chip green">Aktif</span></div></div></div>
-      <div class="matkul-card"><div class="matkul-cover" style="background:#7C3AED"></div><div class="matkul-body"><div class="matkul-kode">MPK2401</div><div class="matkul-nama">Pendidikan Pancasila</div><div class="matkul-dosen">Drs. Hendra Wijaya, M.Pd.</div><div class="matkul-footer"><span class="matkul-chip">2 SKS</span><span class="matkul-chip green">Aktif</span></div></div></div>
-      <div class="matkul-card"><div class="matkul-cover" style="background:#DB2777"></div><div class="matkul-body"><div class="matkul-kode">TI2404</div><div class="matkul-nama">Algoritma & Pemrograman</div><div class="matkul-dosen">Siti Rahayu, S.Kom., M.T.</div><div class="matkul-footer"><span class="matkul-chip">3 SKS</span><span class="matkul-chip green">Aktif</span></div></div></div>
+    <div class="page-header">
+      <h2>Mata Kuliah</h2>
+      <p id="matkul-sub">Daftar mata kuliah aktif semester ini.</p>
+    </div>
+    <div class="matkul-grid" id="matkul-grid">
+      <div class="loading-row"><div class="spinner"></div> Memuat mata kuliah...</div>
     </div>
   </div>
 
-  <!-- TUGAS -->
+  <!-- ═══════════════ TUGAS ═══════════════ -->
   <div class="content" id="page-tugas">
-    <div class="page-header"><h2>Tugas</h2><p>Daftar seluruh tugas dari semua mata kuliah</p></div>
+    <div class="page-header">
+      <h2>Tugas</h2>
+      <p>Daftar seluruh tugas dari mata kuliah kamu.</p>
+    </div>
     <div class="tugas-filter">
       <button class="filter-btn active" onclick="filterTugas('semua',this)">Semua</button>
-      <button class="filter-btn" onclick="filterTugas('belum',this)">Belum Dikumpul</button>
-      <button class="filter-btn" onclick="filterTugas('sudah',this)">Sudah Dikumpul</button>
+      <button class="filter-btn" onclick="filterTugas('aktif',this)">Aktif</button>
+      <button class="filter-btn" onclick="filterTugas('ditutup',this)">Ditutup</button>
     </div>
-    <div class="tugas-list">
-      <div class="tugas-card" data-status="belum">
-        <div class="tugas-card-icon sc-red"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
-        <div class="tugas-card-info"><div class="tc-name">Laporan Praktikum Jaringan</div><div class="tc-meta">Jaringan Komputer · M. Ridwan, S.T.</div></div>
-        <div class="tugas-card-right"><div class="status-pill pill-red">Belum</div><div class="tc-deadline">Deadline: Besok, 23:59</div></div>
-      </div>
-      <div class="tugas-card" data-status="belum">
-        <div class="tugas-card-icon sc-yellow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
-        <div class="tugas-card-info"><div class="tc-name">UTS Essay — Pancasila</div><div class="tc-meta">Pendidikan Pancasila · Drs. Hendra W.</div></div>
-        <div class="tugas-card-right"><div class="status-pill pill-yellow">Belum</div><div class="tc-deadline">Deadline: 3 hari lagi</div></div>
-      </div>
-      <div class="tugas-card" data-status="belum">
-        <div class="tugas-card-icon sc-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
-        <div class="tugas-card-info"><div class="tc-name">Tugas 3 — Normalisasi Database</div><div class="tc-meta">Basis Data · Dr. Budi Santoso</div></div>
-        <div class="tugas-card-right"><div class="status-pill pill-yellow">Belum</div><div class="tc-deadline">Deadline: 7 hari lagi</div></div>
-      </div>
-      <div class="tugas-card" data-status="sudah">
-        <div class="tugas-card-icon sc-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
-        <div class="tugas-card-info"><div class="tc-name">Tugas 2 — ERD Diagram</div><div class="tc-meta">Basis Data · Dr. Budi Santoso</div></div>
-        <div class="tugas-card-right"><div class="status-pill pill-green">Terkumpul</div><div class="tc-deadline">Dikumpul: 3 hari lalu</div></div>
-      </div>
-      <div class="tugas-card" data-status="sudah">
-        <div class="tugas-card-icon sc-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
-        <div class="tugas-card-info"><div class="tc-name">Tugas 1 — HTML & CSS Dasar</div><div class="tc-meta">Pemrograman Web · Dr. Budi Santoso</div></div>
-        <div class="tugas-card-right"><div class="status-pill pill-green">Terkumpul</div><div class="tc-deadline">Nilai: 90/100</div></div>
-      </div>
+    <div class="tugas-list" id="tugas-list">
+      <div class="loading-row"><div class="spinner"></div> Memuat tugas...</div>
     </div>
   </div>
 
-  <!-- ABSENSI -->
-  <div class="content" id="page-absensi">
-    <div class="page-header"><h2>Absensi</h2><p>Rekap kehadiran per mata kuliah semester ini</p></div>
-    <div class="absensi-grid">
-      <div class="absensi-card">
-        <div class="absensi-card-header"><div class="absensi-icon sc-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div><div><div class="absensi-matkul">Basis Data</div><div class="absensi-dosen">Dr. Budi Santoso</div></div></div>
-        <div class="absensi-body"><div class="progress-row"><span class="pr-label">Kehadiran</span><span class="pr-val">13/14 · 93%</span></div><div class="progress-bar"><div class="progress-fill" style="width:93%;background:var(--green)"></div></div><div class="absensi-detail"><div class="abs-item"><div class="ai-num" style="color:var(--green)">13</div><div class="ai-label">Hadir</div></div><div class="abs-item"><div class="ai-num" style="color:var(--yellow)">0</div><div class="ai-label">Izin</div></div><div class="abs-item"><div class="ai-num" style="color:var(--red)">1</div><div class="ai-label">Absen</div></div></div></div>
-      </div>
-      <div class="absensi-card">
-        <div class="absensi-card-header"><div class="absensi-icon sc-yellow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div><div><div class="absensi-matkul">Pemrograman Web</div><div class="absensi-dosen">Dr. Budi Santoso</div></div></div>
-        <div class="absensi-body"><div class="progress-row"><span class="pr-label">Kehadiran</span><span class="pr-val">11/14 · 79%</span></div><div class="progress-bar"><div class="progress-fill" style="width:79%;background:var(--yellow)"></div></div><div class="absensi-detail"><div class="abs-item"><div class="ai-num" style="color:var(--green)">11</div><div class="ai-label">Hadir</div></div><div class="abs-item"><div class="ai-num" style="color:var(--yellow)">2</div><div class="ai-label">Izin</div></div><div class="abs-item"><div class="ai-num" style="color:var(--red)">1</div><div class="ai-label">Absen</div></div></div></div>
-      </div>
-      <div class="absensi-card">
-        <div class="absensi-card-header"><div class="absensi-icon sc-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div><div><div class="absensi-matkul">Jaringan Komputer</div><div class="absensi-dosen">M. Ridwan, S.T.</div></div></div>
-        <div class="absensi-body"><div class="progress-row"><span class="pr-label">Kehadiran</span><span class="pr-val">14/14 · 100%</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--green)"></div></div><div class="absensi-detail"><div class="abs-item"><div class="ai-num" style="color:var(--green)">14</div><div class="ai-label">Hadir</div></div><div class="abs-item"><div class="ai-num" style="color:var(--yellow)">0</div><div class="ai-label">Izin</div></div><div class="abs-item"><div class="ai-num" style="color:var(--red)">0</div><div class="ai-label">Absen</div></div></div></div>
-      </div>
-      <div class="absensi-card">
-        <div class="absensi-card-header"><div class="absensi-icon" style="background:#F3E8FF"><svg viewBox="0 0 24 24" fill="#7C3AED"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div><div><div class="absensi-matkul">Pendidikan Pancasila</div><div class="absensi-dosen">Drs. Hendra Wijaya</div></div></div>
-        <div class="absensi-body"><div class="progress-row"><span class="pr-label">Kehadiran</span><span class="pr-val">10/14 · 71%</span></div><div class="progress-bar"><div class="progress-fill" style="width:71%;background:var(--red)"></div></div><div class="absensi-detail"><div class="abs-item"><div class="ai-num" style="color:var(--green)">10</div><div class="ai-label">Hadir</div></div><div class="abs-item"><div class="ai-num" style="color:var(--yellow)">2</div><div class="ai-label">Izin</div></div><div class="abs-item"><div class="ai-num" style="color:var(--red)">2</div><div class="ai-label">Absen</div></div></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DISKUSI -->
+  <!-- ═══════════════ DISKUSI ═══════════════ -->
   <div class="content" id="page-diskusi">
-    <div class="page-header"><h2>Diskusi</h2><p>Ruang diskusi per mata kuliah bersama dosen dan teman</p></div>
+    <div class="page-header">
+      <h2>Diskusi</h2>
+      <p>Ruang diskusi per mata kuliah bersama dosen dan teman sekelas.</p>
+    </div>
     <div class="diskusi-layout">
       <div class="diskusi-rooms">
         <div class="diskusi-rooms-header">📚 Ruang Diskusi</div>
-        <div class="diskusi-room-list">
-          <div class="diskusi-room active" onclick="selectRoom(this,'Basis Data')"><div class="dr-name">Basis Data</div><div class="dr-last">Dr. Budi: Ingat kumpul tugas 3 besok...</div></div>
-          <div class="diskusi-room" onclick="selectRoom(this,'Pemrograman Web')"><div class="dr-name">Pemrograman Web</div><div class="dr-last">Andi: Pak, link materi sudah bisa diakses?</div></div>
-          <div class="diskusi-room" onclick="selectRoom(this,'Jaringan Komputer')"><div class="dr-name">Jaringan Komputer</div><div class="dr-last">Ridwan: Praktek minggu depan di Lab A</div></div>
-          <div class="diskusi-room" onclick="selectRoom(this,'Pendidikan Pancasila')"><div class="dr-name">Pendidikan Pancasila</div><div class="dr-last">Hendra: Essay dikumpul via LMS ya</div></div>
-          <div class="diskusi-room" onclick="selectRoom(this,'Algoritma & Pemrograman')"><div class="dr-name">Algoritma & Pemrograman</div><div class="dr-last">Siti: Soal kuis dari bab 5-7</div></div>
+        <div class="diskusi-room-list" id="diskusi-rooms">
+          <div class="loading-row"><div class="spinner"></div></div>
         </div>
       </div>
       <div class="diskusi-chat">
         <div class="chat-header">
-          <div class="chat-header-icon" style="background:var(--blue-pale)"><svg viewBox="0 0 24 24" fill="var(--blue-light)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
-          <div><div class="chat-matkul" id="chat-title">Basis Data</div><div class="chat-sub">Dr. Budi Santoso, M.T. · 14 mahasiswa</div></div>
+          <div class="chat-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+          </div>
+          <div>
+            <div class="chat-matkul" id="chat-title">Pilih ruang diskusi</div>
+            <div class="chat-sub" id="chat-dosen">—</div>
+          </div>
         </div>
         <div class="chat-messages" id="chat-messages">
-          <div class="chat-msg">
-            <div class="msg-avatar dosen-av">BS</div>
-            <div><div class="msg-sender">Dr. Budi Santoso</div><div class="msg-bubble">Selamat pagi semua. Pertemuan hari ini kita akan membahas normalisasi database hingga 3NF. Silakan baca materi di modul 6 terlebih dahulu.</div><div class="msg-time">08.15</div></div>
-          </div>
-          <div class="chat-msg">
-            <div class="msg-avatar" style="background:#16A34A">AP</div>
-            <div><div class="msg-sender">Andi Pratama</div><div class="msg-bubble">Pak, untuk tugas 3 normalisasi, apakah boleh menggunakan tabel dari studi kasus sendiri?</div><div class="msg-time">08.32</div></div>
-          </div>
-          <div class="chat-msg">
-            <div class="msg-avatar dosen-av">BS</div>
-            <div><div class="msg-sender">Dr. Budi Santoso</div><div class="msg-bubble">Boleh, asalkan minimal memiliki 5 tabel dan menunjukkan proses normalisasi dari 1NF sampai 3NF secara bertahap.</div><div class="msg-time">08.35</div></div>
-          </div>
-          <div class="chat-msg me">
-            <div class="msg-avatar" id="chat-my-av">—</div>
-            <div><div class="msg-bubble">Baik Pak, terima kasih penjelasannya!</div><div class="msg-time">08.40</div></div>
+          <div class="chat-empty">
+            <div>
+              <span style="font-size:36px;display:block;margin-bottom:10px">💬</span>
+              Pilih ruang diskusi di sebelah kiri untuk mulai berdiskusi.
+            </div>
           </div>
         </div>
         <div class="chat-input-area">
           <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ketik pesan..." onkeydown="handleChatKey(event)"></textarea>
-          <button class="btn-send" onclick="sendMessage()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></button>
+          <button class="btn-send" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- PROFIL -->
+  <!-- ═══════════════ PROFIL ═══════════════ -->
   <div class="content" id="page-profil">
-    <div class="page-header"><h2>Profil Saya</h2><p>Informasi akun dan data akademik</p></div>
-    <div style="max-width:560px">
+    <div class="page-header">
+      <h2>Profil Saya</h2>
+      <p>Informasi akun dan data akademik kamu.</p>
+    </div>
+    <div class="profil-wrap">
       <div class="card" style="margin-bottom:16px">
         <div class="card-header"><h4>Data Diri</h4></div>
         <div class="card-body">
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
-            <div class="avatar" id="profil-avatar" style="width:60px;height:60px;border-radius:14px;font-size:22px">—</div>
-            <div><div style="font-size:17px;font-weight:700;color:var(--navy)" id="profil-nama">—</div><div style="font-size:13px;color:var(--gray-500)" id="profil-nim">—</div></div>
+            <div class="avatar" id="profil-avatar" style="width:60px;height:60px;border-radius:14px;font-size:22px;flex-shrink:0">—</div>
+            <div>
+              <div style="font-size:18px;font-weight:700;color:var(--navy)" id="profil-nama">—</div>
+              <div style="font-size:13px;color:var(--gray-500)" id="profil-nim">—</div>
+            </div>
           </div>
           <table style="width:100%;border-collapse:collapse;font-size:13px">
             <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:10px 0;color:var(--gray-500);width:40%">Role</td><td style="padding:10px 0;font-weight:600">Mahasiswa</td></tr>
             <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:10px 0;color:var(--gray-500)">Jurusan</td><td style="padding:10px 0;font-weight:600" id="profil-jurusan">—</td></tr>
-            <tr><td style="padding:10px 0;color:var(--gray-500)">Semester</td><td style="padding:10px 0;font-weight:600" id="profil-semester">—</td></tr>
+            <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:10px 0;color:var(--gray-500)">Semester</td><td style="padding:10px 0;font-weight:600" id="profil-semester">—</td></tr>
+            <tr><td style="padding:10px 0;color:var(--gray-500)">NIM</td><td style="padding:10px 0;font-weight:600" id="profil-nim2">—</td></tr>
           </table>
         </div>
       </div>
       <div class="card">
         <div class="card-header"><h4>Ganti Password</h4></div>
         <div class="card-body">
-          <div id="pass-alert"   style="display:none;margin-bottom:12px;padding:10px 14px;border-radius:8px;font-size:13px;background:var(--red-pale);color:var(--red);border:1px solid #FECACA"></div>
-          <div id="pass-success" style="display:none;margin-bottom:12px;padding:10px 14px;border-radius:8px;font-size:13px;background:var(--green-pale);color:var(--green);border:1px solid #BBF7D0"></div>
-          <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px">Password Lama</label><input type="password" id="old-pass" placeholder="••••••••" style="width:100%;height:42px;padding:0 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:Inter,sans-serif;outline:none"/></div>
-          <div style="margin-bottom:16px"><label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px">Password Baru</label><input type="password" id="new-pass" placeholder="••••••••" style="width:100%;height:42px;padding:0 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:Inter,sans-serif;outline:none"/></div>
-          <button onclick="gantiPassword()" style="padding:10px 24px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Simpan Password</button>
+          <div class="alert alert-error" id="pass-alert"></div>
+          <div class="alert alert-success" id="pass-success"></div>
+          <div class="form-group">
+            <label>Password Lama</label>
+            <input type="password" id="old-pass" class="form-input" placeholder="••••••••"/>
+          </div>
+          <div class="form-group">
+            <label>Password Baru</label>
+            <input type="password" id="new-pass" class="form-input" placeholder="Minimal 6 karakter"/>
+          </div>
+          <button class="btn-md" onclick="gantiPassword()">Simpan Password</button>
         </div>
       </div>
     </div>
@@ -544,40 +470,422 @@
 
 </main>
 
+<div class="toast" id="toast"></div>
+
 <script src="/auth.js"></script>
 <script>
-  let currentUser = null;
-  const pages  = ['beranda','matkul','tugas','absensi','diskusi','profil'];
-  const titles = { beranda:'Beranda', matkul:'Mata Kuliah', tugas:'Tugas', absensi:'Absensi', diskusi:'Diskusi', profil:'Profil Saya' };
+  // ═══════════════════════════════════════════════════════
+  //  STATE
+  // ═══════════════════════════════════════════════════════
+  let currentUser    = null;
+  let allMatkul      = [];   // mata kuliah sesuai jurusan mahasiswa
+  let allTugas       = [];   // tugas sesuai matkul mahasiswa
+  let currentFilter  = 'semua';
+  let activeDiskusi  = null; // nama matkul yang sedang dibuka di diskusi
+  const chatHistory  = {};   // { [matkulNama]: [{role,text,time}] }
 
+  const pages  = ['beranda','matkul','tugas','diskusi','profil'];
+  const titles = { beranda:'Beranda', matkul:'Mata Kuliah', tugas:'Tugas', diskusi:'Diskusi', profil:'Profil Saya' };
+
+  const COVER_COLORS = ['#2563EB','#C9A84C','#16A34A','#7C3AED','#DB2777','#0891B2','#D97706','#059669'];
+
+  // ═══════════════════════════════════════════════════════
+  //  INIT
+  // ═══════════════════════════════════════════════════════
   (async () => {
     currentUser = await Auth.requireLogin(['mahasiswa']);
     if (!currentUser) return;
-    const inisial = currentUser.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-    ['sb-avatar','top-avatar','profil-avatar','chat-my-av'].forEach(id => {
+
+    // Isi info user di semua elemen
+    const inisial = getInisial(currentUser.nama);
+    ['sb-avatar','top-avatar','profil-avatar'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.textContent = inisial;
     });
-    document.getElementById('sb-nama').textContent       = currentUser.nama;
-    document.getElementById('sb-nim').textContent        = currentUser.nim_nip;
-    document.getElementById('profil-nama').textContent   = currentUser.nama;
-    document.getElementById('profil-nim').textContent    = currentUser.nim_nip;
+
+    document.getElementById('sb-nama').textContent     = currentUser.nama;
+    document.getElementById('sb-nim').textContent      = currentUser.nim_nip;
+    document.getElementById('profil-nama').textContent = currentUser.nama;
+    document.getElementById('profil-nim').textContent  = currentUser.nim_nip;
+    document.getElementById('profil-nim2').textContent = currentUser.nim_nip;
     document.getElementById('profil-jurusan').textContent  = currentUser.jurusan || '—';
     document.getElementById('profil-semester').textContent = currentUser.semester ? `Semester ${currentUser.semester}` : '—';
+
     const firstName = currentUser.nama.split(' ')[0];
     document.getElementById('greeting').textContent    = `Selamat Datang, ${firstName}`;
     document.getElementById('banner-nama').textContent = `Halo, ${firstName}! 👋`;
-    if (currentUser.semester) document.getElementById('banner-sem').textContent = `Semester ${currentUser.semester}`;
-    document.getElementById('tgl-hari').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
+    document.getElementById('banner-sem').textContent  = currentUser.semester ? `Semester ${currentUser.semester}` : 'Mahasiswa';
+
+    // Muat data
+    await Promise.all([loadMatkul(), loadTugas()]);
+
+    // Update banner setelah data tersedia
+    updateBanner();
   })();
 
+  // ═══════════════════════════════════════════════════════
+  //  HELPERS
+  // ═══════════════════════════════════════════════════════
+  function getInisial(nama) {
+    return nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  }
+
+  function authHeaders() {
+    return { 'Content-Type':'application/json', 'x-session-token': Auth.getToken() };
+  }
+
+  function deadlineLabel(deadline) {
+    if (!deadline) return { text: '—', cls: 'dl-gray' };
+    const diff = new Date(deadline) - new Date();
+    const days = Math.ceil(diff / (1000*60*60*24));
+    if (days < 0)  return { text: 'Lewat deadline', cls: 'dl-gray' };
+    if (days === 0) return { text: 'Hari ini', cls: 'dl-red' };
+    if (days === 1) return { text: 'Besok', cls: 'dl-red' };
+    if (days <= 3)  return { text: `${days} hari lagi`, cls: 'dl-yellow' };
+    return { text: `${days} hari lagi`, cls: 'dl-green' };
+  }
+
+  function deadlineDot(deadline) {
+    if (!deadline) return 'dot-gray';
+    const diff = new Date(deadline) - new Date();
+    const days = Math.ceil(diff / (1000*60*60*24));
+    if (days < 0)  return 'dot-gray';
+    if (days <= 1) return 'dot-red';
+    if (days <= 3) return 'dot-yellow';
+    return 'dot-green';
+  }
+
+  function statusPill(status) {
+    const map = {
+      aktif:    { cls: 'pill-yellow', label: 'Aktif' },
+      ditutup:  { cls: 'pill-gray',   label: 'Ditutup' },
+      selesai:  { cls: 'pill-green',  label: 'Selesai' },
+    };
+    return map[status] || { cls: 'pill-blue', label: status };
+  }
+
+  function formatDate(str) {
+    if (!str) return '—';
+    return new Date(str).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  LOAD MATA KULIAH
+  // ═══════════════════════════════════════════════════════
+  async function loadMatkul() {
+    try {
+      // Ambil semua matkul via admin key tidak tersedia dari sisi mahasiswa
+      // Gunakan endpoint list yang open (tidak perlu admin key untuk read)
+      // API matkul butuh admin key, jadi kita fetch tanpa key dan filter dari response
+      // Alternatif: gunakan endpoint yang sudah ada, namun matkul/list memerlukan admin key
+      // Solusi: baca dari tugas (matkul field) + fallback langsung query
+      // Karena API matkul/list butuh x-admin-key, kita tidak bisa panggilnya dari client mahasiswa.
+      // Kita ambil mata kuliah dari data tugas saja, dan tampilkan info dari sana.
+      // Ini by-design: mahasiswa melihat matkul dari tugas yang ada.
+      allMatkul = await fetchMatkulByJurusan();
+    } catch(e) {
+      allMatkul = [];
+    }
+    renderMatkulGrid();
+    renderBerandaMatkul();
+    updateStats();
+  }
+
+  async function fetchMatkulByJurusan() {
+    // Matkul API butuh admin key — mahasiswa tidak punya.
+    // Kita manfaatkan endpoint tugas/list (public) untuk dapat nama matkul,
+    // lalu tampilkan kartu dari sana.
+    // Untuk info lengkap (SKS, dosen), kita parse dari tugas.
+    if (!currentUser.jurusan) return [];
+
+    // Tugas list bisa diakses tanpa auth (hanya GET)
+    const res = await fetch(`/api/tugas/list`);
+    if (!res.ok) return [];
+    const json = await res.json();
+    const semua = json.tugas || [];
+
+    // Kumpulkan nama matkul unik dari jurusan user
+    const seen = new Set();
+    const list = [];
+    semua.forEach(t => {
+      if (!seen.has(t.matkul)) {
+        seen.add(t.matkul);
+        list.push({ id: t.matkul, nama: t.matkul, dosen_nama: '—', sks: '—', kode: '—', jurusan: '' });
+      }
+    });
+    return list;
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  LOAD TUGAS
+  // ═══════════════════════════════════════════════════════
+  async function loadTugas() {
+    const listEl = document.getElementById('tugas-list');
+    const berandaEl = document.getElementById('beranda-tugas');
+
+    try {
+      const res = await fetch(`/api/tugas/list`);
+      if (!res.ok) throw new Error('Gagal memuat tugas.');
+      const json = await res.json();
+      allTugas = json.tugas || [];
+    } catch(e) {
+      allTugas = [];
+      listEl.innerHTML = `<div class="empty-state"><span class="es-icon">⚠️</span><p>${e.message}</p></div>`;
+      berandaEl.innerHTML = `<div class="empty-state"><span class="es-icon">⚠️</span><p>Gagal memuat tugas.</p></div>`;
+      return;
+    }
+
+    renderTugasList(allTugas);
+    renderBerandaTugas(allTugas);
+    updateStats();
+    updateNavBadge();
+  }
+
+  function renderTugasList(list) {
+    const el = document.getElementById('tugas-list');
+    if (!list.length) {
+      el.innerHTML = `<div class="empty-state"><span class="es-icon">📭</span><p><strong>Belum ada tugas</strong><br>Belum ada tugas yang diberikan oleh dosen.</p></div>`;
+      return;
+    }
+
+    const filtered = currentFilter === 'semua' ? list : list.filter(t => t.status === currentFilter);
+    if (!filtered.length) {
+      el.innerHTML = `<div class="empty-state"><span class="es-icon">✅</span><p>Tidak ada tugas dengan status "<strong>${currentFilter}</strong>".</p></div>`;
+      return;
+    }
+
+    el.innerHTML = filtered.map(t => {
+      const dl = deadlineLabel(t.deadline);
+      const sp = statusPill(t.status);
+      const iconColor = t.status === 'aktif' ? 'sc-yellow' : (t.status === 'ditutup' ? 'sc-gray' : 'sc-green');
+      return `
+        <div class="tugas-card" data-status="${t.status}">
+          <div class="tugas-card-icon ${iconColor}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+          </div>
+          <div class="tugas-card-info">
+            <div class="tc-name">${t.judul}</div>
+            <div class="tc-meta">${t.matkul}${t.deskripsi ? ' · ' + t.deskripsi.substring(0,60) + (t.deskripsi.length>60?'…':'') : ''}</div>
+          </div>
+          <div class="tugas-card-right">
+            <div class="status-pill ${sp.cls}">${sp.label}</div>
+            <div class="tc-deadline">Deadline: ${formatDate(t.deadline)}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderBerandaTugas(list) {
+    const el = document.getElementById('beranda-tugas');
+    const aktif = list.filter(t => t.status === 'aktif')
+      .sort((a,b) => new Date(a.deadline) - new Date(b.deadline))
+      .slice(0, 4);
+
+    if (!aktif.length) {
+      el.innerHTML = `<div class="empty-state"><span class="es-icon">🎉</span><p>Tidak ada tugas aktif saat ini.</p></div>`;
+      return;
+    }
+
+    el.innerHTML = aktif.map(t => {
+      const dl = deadlineLabel(t.deadline);
+      const dot = deadlineDot(t.deadline);
+      return `
+        <div class="tugas-item">
+          <div class="tugas-dot ${dot}"></div>
+          <div class="tugas-info">
+            <div class="t-name">${t.judul}</div>
+            <div class="t-matkul">${t.matkul}</div>
+          </div>
+          <div class="tugas-deadline ${dl.cls}">${dl.text}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderBerandaMatkul() {
+    const el = document.getElementById('beranda-matkul');
+    if (!allMatkul.length) {
+      el.innerHTML = `<div class="empty-state"><span class="es-icon">📚</span><p>Belum ada mata kuliah aktif.</p></div>`;
+      return;
+    }
+    el.innerHTML = allMatkul.slice(0,5).map((m, i) => `
+      <div class="tugas-item">
+        <div class="tugas-dot" style="background:${COVER_COLORS[i % COVER_COLORS.length]}"></div>
+        <div class="tugas-info">
+          <div class="t-name">${m.nama}</div>
+          <div class="t-matkul">${m.dosen_nama !== '—' ? m.dosen_nama : 'Lihat di halaman tugas'}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  function renderMatkulGrid() {
+    const el = document.getElementById('matkul-grid');
+    const sub = document.getElementById('matkul-sub');
+
+    if (!allMatkul.length) {
+      // Coba tampilkan matkul dari jurusan user jika ada
+      el.innerHTML = `<div class="empty-state"><span class="es-icon">📚</span><p><strong>Belum ada mata kuliah</strong><br>Dosen belum memberi tugas pada mata kuliah kamu.</p></div>`;
+      return;
+    }
+
+    sub.textContent = `${allMatkul.length} mata kuliah dari jurusan ${currentUser.jurusan || ''}.`;
+    el.innerHTML = allMatkul.map((m, i) => {
+      const color = COVER_COLORS[i % COVER_COLORS.length];
+      return `
+        <div class="matkul-card">
+          <div class="matkul-cover" style="background:${color}"></div>
+          <div class="matkul-body">
+            <div class="matkul-kode">${m.kode !== '—' ? m.kode : 'Mata Kuliah'}</div>
+            <div class="matkul-nama">${m.nama}</div>
+            <div class="matkul-dosen">${m.dosen_nama !== '—' ? m.dosen_nama : '—'}</div>
+            <div class="matkul-footer">
+              ${m.sks !== '—' ? `<span class="matkul-chip">${m.sks} SKS</span>` : ''}
+              <span class="matkul-chip green">Aktif</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function updateStats() {
+    document.getElementById('stat-matkul').textContent  = allMatkul.length || 0;
+    document.getElementById('stat-tugas').textContent   = allTugas.filter(t=>t.status==='aktif').length;
+    document.getElementById('stat-jurusan').textContent = currentUser?.jurusan
+      ? currentUser.jurusan.split(' ').slice(0,3).join(' ') + (currentUser.jurusan.split(' ').length > 3 ? '…' : '')
+      : '—';
+    document.getElementById('stat-fakultas').textContent = 'Program studi aktif';
+    document.getElementById('stat-semester').textContent = currentUser?.semester || '—';
+  }
+
+  function updateBanner() {
+    const aktifCount = allTugas.filter(t=>t.status==='aktif').length;
+    if (aktifCount > 0) {
+      document.getElementById('banner-desc').innerHTML =
+        `Kamu memiliki <strong style="color:white">${aktifCount} tugas aktif</strong> yang perlu diselesaikan.`;
+    } else {
+      document.getElementById('banner-desc').textContent = 'Tidak ada tugas aktif saat ini. Tetap semangat!';
+    }
+  }
+
+  function updateNavBadge() {
+    const aktif = allTugas.filter(t=>t.status==='aktif').length;
+    const badge = document.getElementById('badge-tugas');
+    if (aktif > 0) {
+      badge.textContent = aktif;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  DISKUSI
+  // ═══════════════════════════════════════════════════════
+  function renderDiskusiRooms() {
+    const el = document.getElementById('diskusi-rooms');
+
+    if (!allMatkul.length) {
+      el.innerHTML = `<div class="loading-row" style="font-size:12px;color:var(--gray-500)">Belum ada ruang diskusi.</div>`;
+      return;
+    }
+
+    el.innerHTML = allMatkul.map((m, i) => {
+      const isActive = activeDiskusi === m.nama;
+      const lastMsg = chatHistory[m.nama]?.slice(-1)[0];
+      const last = lastMsg ? lastMsg.text.substring(0,40)+'…' : 'Belum ada pesan.';
+      return `
+        <div class="diskusi-room${isActive?' active':''}" onclick="selectRoom(this,'${m.nama}','${m.dosen_nama}')">
+          <div class="dr-name">${m.nama}</div>
+          <div class="dr-last">${last}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function selectRoom(el, matkulNama, dosenNama) {
+    document.querySelectorAll('.diskusi-room').forEach(r => r.classList.remove('active'));
+    el.classList.add('active');
+    activeDiskusi = matkulNama;
+    document.getElementById('chat-title').textContent = matkulNama;
+    document.getElementById('chat-dosen').textContent = dosenNama || '—';
+    renderChatMessages(matkulNama);
+  }
+
+  function renderChatMessages(matkul) {
+    const container = document.getElementById('chat-messages');
+    const msgs = chatHistory[matkul] || [];
+
+    if (!msgs.length) {
+      container.innerHTML = `
+        <div class="chat-empty">
+          <div>
+            <span style="font-size:36px;display:block;margin-bottom:10px">💬</span>
+            Belum ada pesan di ruang <strong>${matkul}</strong>.<br>Mulai diskusi!
+          </div>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = msgs.map(m => {
+      const isMe = m.role === 'me';
+      const inisial = isMe ? getInisial(currentUser.nama) : getInisial(m.sender || 'User');
+      const avClass = isMe ? '' : (m.role === 'dosen' ? 'dosen-av' : '');
+      return `
+        <div class="chat-msg${isMe?' me':''}">
+          <div class="msg-avatar ${avClass}">${inisial}</div>
+          <div>
+            ${!isMe ? `<div class="msg-sender">${m.sender}</div>` : ''}
+            <div class="msg-bubble">${m.text.replace(/</g,'&lt;')}</div>
+            <div class="msg-time">${m.time}</div>
+          </div>
+        </div>`;
+    }).join('');
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function handleChatKey(e) {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text  = input.value.trim();
+    if (!text || !currentUser || !activeDiskusi) return;
+    const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    if (!chatHistory[activeDiskusi]) chatHistory[activeDiskusi] = [];
+    chatHistory[activeDiskusi].push({ role:'me', text, time:now });
+    renderChatMessages(activeDiskusi);
+    renderDiskusiRooms();
+    input.value = '';
+    showToast('Pesan terkirim.');
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  FILTER TUGAS
+  // ═══════════════════════════════════════════════════════
+  function filterTugas(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTugasList(allTugas);
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  NAVIGASI
+  // ═══════════════════════════════════════════════════════
   function showPage(id) {
     pages.forEach(p => {
       document.getElementById('page-'+p).classList.toggle('active', p===id);
-      const btn = document.querySelector(`[onclick="showPage('${p}')"]`);
+      const btn = document.querySelector(`button.nav-item[onclick="showPage('${p}')"]`);
       if (btn) btn.classList.toggle('active', p===id);
     });
     document.getElementById('topbar-title').textContent = titles[id] || id;
+    if (id === 'diskusi') renderDiskusiRooms();
     closeSidebar();
     window.scrollTo(0,0);
   }
@@ -591,51 +899,31 @@
     document.getElementById('overlay').classList.remove('open');
   }
 
-  function filterTugas(filter, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.tugas-card').forEach(card => {
-      card.style.display = (filter==='semua' || card.dataset.status===filter) ? 'flex' : 'none';
-    });
-  }
-
-  function selectRoom(el, nama) {
-    document.querySelectorAll('.diskusi-room').forEach(r => r.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('chat-title').textContent = nama;
-  }
-
-  function handleChatKey(e) {
-    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  }
-
-  function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const text  = input.value.trim();
-    if (!text || !currentUser) return;
-    const inisial = currentUser.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-    const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-    const msg = document.createElement('div');
-    msg.className = 'chat-msg me';
-    msg.innerHTML = `<div class="msg-avatar">${inisial}</div><div><div class="msg-bubble">${text.replace(/</g,'&lt;')}</div><div class="msg-time">${now}</div></div>`;
-    const container = document.getElementById('chat-messages');
-    container.appendChild(msg);
-    container.scrollTop = container.scrollHeight;
-    input.value = '';
-  }
-
+  // ═══════════════════════════════════════════════════════
+  //  GANTI PASSWORD
+  // ═══════════════════════════════════════════════════════
   async function gantiPassword() {
-    const oldPass  = document.getElementById('old-pass').value;
-    const newPass  = document.getElementById('new-pass').value;
-    const alertEl  = document.getElementById('pass-alert');
+    const oldPass   = document.getElementById('old-pass').value;
+    const newPass   = document.getElementById('new-pass').value;
+    const alertEl   = document.getElementById('pass-alert');
     const successEl = document.getElementById('pass-success');
     alertEl.style.display = successEl.style.display = 'none';
-    if (!oldPass || !newPass) { alertEl.textContent='Isi kedua kolom.'; alertEl.style.display='block'; return; }
+    if (!oldPass || !newPass) {
+      alertEl.textContent = 'Isi kedua kolom password.';
+      alertEl.style.display = 'block';
+      return;
+    }
+    if (newPass.length < 6) {
+      alertEl.textContent = 'Password baru minimal 6 karakter.';
+      alertEl.style.display = 'block';
+      return;
+    }
     try {
       await Auth.changePassword(oldPass, newPass);
       successEl.textContent = 'Password berhasil diubah.';
       successEl.style.display = 'block';
-      document.getElementById('old-pass').value = document.getElementById('new-pass').value = '';
+      document.getElementById('old-pass').value = '';
+      document.getElementById('new-pass').value = '';
     } catch(e) {
       alertEl.textContent = e.message;
       alertEl.style.display = 'block';
