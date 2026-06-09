@@ -1,8 +1,9 @@
 {
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/api/auth/:action", "destination": "/api/auth/[action]" },
-    { "source": "/api/jurusan/:action", "destination": "/api/jurusan/[action]" },
-    { "source": "/api/matkul/:action", "destination": "/api/matkul/[action]" }
+    { "source": "/api/auth/:action",   "destination": "/api/auth/[action]" },
+    { "source": "/api/jurusan/:action","destination": "/api/jurusan/[action]" },
+    { "source": "/api/matkul/:action", "destination": "/api/matkul/[action]" },
+    { "source": "/api/tugas/:action",  "destination": "/api/tugas/[action]" }
   ]
 }
