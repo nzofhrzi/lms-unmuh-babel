@@ -54,6 +54,18 @@
       "created_at": "2026-06-09T12:00:38.509Z",
       "jurusan": "Pendidikan Jasmani Kesehatan dan Rekreasi",
       "semester": 2
+    },
+    {
+      "id": "usr_1781045446222",
+      "nim_nip": "1207066",
+      "nama": "Senzo, M. Pd.",
+      "password": "1c1c01889750ca05c4717a2e663c218978ec274d679ceadcb492ecb9101a2756",
+      "role": "dosen",
+      "created_at": "2026-06-09T22:50:46.222Z",
+      "jurusan": "Pendidikan Jasmani Kesehatan dan Rekreasi",
+      "mata_kuliah": [
+        "Renang"
+      ]
     }
   ]
 }
