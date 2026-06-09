@@ -84,6 +84,7 @@ const Auth = (() => {
 
   function logout() {
     clearSession();
+    sessionStorage.removeItem('lms_admin_key');
     window.location.href = '/login.html';
   }
 
