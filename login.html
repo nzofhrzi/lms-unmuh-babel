@@ -15,16 +15,16 @@
       --blue:       #1B4FBF;
       --blue-light: #2563EB;
       --blue-pale:  #EFF4FF;
-      --blue-mid:   #BFCFEE;
-      --gold:       #C9A84C;
+      --blue-mid:   #CBD5E1;
+      --gold:       #FAB005;
       --white:      #FFFFFF;
       --gray-50:    #F8FAFC;
       --gray-100:   #F1F5F9;
-      --gray-300:   #CBD5E1;
+      --gray-300:   #94A3B8;
       --gray-500:   #64748B;
-      --gray-700:   #334155;
-      --error:      #DC2626;
-      --error-bg:   #FEF2F2;
+      --gray-700:   #1E293B;
+      --error:      #E11D48;
+      --error-bg:   #FFF1F2;
     }
 
     html, body {
@@ -32,25 +32,26 @@
       font-family: 'Inter', sans-serif;
       background: var(--navy);
       color: var(--gray-700);
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ── LAYOUT ── */
     .page {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1fr 480px;
+      grid-template-columns: 1.2fr 480px;
     }
 
     /* ── KIRI: HERO PANEL ── */
     .hero {
       background:
-        linear-gradient(160deg, rgba(15,42,94,0.92) 0%, rgba(27,79,191,0.85) 100%),
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        linear-gradient(135deg, rgba(15, 42, 94, 0.95) 0%, rgba(27, 79, 191, 0.85) 100%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       background-size: cover;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 56px 64px;
+      padding: 64px;
       position: relative;
       overflow: hidden;
     }
@@ -58,12 +59,12 @@
     .hero::after {
       content: '';
       position: absolute;
-      bottom: -120px;
-      right: -80px;
-      width: 500px;
-      height: 500px;
+      bottom: -100px;
+      right: -100px;
+      width: 600px;
+      height: 600px;
       border-radius: 50%;
-      background: rgba(37, 99, 235, 0.15);
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(37, 99, 235, 0) 70%);
       pointer-events: none;
     }
 
@@ -71,81 +72,84 @@
       display: flex;
       align-items: center;
       gap: 16px;
+      z-index: 2;
     }
 
     .logo-icon {
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       background: var(--gold);
-      border-radius: 14px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(250, 176, 5, 0.3);
     }
 
-    .logo-icon svg { width: 30px; height: 30px; fill: var(--white); }
+    .logo-icon svg { width: 28px; height: 28px; fill: var(--navy); }
 
-    .logo-text { line-height: 1.2; }
+    .logo-text { line-height: 1.3; }
 
     .logo-text .univ {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 18px;
       color: var(--white);
       letter-spacing: -0.3px;
     }
 
     .logo-text .sub {
-      font-size: 12px;
-      color: var(--blue-mid);
-      font-weight: 400;
-      letter-spacing: 0.5px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
 
-    .hero-body { position: relative; z-index: 1; }
+    .hero-body { position: relative; z-index: 2; max-width: 520px; }
 
     .hero-tagline {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 42px;
+      font-size: 48px;
       font-weight: 800;
       color: var(--white);
-      line-height: 1.15;
-      letter-spacing: -1px;
-      margin-bottom: 20px;
+      line-height: 1.2;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
     }
 
     .hero-tagline span { color: var(--gold); }
 
     .hero-desc {
-      font-size: 15px;
-      color: var(--blue-mid);
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
       line-height: 1.7;
-      max-width: 380px;
     }
 
     .hero-stats {
       display: flex;
-      gap: 40px;
+      gap: 48px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 32px;
     }
 
-    .stat { }
     .stat-num {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 800;
       color: var(--white);
       line-height: 1;
     }
     .stat-label {
       font-size: 12px;
-      color: var(--blue-mid);
-      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
+      font-weight: 500;
     }
 
     /* ── KANAN: FORM PANEL ── */
@@ -154,18 +158,19 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 56px 48px;
+      padding: 64px 48px;
       position: relative;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.03);
     }
 
-    .form-header { margin-bottom: 36px; }
+    .form-header { margin-bottom: 32px; }
 
     .form-welcome {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       color: var(--blue-light);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       margin-bottom: 8px;
     }
 
@@ -175,19 +180,20 @@
       font-weight: 800;
       color: var(--navy);
       letter-spacing: -0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .form-subtitle {
       font-size: 14px;
       color: var(--gray-500);
+      line-height: 1.5;
     }
 
     /* ── ROLE TABS ── */
     .role-tabs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 28px;
       background: var(--gray-100);
       padding: 6px;
@@ -195,7 +201,7 @@
     }
 
     .role-tab {
-      padding: 10px 8px;
+      padding: 12px 8px;
       border: none;
       background: transparent;
       border-radius: 8px;
@@ -203,25 +209,27 @@
       font-weight: 600;
       color: var(--gray-500);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       font-family: 'Inter', sans-serif;
     }
 
-    .role-tab svg { width: 15px; height: 15px; }
+    .role-tab svg { width: 16px; height: 16px; opacity: 0.7; transition: opacity 0.2s; }
 
     .role-tab.active {
       background: var(--white);
-      color: var(--navy);
-      box-shadow: 0 1px 4px rgba(15,42,94,0.12);
+      color: var(--blue-light);
+      box-shadow: 0 4px 12px rgba(15, 42, 94, 0.08);
     }
+
+    .role-tab.active svg { opacity: 1; }
 
     /* ── FORM ELEMENTS ── */
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     label {
@@ -229,7 +237,7 @@
       font-size: 13px;
       font-weight: 600;
       color: var(--gray-700);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .input-wrap {
@@ -241,8 +249,8 @@
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       color: var(--gray-300);
       pointer-events: none;
       transition: color 0.2s;
@@ -250,27 +258,28 @@
 
     input {
       width: 100%;
-      height: 48px;
-      padding: 0 14px 0 42px;
-      border: 1.5px solid var(--gray-300);
+      height: 50px;
+      padding: 0 14px 0 44px;
+      border: 1.5px solid var(--gray-100);
       border-radius: 10px;
       font-size: 14px;
       font-family: 'Inter', sans-serif;
       color: var(--gray-700);
-      background: var(--white);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--gray-50);
+      transition: all 0.2s ease;
       outline: none;
     }
 
     input::placeholder { color: var(--gray-300); }
 
     input:focus {
+      background: var(--white);
       border-color: var(--blue-light);
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
     }
 
     input:focus + svg,
-    .input-wrap:focus-within svg {
+    .input-wrap:focus-within > svg {
       color: var(--blue-light);
     }
 
@@ -283,16 +292,16 @@
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0;
+      padding: 4px;
       color: var(--gray-300);
       display: flex;
       transition: color 0.2s;
     }
 
     .toggle-pass:hover { color: var(--gray-500); }
-    .toggle-pass svg { width: 17px; height: 17px; }
+    .toggle-pass svg { width: 18px; height: 18px; }
 
-    input[type="password"] { padding-right: 44px; }
+    input[type="password"] { padding-right: 46px; }
 
     /* NIP label dinamis */
     #nim-label { transition: none; }
@@ -300,64 +309,72 @@
     /* ── ALERT ── */
     .alert {
       display: none;
-      padding: 12px 14px;
+      padding: 14px 16px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 500;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      line-height: 1.4;
     }
-    .alert.show { display: flex; }
+    .alert.show { display: flex; animation: slideDown 0.3s ease; }
     .alert-error {
       background: var(--error-bg);
       color: var(--error);
-      border: 1px solid #FECACA;
+      border: 1px solid rgba(225, 29, 72, 0.15);
     }
-    .alert svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .alert svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     /* ── BUTTON ── */
     .btn-login {
       width: 100%;
-      height: 50px;
-      background: var(--blue);
+      height: 52px;
+      background: var(--blue-light);
       color: var(--white);
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 600;
       font-family: 'Plus Jakarta Sans', sans-serif;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 12px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
     }
 
     .btn-login:hover:not(:disabled) {
-      background: var(--blue-light);
-      box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+      background: #1d4ed8;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
     }
 
-    .btn-login:active:not(:disabled) { transform: scale(0.99); }
+    .btn-login:active:not(:disabled) { transform: scale(0.985); }
 
     .btn-login:disabled {
-      opacity: 0.7;
+      opacity: 0.65;
       cursor: not-allowed;
+      box-shadow: none;
     }
 
     /* Spinner */
     .spinner {
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.4);
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
       border-top-color: white;
       border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      animation: spin 0.6s linear infinite;
       display: none;
     }
     .btn-login.loading .spinner { display: block; }
@@ -367,48 +384,47 @@
 
     /* ── FOOTER ── */
     .form-footer {
-      margin-top: 28px;
+      margin-top: 32px;
       padding-top: 24px;
       border-top: 1px solid var(--gray-100);
       text-align: center;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--gray-500);
       line-height: 1.6;
     }
 
     /* ── MOBILE ── */
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
       .page { grid-template-columns: 1fr; }
       .hero { display: none; }
       .form-panel {
-        padding: 40px 24px;
+        padding: 48px 24px;
         min-height: 100vh;
-        justify-content: flex-start;
-        padding-top: 60px;
+        justify-content: center;
       }
-
-      /* Show mini logo on mobile */
-      .mobile-logo {
-        display: flex !important;
-      }
+      .mobile-logo { display: flex !important; }
     }
 
     .mobile-logo {
       display: none;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 36px;
+      gap: 14px;
+      margin-bottom: 32px;
     }
 
     .mobile-logo .logo-icon {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
+      box-shadow: 0 4px 10px rgba(250, 176, 5, 0.2);
     }
 
-    .mobile-logo .logo-icon svg { width: 24px; height: 24px; }
+    .mobile-logo .logo-icon svg { width: 26px; height: 26px; fill: var(--navy); }
     .mobile-logo .logo-text .univ {
       color: var(--navy);
-      font-size: 15px;
+      font-size: 16px;
+    }
+    .mobile-logo .logo-text .sub {
+      color: var(--gray-500);
     }
   </style>
 </head>
@@ -416,11 +432,9 @@
 
 <div class="page">
 
-  <!-- ── HERO ── -->
   <div class="hero">
     <div class="hero-logo">
       <div class="logo-icon">
-        <!-- Graduation cap icon -->
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
         </svg>
@@ -456,13 +470,11 @@
     </div>
   </div>
 
-  <!-- ── FORM PANEL ── -->
   <div class="form-panel">
 
-    <!-- Mobile logo -->
     <div class="mobile-logo">
       <div class="logo-icon">
-        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
         </svg>
       </div>
@@ -478,7 +490,6 @@
       <p class="form-subtitle">Pilih peran dan masukkan kredensial Anda</p>
     </div>
 
-    <!-- Role Tabs -->
     <div class="role-tabs">
       <button class="role-tab active" data-role="mahasiswa" onclick="selectRole('mahasiswa')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>
@@ -494,7 +505,6 @@
       </button>
     </div>
 
-    <!-- Alert -->
     <div class="alert alert-error" id="alert-error">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
       <span id="alert-text">—</span>
@@ -502,50 +512,43 @@
 
     <form id="login-form" onsubmit="handleLogin(event)">
 
-      <!-- NIM / NIP Field -->
       <div id="nim-group">
-      <div class="form-group">
-        <label id="nim-label" for="nim-input">Nomor Induk Mahasiswa (NIM)</label>
-        <div class="input-wrap">
-          <input
-            type="text"
-            id="nim-input"
-            placeholder="Masukkan NIM Anda"
-            autocomplete="username"
-          />
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-        </div>
-      </div>
-      </div><!-- end nim-group -->
-
-      <!-- Password Field -->
-      <div id="pass-group">
-        <label for="pass-input">Password</label>
-        <div class="input-wrap">
-          <input
-            type="password"
-            id="pass-input"
-            placeholder="Masukkan password Anda"
-            autocomplete="current-password"
-            required
-          />
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-          </svg>
-          <button type="button" class="toggle-pass" onclick="togglePassword()" aria-label="Tampilkan password">
-            <svg id="eye-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        <div class="form-group">
+          <label id="nim-label" for="nim-input">Nomor Induk Mahasiswa (NIM)</label>
+          <div class="input-wrap">
+            <input
+              type="text"
+              id="nim-input"
+              placeholder="Masukkan NIM Anda"
+              autocomplete="username"
+            />
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
-          </button>
+          </div>
         </div>
-      </div>
-
-      </div><!-- end pass-group -->
-
-      <!-- Admin Key Field (hanya muncul saat tab Admin) -->
-      <div class="form-group" id="admin-key-group" style="display:none">
+      </div><div id="pass-group">
+        <div class="form-group">
+          <label for="pass-input">Password</label>
+          <div class="input-wrap">
+            <input
+              type="password"
+              id="pass-input"
+              placeholder="Masukkan password Anda"
+              autocomplete="current-password"
+              required
+            />
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </svg>
+            <button type="button" class="toggle-pass" onclick="togglePassword()" aria-label="Tampilkan password">
+              <svg id="eye-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div><div class="form-group" id="admin-key-group" style="display:none">
         <label for="admin-key-input">Admin Key</label>
         <div class="input-wrap">
           <input
