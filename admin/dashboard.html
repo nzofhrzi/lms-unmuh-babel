@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin — LMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#0F2A5E;--blue:#1B4FBF;--blue-light:#2563EB;--blue-pale:#EFF4FF;--blue-mid:#BFCFEE;
+      --gold:#C9A84C;--white:#FFFFFF;
+      --gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-300:#CBD5E1;
+      --gray-500:#64748B;--gray-700:#334155;--gray-900:#0F172A;
+      --green:#16A34A;--green-pale:#F0FDF4;
+      --red:#DC2626;--red-pale:#FEF2F2;
+      --yellow:#D97706;--yellow-pale:#FFFBEB;
+      --sidebar-w:256px;--topbar-h:64px;
+    }
+    html,body{height:100%;font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700)}
+
+    /* SIDEBAR */
+    .sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--navy);display:flex;flex-direction:column;z-index:100;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+    .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px}
+    .logo-icon{width:40px;height:40px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-icon svg{width:22px;height:22px;fill:white}
+    .logo-text .name{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:var(--white);line-height:1.2}
+    .logo-text .sub{font-size:10px;color:var(--blue-mid);text-transform:uppercase;letter-spacing:.5px}
+    .sidebar-user{margin:16px 12px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px}
+    .avatar{width:38px;height:38px;border-radius:10px;background:#7C3AED;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:white;flex-shrink:0}
+    .uname{font-size:13px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .uid{font-size:11px;color:var(--blue-mid)}
+    .sidebar-nav{flex:1;padding:8px 12px;overflow-y:auto}
+    .nav-section{margin-bottom:20px}
+    .nav-label{font-size:10px;font-weight:700;color:rgba(191,207,238,.5);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .15s;font-size:14px;font-weight:500;color:var(--blue-mid);border:none;background:none;width:100%;text-align:left;font-family:'Inter',sans-serif}
+    .nav-item svg{width:18px;height:18px;flex-shrink:0}
+    .nav-item:hover{background:rgba(255,255,255,.07);color:white}
+    .nav-item.active{background:var(--blue-light);color:white;font-weight:600}
+    .sidebar-footer{padding:12px;border-top:1px solid rgba(255,255,255,.08)}
+    .btn-logout{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;color:rgba(191,207,238,.6);font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+    .btn-logout:hover{background:rgba(220,38,38,.15);color:#FCA5A5}
+    .btn-logout svg{width:17px;height:17px}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+
+    /* TOPBAR */
+    .topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--topbar-h);background:var(--white);border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 24px;z-index:90;gap:16px}
+    .topbar-hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--gray-500);border-radius:8px}
+    .topbar-hamburger svg{width:22px;height:22px}
+    .topbar-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--navy);flex:1}
+    .topbar-right{display:flex;align-items:center;gap:10px}
+    .topbar-avatar{width:38px;height:38px;border-radius:10px;background:#7C3AED;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:white}
+
+    /* MAIN */
+    .main{margin-left:var(--sidebar-w);padding-top:var(--topbar-h);min-height:100vh}
+    .content{padding:28px 28px 48px;display:none}
+    .content.active{display:block}
+    .page-header{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .page-header-left h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:4px}
+    .page-header-left p{font-size:14px;color:var(--gray-500)}
+
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .stat-card{background:var(--white);border-radius:14px;padding:20px;border:1px solid var(--gray-200)}
+    .sc-label{font-size:12px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+    .sc-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--navy);line-height:1;margin-bottom:6px}
+    .sc-sub{font-size:12px;color:var(--gray-500)}
+    .sc-icon{float:right;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+    .sc-icon svg{width:18px;height:18px}
+    .ic-blue{background:var(--blue-pale);color:var(--blue)}
+    .ic-green{background:var(--green-pale);color:var(--green)}
+    .ic-yellow{background:var(--yellow-pale);color:var(--yellow)}
+    .ic-purple{background:#F3E8FF;color:#7C3AED}
+
+    /* CARD */
+    .card{background:var(--white);border-radius:14px;border:1px solid var(--gray-200);overflow:hidden}
+    .card-header{padding:18px 20px 14px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+    .card-header h4{font-size:14px;font-weight:700;color:var(--navy)}
+    .card-body{padding:16px 20px}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+    /* BANNER */
+    .banner{background:linear-gradient(135deg,var(--navy) 0%,#4C1D95 100%);border-radius:16px;padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+    .banner::after{content:'';position:absolute;right:-40px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05)}
+    .banner-text h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:white;margin-bottom:6px}
+    .banner-text p{font-size:13px;color:var(--blue-mid);line-height:1.6}
+    .banner-badge{background:var(--gold);color:white;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;flex-shrink:0;position:relative;z-index:1}
+
+    /* PILLS */
+    .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+    .pill-green{background:var(--green-pale);color:var(--green)}
+    .pill-blue{background:var(--blue-pale);color:var(--blue)}
+    .pill-yellow{background:var(--yellow-pale);color:var(--yellow)}
+    .pill-red{background:var(--red-pale);color:var(--red)}
+    .pill-purple{background:#F3E8FF;color:#7C3AED}
+    .pill-gray{background:var(--gray-100);color:var(--gray-500)}
+
+    /* TABLE */
+    .table-wrap{background:white;border-radius:14px;border:1px solid var(--gray-200);overflow:hidden;overflow-x:auto}
+    table.main-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px}
+    .main-table th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+    .main-table td{padding:12px 16px;border-bottom:1px solid var(--gray-100)}
+    .main-table tr:last-child td{border-bottom:none}
+    .main-table tr:hover td{background:var(--gray-50)}
+    .user-cell{display:flex;align-items:center;gap:10px}
+    .user-av{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;flex-shrink:0}
+
+    /* SEARCH + FILTER BAR */
+    .toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+    .search-input{flex:1;min-width:200px;height:38px;padding:0 14px 0 38px;border:1.5px solid var(--gray-200);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E") no-repeat 12px center;transition:border-color .2s}
+    .search-input:focus{border-color:var(--blue-light)}
+    .filter-select{height:38px;padding:0 12px;border:1.5px solid var(--gray-200);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;outline:none;background:white;cursor:pointer;color:var(--gray-700)}
+    .filter-select:focus{border-color:var(--blue-light)}
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:background .15s;height:38px}
+    .btn-primary{background:var(--blue);color:white}
+    .btn-primary:hover{background:var(--blue-light)}
+    .btn-danger{background:var(--red-pale);color:var(--red)}
+    .btn-danger:hover{background:#FECACA}
+    .btn-sm{padding:5px 12px;font-size:12px;height:auto}
+    .btn-icon{padding:6px;height:auto;border-radius:7px;background:var(--gray-100);color:var(--gray-500)}
+    .btn-icon:hover{background:var(--gray-200)}
+    .btn-icon svg{width:15px;height:15px}
+
+    /* MODAL */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:20px}
+    .modal-bg.open{display:flex}
+    .modal{background:white;border-radius:16px;width:100%;max-width:500px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+    .modal-header{padding:20px 24px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+    .modal-header h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--navy)}
+    .modal-close{background:none;border:none;cursor:pointer;color:var(--gray-500);padding:4px;border-radius:6px;display:flex}
+    .modal-close:hover{background:var(--gray-100)}
+    .modal-close svg{width:20px;height:20px}
+    .modal-body{padding:20px 24px}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:12px;font-weight:600;color:var(--gray-500);margin-bottom:5px}
+    .form-input{width:100%;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;background:white;color:var(--gray-700)}
+    .form-input:focus{border-color:var(--blue-light)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:10px}
+    .btn-md{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none}
+
+    /* CONFIRM MODAL */
+    .confirm-modal{max-width:380px;text-align:center}
+    .confirm-icon{width:56px;height:56px;border-radius:14px;background:var(--red-pale);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .confirm-icon svg{width:28px;height:28px;fill:var(--red)}
+    .confirm-modal h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px}
+    .confirm-modal p{font-size:13px;color:var(--gray-500);line-height:1.6}
+
+    /* JURUSAN CARDS */
+    .jurusan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .jurusan-card{background:white;border-radius:14px;border:1px solid var(--gray-200);overflow:hidden;transition:box-shadow .15s}
+    .jurusan-card:hover{box-shadow:0 4px 20px rgba(15,42,94,.08)}
+    .jk-cover{height:5px}
+    .jk-body{padding:18px}
+    .jk-nama{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}
+    .jk-kode{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+    .jk-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .jks{text-align:center;background:var(--gray-50);border-radius:8px;padding:8px}
+    .jks-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--navy)}
+    .jks-label{font-size:10px;color:var(--gray-500);text-transform:uppercase;letter-spacing:.3px}
+    .jk-actions{display:flex;gap:8px}
+
+    /* ACTIVITY ROW */
+    .act-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100)}
+    .act-row:last-child{border-bottom:none}
+    .act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+    .act-info{flex:1}
+    .act-info .act-text{font-size:13px;font-weight:500;color:var(--gray-900);margin-bottom:2px}
+    .act-info .act-time{font-size:11px;color:var(--gray-500)}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--gray-900);color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateY(0)}
+
+    /* MOBILE */
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0)}
+      .sidebar-overlay.open{display:block}
+      .topbar{left:0;padding:0 16px}
+      .topbar-hamburger{display:flex;align-items:center;justify-content:center}
+      .main{margin-left:0}
+      .content{padding:20px 16px 40px}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .two-col{grid-template-columns:1fr}
+      .jurusan-grid{grid-template-columns:1fr}
+      .banner-badge{display:none}
+      .form-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: TAMBAH / EDIT USER -->
+<div class="modal-bg" id="modal-user">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-user-title">Tambah Pengguna</h3>
+      <button class="modal-close" onclick="closeModalUser()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="f-user-id"/>
+      <div class="form-row">
+        <div class="form-group">
+          <label>NIM / NIP</label>
+          <input type="text" class="form-input" id="f-nim-nip" placeholder="cth. 2210101001"/>
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select class="form-input" id="f-role" onchange="toggleRoleFields()">
+            <option value="">Pilih role...</option>
+            <option value="mahasiswa">Mahasiswa</option>
+            <option value="dosen">Dosen</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" class="form-input" id="f-nama" placeholder="cth. Andi Pratama"/>
+      </div>
+      <div class="form-group" id="f-group-password">
+        <label>Password</label>
+        <input type="password" class="form-input" id="f-password" placeholder="••••••••"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Jurusan</label>
+          <select class="form-input" id="f-jurusan">
+            <option value="">Pilih jurusan...</option>
+            <option>Teknik Informatika</option>
+            <option>Sistem Informasi</option>
+            <option>Teknik Elektro</option>
+            <option>Manajemen</option>
+            <option>Akuntansi</option>
+          </select>
+        </div>
+        <div class="form-group" id="f-group-semester">
+          <label>Semester</label>
+          <select class="form-input" id="f-semester">
+            <option value="">—</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" id="f-group-mk" style="display:none">
+        <label>Mata Kuliah Diampu <span style="color:var(--gray-500);font-weight:400">(pisah koma)</span></label>
+        <input type="text" class="form-input" id="f-matkul" placeholder="cth. Basis Data, Pemrograman Web"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-md" onclick="closeModalUser()" style="background:var(--gray-100);color:var(--gray-700)">Batal</button>
+      <button class="btn-md btn-primary" onclick="submitUser()" style="background:var(--blue);color:white" id="btn-submit-user">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TAMBAH JURUSAN -->
+<div class="modal-bg" id="modal-jurusan">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-jur-title">Tambah Jurusan</h3>
+      <button class="modal-close" onclick="closeModalJurusan()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Kode Jurusan</label>
+          <input type="text" class="form-input" id="fj-kode" placeholder="cth. TI"/>
+        </div>
+        <div class="form-group">
+          <label>Jenjang</label>
+          <select class="form-input" id="fj-jenjang">
+            <option>S1</option><option>D3</option><option>D4</option><option>S2</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Nama Jurusan</label>
+        <input type="text" class="form-input" id="fj-nama" placeholder="cth. Teknik Informatika"/>
+      </div>
+      <div class="form-group">
+        <label>Fakultas</label>
+        <input type="text" class="form-input" id="fj-fakultas" placeholder="cth. Fakultas Teknik"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-md" onclick="closeModalJurusan()" style="background:var(--gray-100);color:var(--gray-700)">Batal</button>
+      <button class="btn-md btn-primary" onclick="submitJurusan()" style="background:var(--blue);color:white">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: KONFIRMASI HAPUS -->
+<div class="modal-bg" id="modal-confirm">
+  <div class="modal confirm-modal">
+    <div class="modal-body" style="padding:28px 24px">
+      <div class="confirm-icon"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
+      <h3>Hapus Data?</h3>
+      <p id="confirm-msg">Data ini akan dihapus secara permanen dan tidak dapat dipulihkan.</p>
+    </div>
+    <div class="modal-footer" style="justify-content:center">
+      <button class="btn-md" onclick="closeConfirm()" style="background:var(--gray-100);color:var(--gray-700)">Batal</button>
+      <button class="btn-md" id="btn-confirm-ok" style="background:var(--red);color:white">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg></div>
+    <div class="logo-text"><div class="name">Unmuh Babel</div><div class="sub">Panel Admin</div></div>
+  </div>
+  <div class="sidebar-user">
+    <div class="avatar" id="sb-avatar">AD</div>
+    <div style="overflow:hidden"><div class="uname" id="sb-nama">Administrator</div><div class="uid">Admin Sistem</div></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-label">Menu Utama</div>
+      <button class="nav-item active" onclick="showPage('beranda')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Beranda
+      </button>
+      <button class="nav-item" onclick="showPage('users')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Kelola Pengguna
+      </button>
+      <button class="nav-item" onclick="showPage('jurusan')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>Jurusan & Prodi
+      </button>
+      <button class="nav-item" onclick="showPage('matkul')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>Mata Kuliah
+      </button>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Sistem</div>
+      <button class="nav-item" onclick="showPage('profil')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>Profil & Akun
+      </button>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="Auth.logout()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>Keluar
+    </button>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="topbar-hamburger" onclick="toggleSidebar()">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+  </button>
+  <div class="topbar-title" id="topbar-title">Beranda</div>
+  <div class="topbar-right">
+    <div class="topbar-avatar" id="top-avatar">AD</div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- BERANDA -->
+  <div class="content active" id="page-beranda">
+    <div class="page-header"><div class="page-header-left"><h2 id="greeting">Panel Administrator</h2><p>Ringkasan sistem akademik LMS Unmuh Babel</p></div></div>
+    <div class="banner">
+      <div class="banner-text">
+        <h3 id="banner-nama">Selamat Datang, Admin! 🛡️</h3>
+        <p>Sistem berjalan normal. Terdapat <strong style="color:white">3 pengguna baru</strong> yang perlu ditinjau<br>dan <strong style="color:white">1 jurusan</strong> menunggu verifikasi.</p>
+      </div>
+      <div class="banner-badge">Super Admin</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="sc-icon ic-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg></div><div class="sc-label">Total Mahasiswa</div><div class="sc-num" id="stat-mhs">—</div><div class="sc-sub">Terdaftar aktif</div></div>
+      <div class="stat-card"><div class="sc-icon ic-yellow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 17a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.46c.35.61.54 1.3.54 2h10v11h-9v2h3v2h2v-2h3v2h2v-2h-2z"/></svg></div><div class="sc-label">Total Dosen</div><div class="sc-num" id="stat-dosen">—</div><div class="sc-sub">Aktif mengajar</div></div>
+      <div class="stat-card"><div class="sc-icon ic-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg></div><div class="sc-label">Jurusan</div><div class="sc-num">5</div><div class="sc-sub">Program studi</div></div>
+      <div class="stat-card"><div class="sc-icon ic-purple"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div><div class="sc-label">Mata Kuliah</div><div class="sc-num">18</div><div class="sc-sub">Semester ini</div></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header"><h4>Pengguna Terbaru</h4><a href="#" onclick="showPage('users');return false" style="font-size:12px;color:var(--blue-light);text-decoration:none;font-weight:600">Lihat semua</a></div>
+        <div class="card-body" id="recent-users">
+          <div style="text-align:center;padding:20px;color:var(--gray-500);font-size:13px">Memuat data...</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h4>Log Aktivitas Sistem</h4></div>
+        <div class="card-body">
+          <div class="act-row"><div class="act-dot" style="background:var(--green)"></div><div class="act-info"><div class="act-text">Mahasiswa baru <strong>2210101010</strong> terdaftar</div><div class="act-time">2 menit lalu</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--blue)"></div><div class="act-info"><div class="act-text">Dosen <strong>Dr. Budi Santoso</strong> upload tugas baru</div><div class="act-time">15 menit lalu</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--yellow)"></div><div class="act-info"><div class="act-text">Absensi <strong>Pemrograman Web</strong> diperbarui</div><div class="act-time">1 jam lalu</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--red)"></div><div class="act-info"><div class="act-text">Login gagal dari IP <strong>192.168.1.45</strong></div><div class="act-time">2 jam lalu</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--green)"></div><div class="act-info"><div class="act-text">Jurusan <strong>Sistem Informasi</strong> ditambahkan</div><div class="act-time">Kemarin</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KELOLA PENGGUNA -->
+  <div class="content" id="page-users">
+    <div class="page-header">
+      <div class="page-header-left"><h2>Kelola Pengguna</h2><p>Manajemen akun mahasiswa, dosen, dan admin</p></div>
+      <button class="btn btn-primary" onclick="openModalUser()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Pengguna
+      </button>
+    </div>
+    <div class="toolbar">
+      <input type="text" class="search-input" placeholder="Cari nama atau NIM/NIP..." oninput="filterUsers(this.value)" id="user-search"/>
+      <select class="filter-select" onchange="filterUsers()" id="user-role-filter">
+        <option value="">Semua Role</option>
+        <option value="mahasiswa">Mahasiswa</option>
+        <option value="dosen">Dosen</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table class="main-table">
+        <thead><tr><th>Pengguna</th><th>NIM / NIP</th><th>Role</th><th>Jurusan</th><th>Info</th><th>Aksi</th></tr></thead>
+        <tbody id="users-tbody">
+          <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--gray-500)">Memuat data pengguna...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- JURUSAN -->
+  <div class="content" id="page-jurusan">
+    <div class="page-header">
+      <div class="page-header-left"><h2>Jurusan & Prodi</h2><p>Kelola program studi yang tersedia</p></div>
+      <button class="btn btn-primary" onclick="openModalJurusan()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Jurusan
+      </button>
+    </div>
+    <div class="jurusan-grid" id="jurusan-grid">
+      <div class="jurusan-card"><div class="jk-cover" style="background:var(--blue-light)"></div><div class="jk-body"><div class="jk-nama">Teknik Informatika</div><div class="jk-kode">TI · S1 · Fak. Teknik</div><div class="jk-stats"><div class="jks"><div class="jks-num">87</div><div class="jks-label">Mahasiswa</div></div><div class="jks"><div class="jks-num">5</div><div class="jks-label">Dosen</div></div><div class="jks"><div class="jks-num">8</div><div class="jks-label">Matkul</div></div></div><div class="jk-actions"><button class="btn btn-sm" style="background:var(--blue-pale);color:var(--blue)" onclick="showToast('Edit jurusan segera hadir')">Edit</button><button class="btn btn-sm btn-danger" onclick="confirmDelete('jurusan Teknik Informatika')">Hapus</button></div></div></div>
+      <div class="jurusan-card"><div class="jk-cover" style="background:var(--gold)"></div><div class="jk-body"><div class="jk-nama">Sistem Informasi</div><div class="jk-kode">SI · S1 · Fak. Teknik</div><div class="jk-stats"><div class="jks"><div class="jks-num">65</div><div class="jks-label">Mahasiswa</div></div><div class="jks"><div class="jks-num">4</div><div class="jks-label">Dosen</div></div><div class="jks"><div class="jks-num">7</div><div class="jks-label">Matkul</div></div></div><div class="jk-actions"><button class="btn btn-sm" style="background:var(--blue-pale);color:var(--blue)" onclick="showToast('Edit jurusan segera hadir')">Edit</button><button class="btn btn-sm btn-danger" onclick="confirmDelete('jurusan Sistem Informasi')">Hapus</button></div></div></div>
+      <div class="jurusan-card"><div class="jk-cover" style="background:#16A34A"></div><div class="jk-body"><div class="jk-nama">Teknik Elektro</div><div class="jk-kode">TE · S1 · Fak. Teknik</div><div class="jk-stats"><div class="jks"><div class="jks-num">52</div><div class="jks-label">Mahasiswa</div></div><div class="jks"><div class="jks-num">3</div><div class="jks-label">Dosen</div></div><div class="jks"><div class="jks-num">6</div><div class="jks-label">Matkul</div></div></div><div class="jk-actions"><button class="btn btn-sm" style="background:var(--blue-pale);color:var(--blue)" onclick="showToast('Edit jurusan segera hadir')">Edit</button><button class="btn btn-sm btn-danger" onclick="confirmDelete('jurusan Teknik Elektro')">Hapus</button></div></div></div>
+      <div class="jurusan-card"><div class="jk-cover" style="background:#7C3AED"></div><div class="jk-body"><div class="jk-nama">Manajemen</div><div class="jk-kode">MNJ · S1 · Fak. Ekonomi</div><div class="jk-stats"><div class="jks"><div class="jks-num">110</div><div class="jks-label">Mahasiswa</div></div><div class="jks"><div class="jks-num">6</div><div class="jks-label">Dosen</div></div><div class="jks"><div class="jks-num">9</div><div class="jks-label">Matkul</div></div></div><div class="jk-actions"><button class="btn btn-sm" style="background:var(--blue-pale);color:var(--blue)" onclick="showToast('Edit jurusan segera hadir')">Edit</button><button class="btn btn-sm btn-danger" onclick="confirmDelete('jurusan Manajemen')">Hapus</button></div></div></div>
+      <div class="jurusan-card"><div class="jk-cover" style="background:#DB2777"></div><div class="jk-body"><div class="jk-nama">Akuntansi</div><div class="jk-kode">AKT · S1 · Fak. Ekonomi</div><div class="jk-stats"><div class="jks"><div class="jks-num">98</div><div class="jks-label">Mahasiswa</div></div><div class="jks"><div class="jks-num">5</div><div class="jks-label">Dosen</div></div><div class="jks"><div class="jks-num">8</div><div class="jks-label">Matkul</div></div></div><div class="jk-actions"><button class="btn btn-sm" style="background:var(--blue-pale);color:var(--blue)" onclick="showToast('Edit jurusan segera hadir')">Edit</button><button class="btn btn-sm btn-danger" onclick="confirmDelete('jurusan Akuntansi')">Hapus</button></div></div></div>
+    </div>
+  </div>
+
+  <!-- MATA KULIAH -->
+  <div class="content" id="page-matkul">
+    <div class="page-header">
+      <div class="page-header-left"><h2>Mata Kuliah</h2><p>Daftar semua mata kuliah aktif</p></div>
+      <button class="btn btn-primary" onclick="showToast('Fitur tambah mata kuliah segera hadir')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Matkul
+      </button>
+    </div>
+    <div class="table-wrap">
+      <table class="main-table">
+        <thead><tr><th>Kode</th><th>Nama Mata Kuliah</th><th>Jurusan</th><th>Dosen</th><th>SKS</th><th>Mahasiswa</th><th>Aksi</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill pill-blue">TI2401</span></td><td style="font-weight:600">Basis Data</td><td>Teknik Informatika</td><td>Dr. Budi Santoso</td><td>3</td><td>30</td><td><div style="display:flex;gap:6px"><button class="btn btn-icon" onclick="showToast('Edit mata kuliah')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button class="btn btn-icon btn-danger" onclick="confirmDelete('mata kuliah Basis Data')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div></td></tr>
+          <tr><td><span class="pill pill-blue">TI2402</span></td><td style="font-weight:600">Pemrograman Web</td><td>Teknik Informatika</td><td>Dr. Budi Santoso</td><td>3</td><td>30</td><td><div style="display:flex;gap:6px"><button class="btn btn-icon" onclick="showToast('Edit mata kuliah')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button class="btn btn-icon btn-danger" onclick="confirmDelete('mata kuliah Pemrograman Web')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div></td></tr>
+          <tr><td><span class="pill pill-blue">TI2403</span></td><td style="font-weight:600">Jaringan Komputer</td><td>Teknik Informatika</td><td>M. Ridwan, S.T.</td><td>3</td><td>30</td><td><div style="display:flex;gap:6px"><button class="btn btn-icon" onclick="showToast('Edit mata kuliah')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button class="btn btn-icon btn-danger" onclick="confirmDelete('mata kuliah Jaringan Komputer')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div></td></tr>
+          <tr><td><span class="pill pill-purple">MPK2401</span></td><td style="font-weight:600">Pendidikan Pancasila</td><td>Umum</td><td>Drs. Hendra Wijaya</td><td>2</td><td>120</td><td><div style="display:flex;gap:6px"><button class="btn btn-icon" onclick="showToast('Edit mata kuliah')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button class="btn btn-icon btn-danger" onclick="confirmDelete('mata kuliah Pendidikan Pancasila')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PROFIL -->
+  <div class="content" id="page-profil">
+    <div class="page-header"><div class="page-header-left"><h2>Profil & Akun</h2><p>Informasi dan pengaturan akun administrator</p></div></div>
+    <div style="max-width:560px">
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header"><h4>Data Admin</h4></div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+            <div class="avatar" id="profil-avatar" style="width:60px;height:60px;border-radius:14px;font-size:22px">AD</div>
+            <div><div style="font-size:17px;font-weight:700;color:var(--navy)" id="profil-nama">Administrator</div><div style="font-size:13px;color:var(--gray-500)" id="profil-id">—</div></div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:10px 0;color:var(--gray-500);width:40%">Role</td><td style="padding:10px 0;font-weight:600"><span class="pill pill-purple">Super Admin</span></td></tr>
+            <tr><td style="padding:10px 0;color:var(--gray-500)">Akses</td><td style="padding:10px 0;font-weight:600">Full System Access</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h4>Ganti Password</h4></div>
+        <div class="card-body">
+          <div id="pass-alert" style="display:none;margin-bottom:12px;padding:10px 14px;border-radius:8px;font-size:13px;background:var(--red-pale);color:var(--red);border:1px solid #FECACA"></div>
+          <div id="pass-success" style="display:none;margin-bottom:12px;padding:10px 14px;border-radius:8px;font-size:13px;background:var(--green-pale);color:var(--green);border:1px solid #BBF7D0"></div>
+          <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px">Password Lama</label><input type="password" id="old-pass" placeholder="••••••••" style="width:100%;height:42px;padding:0 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:Inter,sans-serif;outline:none"/></div>
+          <div style="margin-bottom:16px"><label style="font-size:12px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px">Password Baru</label><input type="password" id="new-pass" placeholder="••••••••" style="width:100%;height:42px;padding:0 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:Inter,sans-serif;outline:none"/></div>
+          <button onclick="gantiPassword()" style="padding:10px 24px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Simpan Password</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="/auth.js"></script>
+<script>
+  let currentUser = null;
+  let allUsers = [];
+  const ADMIN_KEY = prompt('Masukkan Admin Key untuk akses:') || '';
+
+  const pages  = ['beranda','users','jurusan','matkul','profil'];
+  const titles = {beranda:'Beranda',users:'Kelola Pengguna',jurusan:'Jurusan & Prodi',matkul:'Mata Kuliah',profil:'Profil & Akun'};
+
+  (async () => {
+    currentUser = await Auth.requireLogin(['admin']);
+    if (!currentUser) return;
+    const inisial = currentUser.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    ['sb-avatar','top-avatar','profil-avatar'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.textContent = inisial;
+    });
+    document.getElementById('sb-nama').textContent   = currentUser.nama;
+    document.getElementById('profil-nama').textContent = currentUser.nama;
+    document.getElementById('profil-id').textContent   = currentUser.nim_nip;
+    const firstName = currentUser.nama.split(' ')[0];
+    document.getElementById('greeting').textContent    = `Panel Administrator`;
+    document.getElementById('banner-nama').textContent = `Selamat Datang, ${firstName}! 🛡️`;
+    await loadUsers();
+  })();
+
+  async function loadUsers() {
+    try {
+      const res = await fetch('/api/auth/list-users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY },
+        body: JSON.stringify({ key: ADMIN_KEY })
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast('Gagal memuat pengguna: ' + (data.error||'')); return; }
+      allUsers = data.users || [];
+      renderUsers(allUsers);
+      renderRecentUsers(allUsers);
+      // Update stats
+      document.getElementById('stat-mhs').textContent   = allUsers.filter(u=>u.role==='mahasiswa').length;
+      document.getElementById('stat-dosen').textContent = allUsers.filter(u=>u.role==='dosen').length;
+    } catch(e) {
+      showToast('Tidak dapat terhubung ke server.');
+    }
+  }
+
+  function renderUsers(users) {
+    const tbody = document.getElementById('users-tbody');
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--gray-500)">Tidak ada pengguna ditemukan.</td></tr>';
+      return;
+    }
+    const roleColor = { mahasiswa:'pill-blue', dosen:'pill-yellow', admin:'pill-purple' };
+    const roleLabel = { mahasiswa:'Mahasiswa', dosen:'Dosen', admin:'Admin' };
+    const avColor   = { mahasiswa:'var(--blue-light)', dosen:'var(--gold)', admin:'#7C3AED' };
+    tbody.innerHTML = users.map(u => {
+      const inisial = u.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      const extra = u.role==='mahasiswa' ? (u.semester ? `Semester ${u.semester}` : '—')
+                  : u.role==='dosen'     ? ((u.mata_kuliah||[]).length + ' matkul')
+                  : 'Full Access';
+      return `<tr>
+        <td><div class="user-cell"><div class="user-av" style="background:${avColor[u.role]||'var(--gray-300)'}">${inisial}</div><div><div style="font-weight:600;color:var(--navy)">${u.nama}</div><div style="font-size:11px;color:var(--gray-500)">${new Date(u.created_at).toLocaleDateString('id-ID')}</div></div></div></td>
+        <td style="font-family:monospace;font-size:12px">${u.nim_nip}</td>
+        <td><span class="pill ${roleColor[u.role]||'pill-gray'}">${roleLabel[u.role]||u.role}</span></td>
+        <td style="font-size:12px;color:var(--gray-500)">${u.jurusan||'—'}</td>
+        <td style="font-size:12px;color:var(--gray-500)">${extra}</td>
+        <td><div style="display:flex;gap:6px">
+          <button class="btn btn-icon" title="Edit" onclick="editUser(${JSON.stringify(u).replace(/"/g,'&quot;')})"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+          <button class="btn btn-icon btn-danger" title="Hapus" onclick="deleteUser('${u.id}','${u.nama}')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function renderRecentUsers(users) {
+    const el = document.getElementById('recent-users');
+    const recent = [...users].sort((a,b) => new Date(b.created_at)-new Date(a.created_at)).slice(0,5);
+    const roleColor = { mahasiswa:'pill-blue', dosen:'pill-yellow', admin:'pill-purple' };
+    const roleLabel = { mahasiswa:'Mahasiswa', dosen:'Dosen', admin:'Admin' };
+    const avColor   = { mahasiswa:'var(--blue-light)', dosen:'var(--gold)', admin:'#7C3AED' };
+    el.innerHTML = recent.map(u => {
+      const inisial = u.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-100)">
+        <div class="user-av" style="background:${avColor[u.role]||'var(--gray-300)'}">${inisial}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--gray-900)">${u.nama}</div><div style="font-size:11px;color:var(--gray-500)">${u.nim_nip}</div></div>
+        <span class="pill ${roleColor[u.role]||'pill-gray'}">${roleLabel[u.role]||u.role}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function filterUsers() {
+    const search = document.getElementById('user-search').value.toLowerCase();
+    const role   = document.getElementById('user-role-filter').value;
+    const filtered = allUsers.filter(u =>
+      (u.nama.toLowerCase().includes(search) || u.nim_nip.toLowerCase().includes(search)) &&
+      (!role || u.role === role)
+    );
+    renderUsers(filtered);
+  }
+
+  // Modal User
+  function openModalUser(mode='add') {
+    document.getElementById('modal-user-title').textContent = mode==='add' ? 'Tambah Pengguna' : 'Edit Pengguna';
+    document.getElementById('btn-submit-user').textContent  = mode==='add' ? 'Simpan' : 'Update';
+    if (mode==='add') {
+      ['f-user-id','f-nim-nip','f-nama','f-password','f-matkul'].forEach(id => document.getElementById(id).value='');
+      document.getElementById('f-role').value = '';
+      document.getElementById('f-jurusan').value = '';
+      document.getElementById('f-semester').value = '';
+      document.getElementById('f-group-password').style.display = 'block';
+    }
+    toggleRoleFields();
+    document.getElementById('modal-user').classList.add('open');
+  }
+
+  function editUser(u) {
+    document.getElementById('f-user-id').value   = u.id;
+    document.getElementById('f-nim-nip').value   = u.nim_nip;
+    document.getElementById('f-nama').value      = u.nama;
+    document.getElementById('f-role').value      = u.role;
+    document.getElementById('f-jurusan').value   = u.jurusan||'';
+    document.getElementById('f-semester').value  = u.semester||'';
+    document.getElementById('f-matkul').value    = (u.mata_kuliah||[]).join(', ');
+    document.getElementById('f-group-password').style.display = 'none';
+    toggleRoleFields();
+    openModalUser('edit');
+  }
+
+  function closeModalUser() { document.getElementById('modal-user').classList.remove('open'); }
+
+  function toggleRoleFields() {
+    const role = document.getElementById('f-role').value;
+    document.getElementById('f-group-semester').style.display = role==='mahasiswa' ? 'block' : 'none';
+    document.getElementById('f-group-mk').style.display       = role==='dosen'     ? 'block' : 'none';
+  }
+
+  async function submitUser() {
+    const id       = document.getElementById('f-user-id').value;
+    const nim_nip  = document.getElementById('f-nim-nip').value.trim();
+    const nama     = document.getElementById('f-nama').value.trim();
+    const role     = document.getElementById('f-role').value;
+    const password = document.getElementById('f-password').value;
+    const jurusan  = document.getElementById('f-jurusan').value;
+    const semester = document.getElementById('f-semester').value;
+    const mk_raw   = document.getElementById('f-matkul').value;
+    const mata_kuliah = mk_raw ? mk_raw.split(',').map(s=>s.trim()).filter(Boolean) : [];
+    const isEdit = !!id;
+
+    if (!nim_nip||!nama||!role) { showToast('Lengkapi field wajib!'); return; }
+    if (!isEdit && !password)   { showToast('Password wajib diisi!'); return; }
+
+    const body = { nim_nip, nama, role, jurusan, semester, mata_kuliah, key: ADMIN_KEY };
+    if (!isEdit) body.password = password;
+    if (isEdit)  body.id = id;
+
+    const action = isEdit ? 'update-user' : 'register';
+    try {
+      const res = await fetch(`/api/auth/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.error||'Gagal menyimpan.'); return; }
+      showToast(isEdit ? 'Data pengguna diperbarui!' : 'Pengguna berhasil ditambahkan!');
+      closeModalUser();
+      await loadUsers();
+    } catch { showToast('Tidak dapat terhubung ke server.'); }
+  }
+
+  function deleteUser(id, nama) {
+    document.getElementById('confirm-msg').textContent = `Akun "${nama}" akan dihapus secara permanen.`;
+    document.getElementById('btn-confirm-ok').onclick = async () => {
+      closeConfirm();
+      try {
+        const res = await fetch('/api/auth/delete-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY },
+          body: JSON.stringify({ id, key: ADMIN_KEY })
+        });
+        const data = await res.json();
+        if (!res.ok) { showToast(data.error||'Gagal menghapus.'); return; }
+        showToast(`Akun "${nama}" berhasil dihapus.`);
+        await loadUsers();
+      } catch { showToast('Tidak dapat terhubung ke server.'); }
+    };
+    document.getElementById('modal-confirm').classList.add('open');
+  }
+
+  // Modal Jurusan
+  function openModalJurusan() { document.getElementById('modal-jurusan').classList.add('open'); }
+  function closeModalJurusan() { document.getElementById('modal-jurusan').classList.remove('open'); }
+  function submitJurusan() {
+    const nama = document.getElementById('fj-nama').value.trim();
+    const kode = document.getElementById('fj-kode').value.trim();
+    if (!nama||!kode) { showToast('Nama dan kode jurusan wajib diisi!'); return; }
+    closeModalJurusan();
+    showToast(`Jurusan "${nama}" berhasil ditambahkan!`);
+    ['fj-nama','fj-kode','fj-fakultas'].forEach(id => document.getElementById(id).value='');
+  }
+
+  // Confirm modal
+  function confirmDelete(label) {
+    document.getElementById('confirm-msg').textContent = `Data "${label}" akan dihapus secara permanen.`;
+    document.getElementById('btn-confirm-ok').onclick = () => { closeConfirm(); showToast(`${label} dihapus.`); };
+    document.getElementById('modal-confirm').classList.add('open');
+  }
+  function closeConfirm() { document.getElementById('modal-confirm').classList.remove('open'); }
+
+  function showPage(id) {
+    pages.forEach(p => {
+      document.getElementById('page-'+p).classList.toggle('active', p===id);
+      const btn = document.querySelector(`[onclick="showPage('${p}')"]`);
+      if(btn) btn.classList.toggle('active', p===id);
+    });
+    document.getElementById('topbar-title').textContent = titles[id]||id;
+    closeSidebar(); window.scrollTo(0,0);
+  }
+
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  async function gantiPassword() {
+    const oldPass = document.getElementById('old-pass').value;
+    const newPass = document.getElementById('new-pass').value;
+    const alertEl = document.getElementById('pass-alert');
+    const succEl  = document.getElementById('pass-success');
+    alertEl.style.display = succEl.style.display = 'none';
+    if (!oldPass||!newPass) { alertEl.textContent='Isi kedua kolom.'; alertEl.style.display='block'; return; }
+    try {
+      await Auth.changePassword(oldPass, newPass);
+      succEl.textContent='Password berhasil diubah.'; succEl.style.display='block';
+      document.getElementById('old-pass').value = document.getElementById('new-pass').value = '';
+    } catch(e) { alertEl.textContent=e.message; alertEl.style.display='block'; }
+  }
+</script>
+</body>
+</html>
