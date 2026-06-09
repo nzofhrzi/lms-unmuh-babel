@@ -15,8 +15,13 @@
       "password": "dosen123",
       "role": "dosen",
       "jurusan": "Teknik Informatika",
-      "mata_kuliah": ["Pemrograman Web", "Basis Data", "Algoritma"],
-      "created_at": "2026-01-01T00:00:00.000Z"
+      "mata_kuliah": [
+        "Pemrograman Web",
+        "Basis Data",
+        "Algoritma"
+      ],
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-06-09T10:32:20.776Z"
     },
     {
       "id": "usr_mhs_001",
