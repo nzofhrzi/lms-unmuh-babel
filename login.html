@@ -541,6 +541,22 @@
         </div>
       </div>
 
+      <!-- Admin Key Field (hanya muncul saat tab Admin) -->
+      <div class="form-group" id="admin-key-group" style="display:none">
+        <label for="admin-key-input">Admin Key</label>
+        <div class="input-wrap">
+          <input
+            type="password"
+            id="admin-key-input"
+            placeholder="Masukkan admin key"
+            autocomplete="off"
+          />
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+          </svg>
+        </div>
+      </div>
+
       <button type="submit" class="btn-login" id="btn-login">
         <div class="spinner"></div>
         <span class="btn-text">Masuk</span>
@@ -575,6 +591,8 @@
 
     const label = document.getElementById('nim-label');
     const input = document.getElementById('nim-input');
+    const adminKeyGroup = document.getElementById('admin-key-group');
+    const adminKeyInput = document.getElementById('admin-key-input');
 
     const config = {
       mahasiswa: { label: 'Nomor Induk Mahasiswa (NIM)', placeholder: 'Masukkan NIM Anda' },
@@ -585,6 +603,10 @@
     label.textContent   = config[role].label;
     input.placeholder   = config[role].placeholder;
     input.value         = '';
+
+    // Tampilkan / sembunyikan field admin key
+    adminKeyGroup.style.display = role === 'admin' ? 'block' : 'none';
+    if (role !== 'admin') adminKeyInput.value = '';
 
     hideAlert();
   }
@@ -615,10 +637,17 @@
 
     const nim_nip  = document.getElementById('nim-input').value.trim();
     const password = document.getElementById('pass-input').value;
+    const adminKey = document.getElementById('admin-key-input').value.trim();
     const btn      = document.getElementById('btn-login');
 
     if (!nim_nip || !password) {
       showAlert('Harap isi semua kolom.');
+      return;
+    }
+
+    // Validasi admin key sebelum request
+    if (selectedRole === 'admin' && !adminKey) {
+      showAlert('Admin Key wajib diisi untuk login sebagai Admin.');
       return;
     }
 
@@ -633,6 +662,11 @@
         Auth.clearSession();
         showAlert(`Akun ini terdaftar sebagai ${getRoleLabel(user.role)}, bukan ${getRoleLabel(selectedRole)}.`);
         return;
+      }
+
+      // Simpan admin key ke sessionStorage agar dashboard bisa pakai
+      if (user.role === 'admin') {
+        sessionStorage.setItem('lms_admin_key', adminKey);
       }
 
       // Redirect ke dashboard sesuai role
