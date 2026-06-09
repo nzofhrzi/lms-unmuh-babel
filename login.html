@@ -503,6 +503,7 @@
     <form id="login-form" onsubmit="handleLogin(event)">
 
       <!-- NIM / NIP Field -->
+      <div id="nim-group">
       <div class="form-group">
         <label id="nim-label" for="nim-input">Nomor Induk Mahasiswa (NIM)</label>
         <div class="input-wrap">
@@ -511,16 +512,16 @@
             id="nim-input"
             placeholder="Masukkan NIM Anda"
             autocomplete="username"
-            required
           />
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
           </svg>
         </div>
       </div>
+      </div><!-- end nim-group -->
 
       <!-- Password Field -->
-      <div class="form-group">
+      <div id="pass-group">
         <label for="pass-input">Password</label>
         <div class="input-wrap">
           <input
@@ -540,6 +541,8 @@
           </button>
         </div>
       </div>
+
+      </div><!-- end pass-group -->
 
       <!-- Admin Key Field (hanya muncul saat tab Admin) -->
       <div class="form-group" id="admin-key-group" style="display:none">
@@ -604,9 +607,13 @@
     input.placeholder   = config[role].placeholder;
     input.value         = '';
 
-    // Tampilkan / sembunyikan field admin key
-    adminKeyGroup.style.display = role === 'admin' ? 'block' : 'none';
-    if (role !== 'admin') adminKeyInput.value = '';
+    // Tampilkan / sembunyikan field sesuai role
+    const isAdmin = role === 'admin';
+    adminKeyGroup.style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('nim-group').style.display  = isAdmin ? 'none' : 'block';
+    document.getElementById('pass-group').style.display = isAdmin ? 'none' : 'block';
+    const btnText = document.querySelector('.btn-text');
+    if (btnText) btnText.textContent = isAdmin ? 'Masuk sebagai Admin' : 'Masuk';
 
     hideAlert();
   }
@@ -640,40 +647,52 @@
     const adminKey = document.getElementById('admin-key-input').value.trim();
     const btn      = document.getElementById('btn-login');
 
-    if (!nim_nip || !password) {
-      showAlert('Harap isi semua kolom.');
-      return;
-    }
-
-    // Validasi admin key sebelum request
-    if (selectedRole === 'admin' && !adminKey) {
-      showAlert('Admin Key wajib diisi untuk login sebagai Admin.');
-      return;
-    }
-
     btn.classList.add('loading');
     btn.disabled = true;
 
     try {
+      // ── ALUR ADMIN: hanya admin key ──
+      if (selectedRole === 'admin') {
+        if (!adminKey) {
+          showAlert('Admin Key wajib diisi.');
+          return;
+        }
+        // Verifikasi admin key dengan memanggil list-users (jika berhasil = key valid)
+        const res = await fetch('/api/auth/list-users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+          body: JSON.stringify({ key: adminKey })
+        });
+        if (!res.ok) {
+          showAlert('Admin Key salah atau tidak valid.');
+          return;
+        }
+        // Simpan admin key & buat sesi admin minimal
+        sessionStorage.setItem('lms_admin_key', adminKey);
+        // Buat dummy session agar requireLogin tidak redirect
+        Auth.setSession('admin-key-auth', { id: 'admin', nim_nip: 'ADMIN', nama: 'Administrator', role: 'admin' });
+        window.location.href = '/admin/dashboard.html';
+        return;
+      }
+
+      // ── ALUR MAHASISWA / DOSEN ──
+      if (!nim_nip || !password) {
+        showAlert('Harap isi NIM/NIP dan password.');
+        return;
+      }
+
       const user = await Auth.login(nim_nip, password);
 
-      // Validasi role sesuai tab yang dipilih
       if (user.role !== selectedRole) {
         Auth.clearSession();
         showAlert(`Akun ini terdaftar sebagai ${getRoleLabel(user.role)}, bukan ${getRoleLabel(selectedRole)}.`);
         return;
       }
 
-      // Simpan admin key ke sessionStorage agar dashboard bisa pakai
-      if (user.role === 'admin') {
-        sessionStorage.setItem('lms_admin_key', adminKey);
-      }
-
-      // Redirect ke dashboard sesuai role
       Auth.redirectToDashboard(user.role);
 
     } catch (err) {
-      showAlert(err.message || 'Login gagal. Periksa kembali NIM/NIP dan password Anda.');
+      showAlert(err.message || 'Login gagal. Periksa kembali kredensial Anda.');
     } finally {
       btn.classList.remove('loading');
       btn.disabled = false;
