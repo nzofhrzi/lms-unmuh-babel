@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_001",
+      "nim_nip": "ADMIN001",
+      "nama": "Administrator",
+      "password": "admin123",
+      "role": "admin",
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr_dosen_001",
+      "nim_nip": "198501012010011001",
+      "nama": "Dr. Budi Santoso, M.T.",
+      "password": "dosen123",
+      "role": "dosen",
+      "jurusan": "Teknik Informatika",
+      "mata_kuliah": ["Pemrograman Web", "Basis Data", "Algoritma"],
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr_mhs_001",
+      "nim_nip": "2210101001",
+      "nama": "Andi Pratama",
+      "password": "mahasiswa123",
+      "role": "mahasiswa",
+      "jurusan": "Teknik Informatika",
+      "semester": 4,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    }
+  ]
+}
