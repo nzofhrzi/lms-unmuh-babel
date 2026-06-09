@@ -1,3 +1,14 @@
 {
-  "tugas": []
+  "tugas": [
+    {
+      "id": "tgs_1781046025468",
+      "judul": "Tugas 1 - Buatkan Makalah & PPT",
+      "deskripsi": "Makalah & PPT sesuai urutan materi kemarin",
+      "matkul": "Renang",
+      "deadline": "2026-06-15T06:00",
+      "dosen_id": "usr_1781045446222",
+      "status": "aktif",
+      "created_at": "2026-06-09T23:00:25.468Z"
+    }
+  ]
 }
