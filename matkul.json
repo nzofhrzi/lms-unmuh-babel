@@ -9,6 +9,16 @@
       "dosen_id": null,
       "dosen_nama": "Ratno Purnamasari, M. Pd.",
       "created_at": "2026-06-09T11:58:33.065Z"
+    },
+    {
+      "id": "mk_1781045366536",
+      "nama": "Renang",
+      "kode": "PJKR26",
+      "jurusan": "Pendidikan Jasmani Kesehatan dan Rekreasi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Kenzo, M. Pd.",
+      "created_at": "2026-06-09T22:49:26.536Z"
     }
   ]
 }
