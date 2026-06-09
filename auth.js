@@ -44,6 +44,12 @@ const Auth = (() => {
 
   async function verify() {
     const token = getToken();
+
+    // Bypass khusus admin login menggunakan ADMIN_KEY
+    if (token === 'admin-key-auth') {
+      return getUser();
+    }
+
     if (!token) return null;
     try {
       const res = await fetch(`${BASE_URL}/verify`, {
