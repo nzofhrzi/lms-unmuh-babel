@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Dashboard — LMS Unmuh Babel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0F2A5E;
+      --blue:       #1B4FBF;
+      --blue-l:     #2563EB;
+      --blue-pale:  #EFF4FF;
+      --blue-mid:   #BFCFEE;
+      --gold:       #C9A84C;
+      --white:      #FFFFFF;
+      --gray-50:    #F8FAFC;
+      --gray-100:   #F1F5F9;
+      --gray-200:   #E2E8F0;
+      --gray-400:   #94A3B8;
+      --gray-500:   #64748B;
+      --gray-700:   #334155;
+      --gray-900:   #0F172A;
+      --danger:     #DC2626;
+      --success:    #16A34A;
+      --warn:       #D97706;
+
+      --sidebar-w: 270px;
+      --topbar-h:  56px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-700);
+      font-size: 14px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ═══ LAYOUT ═══ */
+    .app { display: flex; min-height: 100vh; }
+
+    /* ═══ OVERLAY ═══ */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(10,20,50,.55);
+      backdrop-filter: blur(2px);
+      z-index: 200;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+
+    /* ═══════════════════
+       SIDEBAR
+    ═══════════════════ */
+    .sidebar {
+      position: fixed; top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100%;
+      background: var(--navy);
+      z-index: 300;
+      display: flex; flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform .28s cubic-bezier(.4,0,.2,1);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .sidebar.open { transform: translateX(0); }
+
+    /* Header logo */
+    .sb-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .sb-logo-mark {
+      width: 34px; height: 34px;
+      background: var(--gold);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .sb-logo-mark svg { width: 18px; height: 18px; fill: var(--navy); }
+    .sb-logo-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--white); line-height: 1.2;
+    }
+    .sb-logo-sub {
+      font-size: 10px; color: var(--blue-mid);
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .sb-close {
+      margin-left: auto;
+      background: rgba(255,255,255,.07); border: none;
+      width: 30px; height: 30px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .sb-close svg { width: 16px; height: 16px; stroke: var(--blue-mid); }
+
+    /* Profile strip */
+    .sb-profile {
+      margin: 14px 14px 6px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sb-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-l), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: 14px; color: var(--white);
+      flex-shrink: 0;
+    }
+    .sb-profile-info .p-name {
+      font-size: 13px; font-weight: 600; color: var(--white); line-height: 1.3;
+    }
+    .sb-profile-info .p-nim { font-size: 11px; color: var(--blue-mid); }
+    .sb-role-badge {
+      margin-left: auto; flex-shrink: 0;
+      font-size: 10px; font-weight: 700;
+      background: rgba(201,168,76,.18);
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,.3);
+      border-radius: 5px;
+      padding: 2px 7px;
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+
+    /* Nav */
+    .sb-section {
+      padding: 14px 12px 2px;
+    }
+    .sb-section-label {
+      font-size: 10px; font-weight: 600;
+      color: rgba(191,207,238,.35);
+      text-transform: uppercase; letter-spacing: 1px;
+      padding: 0 6px; margin-bottom: 4px;
+    }
+
+    .sb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px;
+      border-radius: 9px;
+      color: rgba(191,207,238,.65);
+      font-size: 13px; font-weight: 500;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      position: relative;
+      text-decoration: none;
+      margin-bottom: 1px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .sb-item:active { background: rgba(255,255,255,.05); }
+    .sb-item:hover  { background: rgba(255,255,255,.07); color: var(--white); }
+    .sb-item.active {
+      background: rgba(37,99,235,.22);
+      color: var(--white); font-weight: 600;
+    }
+    .sb-item.active::before {
+      content: '';
+      position: absolute; left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 3px; height: 22px;
+      background: var(--gold); border-radius: 0 2px 2px 0;
+    }
+    .sb-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: .8; }
+    .sb-item.active svg { opacity: 1; }
+
+    .sb-badge {
+      margin-left: auto; flex-shrink: 0;
+      font-size: 11px; font-weight: 700;
+      background: var(--danger); color: #fff;
+      border-radius: 10px; padding: 1px 6px; min-width: 18px; text-align: center;
+    }
+    .sb-badge.info {
+      background: rgba(37,99,235,.3); color: var(--blue-mid);
+    }
+
+    /* Sub-menu */
+    .sb-sub {
+      overflow: hidden; max-height: 0;
+      transition: max-height .25s ease;
+    }
+    .sb-sub.open { max-height: 300px; }
+    .sb-subitem {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px 8px 38px;
+      border-radius: 8px;
+      color: rgba(191,207,238,.5);
+      font-size: 12px; font-weight: 500;
+      cursor: pointer;
+      transition: background .12s, color .12s;
+      text-decoration: none;
+      margin-bottom: 1px;
+    }
+    .sb-subitem:hover  { background: rgba(255,255,255,.05); color: rgba(191,207,238,.85); }
+    .sb-subitem.active { color: var(--gold); }
+    .sub-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: currentColor; flex-shrink: 0;
+    }
+    .sub-badge {
+      margin-left: auto; font-size: 10px; font-weight: 600;
+      background: rgba(220,38,38,.25); color: #FCA5A5;
+      border-radius: 8px; padding: 1px 5px;
+    }
+
+    /* Divider */
+    .sb-divider {
+      height: 1px; background: rgba(255,255,255,.06);
+      margin: 10px 14px;
+    }
+
+    /* Logout */
+    .sb-footer { margin-top: auto; padding: 10px 12px 20px; }
+    .sb-logout {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 10px 10px;
+      background: none; border: none;
+      color: rgba(191,207,238,.55);
+      font-size: 13px; font-weight: 500;
+      border-radius: 9px; cursor: pointer;
+      transition: background .15s, color .15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .sb-logout:hover { background: rgba(220,38,38,.15); color: #FCA5A5; }
+    .sb-logout svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ═══════════════════
+       MAIN
+    ═══════════════════ */
+    .main { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* Topbar */
+    .topbar {
+      height: var(--topbar-h);
+      background: var(--navy);
+      display: flex; align-items: center;
+      padding: 0 16px; gap: 12px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-menu {
+      background: none; border: none; cursor: pointer;
+      padding: 6px; margin: -6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .topbar-menu svg { width: 22px; height: 22px; stroke: var(--white); }
+
+    .topbar-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px; font-weight: 700; color: var(--white);
+    }
+    .topbar-right {
+      margin-left: auto; display: flex; align-items: center; gap: 8px;
+    }
+    .topbar-icon {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; cursor: pointer; border: none;
+    }
+    .topbar-icon svg { width: 18px; height: 18px; stroke: var(--white); }
+    .notif-dot {
+      position: absolute; top: 7px; right: 7px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--danger); border: 1.5px solid var(--navy);
+    }
+    .topbar-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: 12px; color: var(--navy);
+      cursor: pointer;
+    }
+
+    /* ── Page body ── */
+    .page { padding: 16px; }
+
+    /* Greeting */
+    .greeting {
+      background: linear-gradient(120deg, var(--navy) 0%, var(--blue) 100%);
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+      margin-bottom: 16px;
+    }
+    .greeting-hi {
+      font-size: 11px; color: var(--blue-mid);
+      text-transform: uppercase; letter-spacing: .6px; font-weight: 500;
+    }
+    .greeting-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px; font-weight: 800; color: var(--white);
+      margin: 3px 0 6px;
+    }
+    .greeting-meta {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .g-chip {
+      font-size: 11px; font-weight: 500;
+      background: rgba(255,255,255,.1); color: var(--blue-mid);
+      border-radius: 100px; padding: 3px 9px;
+    }
+    .g-chip.gold { background: rgba(201,168,76,.2); color: var(--gold); }
+
+    /* Stat cards */
+    .stat-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-bottom: 16px;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .stat-icon-wrap {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+    }
+    .stat-icon-wrap svg { width: 19px; height: 19px; }
+    .ic-blue  { background: var(--blue-pale); }
+    .ic-blue svg  { stroke: var(--blue-l); }
+    .ic-gold  { background: #FEF9EC; }
+    .ic-gold svg  { stroke: var(--gold); }
+    .ic-green { background: #F0FDF4; }
+    .ic-green svg { stroke: var(--success); }
+    .ic-navy  { background: #EEF1F8; }
+    .ic-navy svg  { stroke: var(--navy); }
+    .stat-val {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 22px; font-weight: 800; color: var(--gray-900); line-height: 1;
+    }
+    .stat-lbl { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+
+    /* Tugas card */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--gray-900);
+    }
+    .btn-lihat {
+      font-size: 12px; font-weight: 600; color: var(--blue-l);
+      background: none; border: none; cursor: pointer;
+      text-decoration: none;
+    }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .tugas-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .tugas-item:last-child { border-bottom: none; }
+    .t-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .td-danger  { background: var(--danger); }
+    .td-warn    { background: var(--warn); }
+    .td-success { background: var(--success); }
+    .t-info { flex: 1; min-width: 0; }
+    .t-nama {
+      font-size: 13px; font-weight: 600; color: var(--gray-900);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .t-mk { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+    .t-due { flex-shrink: 0; text-align: right; }
+    .t-due .date { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+    .t-due .left { font-size: 11px; margin-top: 1px; }
+    .urgent { color: var(--danger); font-weight: 600; }
+    .ok     { color: var(--gray-400); }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="sb-header">
+      <div class="sb-logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 3L2 9l10 6 10-6-10-6zM2 15l10 6 10-6M2 12l10 6 10-6"/></svg>
+      </div>
+      <div>
+        <div class="sb-logo-name">LMS Unmuh Babel</div>
+        <div class="sb-logo-sub">Akademik Digital</div>
+      </div>
+      <button class="sb-close" id="sbClose">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Profile -->
+    <div class="sb-profile">
+      <div class="sb-avatar" id="sbAvatar">AP</div>
+      <div class="sb-profile-info">
+        <div class="p-name" id="sbName">Andi Pratama</div>
+        <div class="p-nim" id="sbNim">2210101001</div>
+      </div>
+      <div class="sb-role-badge">Mhs</div>
+    </div>
+
+    <!-- Utama -->
+    <div class="sb-section">
+      <div class="sb-section-label">Utama</div>
+
+      <a class="sb-item active" data-page="Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Dashboard
+      </a>
+
+      <a class="sb-item" data-page="Jadwal Kuliah">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Jadwal Kuliah
+      </a>
+
+      <a class="sb-item" data-page="Nilai">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        Nilai
+        <span class="sb-badge info">Baru</span>
+      </a>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Perkuliahan -->
+    <div class="sb-section">
+      <div class="sb-section-label">Perkuliahan</div>
+
+      <!-- Tugas -->
+      <a class="sb-item" id="togTugas" data-toggle="subTugas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+        Tugas
+        <span class="sb-badge">3</span>
+      </a>
+      <div class="sb-sub open" id="subTugas">
+        <a class="sb-subitem active"><span class="sub-dot"></span> Pemrograman Web <span class="sub-badge">1</span></a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Basis Data <span class="sub-badge">1</span></a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Algoritma <span class="sub-badge">1</span></a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Matematika Diskrit</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> RPL</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Jaringan Komputer</a>
+      </div>
+
+      <!-- Absensi -->
+      <a class="sb-item" id="togAbsensi" data-toggle="subAbsensi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+        Absensi
+      </a>
+      <div class="sb-sub" id="subAbsensi">
+        <a class="sb-subitem"><span class="sub-dot"></span> Pemrograman Web</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Basis Data</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Algoritma</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Matematika Diskrit</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> RPL</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Jaringan Komputer</a>
+      </div>
+
+      <!-- Diskusi -->
+      <a class="sb-item" id="togDiskusi" data-toggle="subDiskusi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        Diskusi
+        <span class="sb-badge">5</span>
+      </a>
+      <div class="sb-sub" id="subDiskusi">
+        <a class="sb-subitem"><span class="sub-dot"></span> Pemrograman Web</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Basis Data</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Algoritma</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Matematika Diskrit</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> RPL</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Jaringan Komputer</a>
+      </div>
+
+      <!-- Materi -->
+      <a class="sb-item" id="togMateri" data-toggle="subMateri">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+        </svg>
+        Materi
+      </a>
+      <div class="sb-sub" id="subMateri">
+        <a class="sb-subitem"><span class="sub-dot"></span> Pemrograman Web</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Basis Data</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Algoritma</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Matematika Diskrit</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> RPL</a>
+        <a class="sb-subitem"><span class="sub-dot"></span> Jaringan Komputer</a>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Akun -->
+    <div class="sb-section">
+      <div class="sb-section-label">Akun</div>
+      <a class="sb-item" data-page="Profil Saya">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Profil Saya
+      </a>
+      <a class="sb-item" data-page="Pengaturan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+        Pengaturan
+      </a>
+    </div>
+
+    <div class="sb-footer">
+      <button class="sb-logout" id="btnLogout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="topbar-menu" id="btnMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <span class="topbar-title" id="pageTitle">Dashboard</span>
+      <div class="topbar-right">
+        <button class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0"/>
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="topbar-avatar" id="topAvatar">AP</div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <div class="page">
+
+      <!-- Greeting -->
+      <div class="greeting">
+        <div class="greeting-hi">Selamat Datang</div>
+        <div class="greeting-name" id="greetName">Andi Pratama 👋</div>
+        <div class="greeting-meta">
+          <span class="g-chip">Semester <span id="gSmt">4</span></span>
+          <span class="g-chip" id="gJur">Teknik Informatika</span>
+          <span class="g-chip gold" id="gDate"></span>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-icon-wrap ic-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <div class="stat-val">3</div>
+          <div class="stat-lbl">Tugas Aktif</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap ic-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+          </div>
+          <div class="stat-val">87%</div>
+          <div class="stat-lbl">Kehadiran</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap ic-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+          </div>
+          <div class="stat-val">5</div>
+          <div class="stat-lbl">Diskusi Baru</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap ic-navy">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+            </svg>
+          </div>
+          <div class="stat-val">6</div>
+          <div class="stat-lbl">Mata Kuliah</div>
+        </div>
+      </div>
+
+      <!-- Tugas -->
+      <div class="section-header">
+        <span class="section-title">Tugas Mendatang</span>
+        <a class="btn-lihat">Lihat semua</a>
+      </div>
+      <div class="card">
+        <div class="tugas-item">
+          <div class="t-dot td-danger"></div>
+          <div class="t-info">
+            <div class="t-nama">ERD & Normalisasi Database</div>
+            <div class="t-mk">Basis Data</div>
+          </div>
+          <div class="t-due">
+            <div class="date">11 Jun</div>
+            <div class="left urgent">Besok!</div>
+          </div>
+        </div>
+        <div class="tugas-item">
+          <div class="t-dot td-warn"></div>
+          <div class="t-info">
+            <div class="t-nama">Implementasi REST API Node.js</div>
+            <div class="t-mk">Pemrograman Web</div>
+          </div>
+          <div class="t-due">
+            <div class="date">14 Jun</div>
+            <div class="left urgent">5 hari</div>
+          </div>
+        </div>
+        <div class="tugas-item">
+          <div class="t-dot td-warn"></div>
+          <div class="t-info">
+            <div class="t-nama">Sorting & Searching Algorithm</div>
+            <div class="t-mk">Algoritma</div>
+          </div>
+          <div class="t-due">
+            <div class="date">18 Jun</div>
+            <div class="left ok">9 hari</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script src="/auth.js"></script>
+<script>
+  // ── AUTH GUARD ──
+  // Uncomment saat deploy:
+  // (async () => {
+  //   const user = await Auth.requireLogin(['mahasiswa']);
+  //   if (user) loadUser(user);
+  // })();
+
+  // Demo
+  loadUser({ nama: 'Andi Pratama', nim_nip: '2210101001', jurusan: 'Teknik Informatika', semester: 4 });
+
+  function getInitials(n) { return n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+
+  function loadUser(u) {
+    const init = getInitials(u.nama);
+    document.getElementById('sbAvatar').textContent = init;
+    document.getElementById('topAvatar').textContent = init;
+    document.getElementById('sbName').textContent = u.nama;
+    document.getElementById('sbNim').textContent = u.nim_nip;
+    document.getElementById('greetName').textContent = u.nama.split(' ')[0] + ' 👋';
+    document.getElementById('gSmt').textContent = u.semester;
+    document.getElementById('gJur').textContent = u.jurusan;
+  }
+
+  // Tanggal
+  const D = new Date();
+  const days = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+  const mons = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  document.getElementById('gDate').textContent = `${days[D.getDay()]}, ${D.getDate()} ${mons[D.getMonth()]}`;
+
+  // ── SIDEBAR ──
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+
+  function openSidebar()  { sidebar.classList.add('open'); overlay.classList.add('show'); document.body.style.overflow='hidden'; }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); document.body.style.overflow=''; }
+
+  document.getElementById('btnMenu').addEventListener('click', openSidebar);
+  document.getElementById('sbClose').addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // Submenu toggle
+  document.querySelectorAll('[data-toggle]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const sub = document.getElementById(btn.dataset.toggle);
+      sub.classList.toggle('open');
+    });
+  });
+
+  // Nav active
+  document.querySelectorAll('.sb-item[data-page]').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      document.getElementById('pageTitle').textContent = item.dataset.page;
+      closeSidebar();
+    });
+  });
+
+  // Logout
+  document.getElementById('btnLogout').addEventListener('click', () => {
+    if (confirm('Yakin ingin keluar?')) {
+      // Auth.logout();
+      alert('Demo: Logout!');
+    }
+  });
+</script>
+</body>
+</html>
