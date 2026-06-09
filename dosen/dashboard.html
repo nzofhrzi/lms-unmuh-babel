@@ -224,20 +224,19 @@
 <div class="toast" id="toast"></div>
 
 <!-- MODAL UPLOAD TUGAS -->
+<!-- MODAL: TAMBAH / EDIT TUGAS -->
 <div class="modal-bg" id="modal-tugas">
   <div class="modal">
     <div class="modal-header">
-      <h3>Upload Tugas</h3>
+      <h3 id="modal-tugas-title">Upload Tugas</h3>
       <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
     </div>
     <div class="modal-body">
+      <input type="hidden" id="f-tugas-id"/>
       <div class="form-group">
         <label>Mata Kuliah</label>
         <select class="form-input" id="f-matkul">
           <option value="">Pilih mata kuliah...</option>
-          <option>Pemrograman Web</option>
-          <option>Basis Data</option>
-          <option>Algoritma & Pemrograman</option>
         </select>
       </div>
       <div class="form-group">
@@ -246,7 +245,7 @@
       </div>
       <div class="form-group">
         <label>Deskripsi / Instruksi</label>
-        <textarea class="form-input" id="f-deskripsi" placeholder="Jelaskan instruksi tugas..."></textarea>
+        <textarea class="form-input" id="f-deskripsi" rows="3" placeholder="Jelaskan instruksi tugas..." style="resize:vertical;min-height:80px"></textarea>
       </div>
       <div class="form-group">
         <label>Deadline</label>
@@ -255,7 +254,24 @@
     </div>
     <div class="modal-footer">
       <button class="btn-md btn-outline" onclick="closeModal()" style="background:var(--gray-100);color:var(--gray-700)">Batal</button>
-      <button class="btn-md btn-primary" onclick="submitTugas()" style="background:var(--blue);color:white">Upload Tugas</button>
+      <button class="btn-md btn-primary" onclick="submitTugas()" style="background:var(--blue);color:white" id="btn-submit-tugas">Upload Tugas</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: KONFIRMASI HAPUS -->
+<div class="modal-bg" id="modal-confirm">
+  <div class="modal" style="max-width:380px;text-align:center">
+    <div class="modal-body" style="padding:28px 24px">
+      <div style="width:56px;height:56px;border-radius:14px;background:var(--red-pale);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--red)"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      </div>
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px">Hapus Tugas?</h3>
+      <p id="confirm-msg" style="font-size:13px;color:var(--gray-500);line-height:1.6">Tugas ini akan dihapus secara permanen.</p>
+    </div>
+    <div class="modal-footer" style="justify-content:center">
+      <button class="btn-md" onclick="closeConfirm()" style="background:var(--gray-100);color:var(--gray-700)">Batal</button>
+      <button class="btn-md" id="btn-confirm-ok" style="background:var(--red);color:white">Ya, Hapus</button>
     </div>
   </div>
 </div>
@@ -268,7 +284,7 @@
   </div>
   <div class="sidebar-user">
     <div class="avatar" id="sb-avatar">—</div>
-    <div style="overflow:hidden"><div class="uname" id="sb-nama">Memuat...</div><div class="uid" id="sb-nip">—</div></div>
+    <div style="overflow:hidden"><div class="uname" id="sb-nama">Dosen</div><div class="uid" id="sb-nip">—</div></div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">
@@ -281,7 +297,7 @@
       </button>
       <button class="nav-item" onclick="showPage('tugas')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Tugas
-        <span class="nav-badge" id="badge-tugas">3</span>
+        <span class="nav-badge" id="nav-badge-tugas" style="display:none">0</span>
       </button>
       <button class="nav-item" onclick="showPage('absensi')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>Absensi
@@ -293,7 +309,7 @@
     <div class="nav-section">
       <div class="nav-label">Akun</div>
       <button class="nav-item" onclick="showPage('profil')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>Profil Saya
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>Profil
       </button>
     </div>
   </nav>
@@ -311,9 +327,6 @@
   </button>
   <div class="topbar-title" id="topbar-title">Beranda</div>
   <div class="topbar-right">
-    <button onclick="openModal()" style="display:flex;align-items:center;gap:7px;padding:8px 16px;background:var(--blue);color:white;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;transition:background .15s" onmouseover="this.style.background='var(--blue-light)'" onmouseout="this.style.background='var(--blue)'">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Upload Tugas
-    </button>
     <div class="topbar-avatar" id="top-avatar">—</div>
   </div>
 </header>
@@ -322,36 +335,31 @@
 
   <!-- BERANDA -->
   <div class="content active" id="page-beranda">
-    <div class="page-header"><h2 id="greeting">Selamat Datang</h2><p>Ringkasan aktivitas perkuliahan Anda hari ini.</p></div>
+    <div class="page-header"><h2 id="greeting">Selamat Datang</h2><p>Ringkasan aktivitas perkuliahan Anda.</p></div>
     <div class="banner">
       <div class="banner-text">
         <h3 id="banner-nama">Halo, Dosen! 👋</h3>
-        <p>Anda mengampu <strong style="color:white">3 mata kuliah</strong> semester ini.<br>Ada <strong style="color:white">12 tugas</strong> masuk yang belum dinilai.</p>
+        <p id="banner-sub">Memuat informasi mata kuliah Anda...</p>
       </div>
       <div class="banner-badge">Dosen Pengampu</div>
     </div>
     <div class="stats-grid">
-      <div class="stat-card"><div class="sc-icon ic-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div><div class="sc-label">Mata Kuliah</div><div class="sc-num">3</div><div class="sc-sub">Semester ini</div></div>
-      <div class="stat-card"><div class="sc-icon ic-yellow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div><div class="sc-label">Tugas Aktif</div><div class="sc-num">3</div><div class="sc-sub">Belum deadline</div></div>
-      <div class="stat-card"><div class="sc-icon ic-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg></div><div class="sc-label">Total Mahasiswa</div><div class="sc-num">87</div><div class="sc-sub">Lintas mata kuliah</div></div>
-      <div class="stat-card"><div class="sc-icon ic-gold"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div><div class="sc-label">Belum Dinilai</div><div class="sc-num">12</div><div class="sc-sub">Tugas masuk</div></div>
+      <div class="stat-card"><div class="sc-icon ic-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div><div class="sc-label">Mata Kuliah</div><div class="sc-num" id="stat-matkul">—</div><div class="sc-sub">Diampu</div></div>
+      <div class="stat-card"><div class="sc-icon ic-yellow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div><div class="sc-label">Tugas Aktif</div><div class="sc-num" id="stat-tugas-aktif">—</div><div class="sc-sub">Belum deadline</div></div>
+      <div class="stat-card"><div class="sc-icon ic-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg></div><div class="sc-label">Total Tugas</div><div class="sc-num" id="stat-tugas-total">—</div><div class="sc-sub">Semua status</div></div>
+      <div class="stat-card"><div class="sc-icon ic-gold"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div><div class="sc-label">Tugas Ditutup</div><div class="sc-num" id="stat-tugas-tutup">—</div><div class="sc-sub">Lewat deadline</div></div>
     </div>
     <div class="two-col">
       <div class="card">
         <div class="card-header"><h4>Mata Kuliah Diampu</h4><a href="#" onclick="showPage('matkul');return false" style="font-size:12px;color:var(--blue-light);text-decoration:none;font-weight:600">Lihat semua</a></div>
-        <div class="card-body">
-          <div class="matkul-row"><div class="mk-dot" style="background:var(--blue-light)"></div><div class="mk-info"><div class="mk-name">Pemrograman Web</div><div class="mk-meta">TI2402 · 30 mahasiswa</div></div><span class="mk-chip">3 SKS</span></div>
-          <div class="matkul-row"><div class="mk-dot" style="background:var(--gold)"></div><div class="mk-info"><div class="mk-name">Basis Data</div><div class="mk-meta">TI2401 · 30 mahasiswa</div></div><span class="mk-chip">3 SKS</span></div>
-          <div class="matkul-row"><div class="mk-dot" style="background:#DB2777"></div><div class="mk-info"><div class="mk-name">Algoritma & Pemrograman</div><div class="mk-meta">TI2404 · 27 mahasiswa</div></div><span class="mk-chip">3 SKS</span></div>
+        <div class="card-body" id="beranda-matkul-list">
+          <div style="text-align:center;padding:20px;color:var(--gray-500);font-size:13px">Memuat...</div>
         </div>
       </div>
       <div class="card">
-        <div class="card-header"><h4>Tugas Masuk Terbaru</h4><a href="#" onclick="showPage('tugas');return false" style="font-size:12px;color:var(--blue-light);text-decoration:none;font-weight:600">Lihat semua</a></div>
-        <div class="card-body">
-          <div class="tugas-row"><div style="flex:1"><div class="tr-name">Andi Pratama</div><div class="tr-meta">Tugas 2 ERD · Basis Data</div></div><span class="pill pill-yellow">Belum Dinilai</span></div>
-          <div class="tugas-row"><div style="flex:1"><div class="tr-name">Siti Rahayu</div><div class="tr-meta">Tugas 1 HTML · Pemrograman Web</div></div><span class="pill pill-green">Sudah Dinilai</span></div>
-          <div class="tugas-row"><div style="flex:1"><div class="tr-name">Budi Hartono</div><div class="tr-meta">Tugas 2 ERD · Basis Data</div></div><span class="pill pill-yellow">Belum Dinilai</span></div>
-          <div class="tugas-row"><div style="flex:1"><div class="tr-name">Dewi Lestari</div><div class="tr-meta">Tugas 3 Normalisasi · Basis Data</div></div><span class="pill pill-blue">Baru Masuk</span></div>
+        <div class="card-header"><h4>Tugas Terbaru</h4><a href="#" onclick="showPage('tugas');return false" style="font-size:12px;color:var(--blue-light);text-decoration:none;font-weight:600">Lihat semua</a></div>
+        <div class="card-body" id="beranda-tugas-list">
+          <div style="text-align:center;padding:20px;color:var(--gray-500);font-size:13px">Memuat...</div>
         </div>
       </div>
     </div>
@@ -359,108 +367,57 @@
 
   <!-- MATA KULIAH -->
   <div class="content" id="page-matkul">
-    <div class="page-header"><h2>Mata Kuliah</h2><p>Mata kuliah yang Anda ampu semester ini</p></div>
-    <div class="matkul-grid">
-      <div class="matkul-card"><div class="mk-cover" style="background:var(--blue-light)"></div><div class="mk-body"><div class="mk-kode">TI2402</div><div class="mk-title">Pemrograman Web</div><div class="mk-stats"><div class="mks"><div class="mks-num">30</div><div class="mks-label">Mahasiswa</div></div><div class="mks"><div class="mks-num">5</div><div class="mks-label">Tugas</div></div><div class="mks"><div class="mks-num">14</div><div class="mks-label">Pertemuan</div></div></div><div class="mk-actions"><button class="btn-sm btn-primary" onclick="openModal()">+ Tugas</button><button class="btn-sm btn-outline" onclick="showPage('absensi')">Absensi</button><button class="btn-sm btn-outline" onclick="showPage('diskusi')">Diskusi</button></div></div></div>
-      <div class="matkul-card"><div class="mk-cover" style="background:var(--gold)"></div><div class="mk-body"><div class="mk-kode">TI2401</div><div class="mk-title">Basis Data</div><div class="mk-stats"><div class="mks"><div class="mks-num">30</div><div class="mks-label">Mahasiswa</div></div><div class="mks"><div class="mks-num">4</div><div class="mks-label">Tugas</div></div><div class="mks"><div class="mks-num">14</div><div class="mks-label">Pertemuan</div></div></div><div class="mk-actions"><button class="btn-sm btn-primary" onclick="openModal()">+ Tugas</button><button class="btn-sm btn-outline" onclick="showPage('absensi')">Absensi</button><button class="btn-sm btn-outline" onclick="showPage('diskusi')">Diskusi</button></div></div></div>
-      <div class="matkul-card"><div class="mk-cover" style="background:#DB2777"></div><div class="mk-body"><div class="mk-kode">TI2404</div><div class="mk-title">Algoritma & Pemrograman</div><div class="mk-stats"><div class="mks"><div class="mks-num">27</div><div class="mks-label">Mahasiswa</div></div><div class="mks"><div class="mks-num">3</div><div class="mks-label">Tugas</div></div><div class="mks"><div class="mks-num">14</div><div class="mks-label">Pertemuan</div></div></div><div class="mk-actions"><button class="btn-sm btn-primary" onclick="openModal()">+ Tugas</button><button class="btn-sm btn-outline" onclick="showPage('absensi')">Absensi</button><button class="btn-sm btn-outline" onclick="showPage('diskusi')">Diskusi</button></div></div></div>
+    <div class="page-header">
+      <div><h2>Mata Kuliah</h2><p>Mata kuliah yang Anda ampu</p></div>
+      <button onclick="showPage('tugas')" style="display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--blue);color:white;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Upload Tugas
+      </button>
+    </div>
+    <div class="matkul-grid" id="matkul-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gray-500);font-size:13px">Memuat data mata kuliah...</div>
     </div>
   </div>
 
   <!-- TUGAS -->
   <div class="content" id="page-tugas">
     <div class="page-header">
-      <h2>Manajemen Tugas</h2><p>Semua tugas yang telah diunggah beserta status pengumpulan</p>
-    </div>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+      <div><h2>Manajemen Tugas</h2><p>Semua tugas yang telah diupload</p></div>
       <button onclick="openModal()" style="display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--blue);color:white;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Upload Tugas Baru
       </button>
     </div>
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+      <input type="text" class="search-input" placeholder="Cari judul tugas..." oninput="filterTugas()" id="tugas-search" style="flex:1;min-width:200px;height:38px;padding:0 14px 0 38px;border:1.5px solid var(--gray-200);border-radius:9px;font-size:13px;outline:none;background:white url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22 fill=%22%2394a3b8%22%3E%3Cpath d=%22M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z%22/%3E%3C/svg%3E') no-repeat 12px center"/>
+      <select id="tugas-filter-status" onchange="filterTugas()" style="height:38px;padding:0 12px;border:1.5px solid var(--gray-200);border-radius:9px;font-size:13px;outline:none;background:white;cursor:pointer;color:var(--gray-700)">
+        <option value="">Semua Status</option>
+        <option value="aktif">Aktif</option>
+        <option value="ditutup">Ditutup</option>
+        <option value="selesai">Selesai</option>
+      </select>
+      <select id="tugas-filter-matkul" onchange="filterTugas()" style="height:38px;padding:0 12px;border:1.5px solid var(--gray-200);border-radius:9px;font-size:13px;outline:none;background:white;cursor:pointer;color:var(--gray-700)">
+        <option value="">Semua Matkul</option>
+      </select>
+    </div>
     <div style="display:flex;flex-direction:column;gap:12px" id="tugas-list">
-      <div class="card">
-        <div style="padding:18px 20px;display:flex;align-items:center;gap:16px">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--blue)"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
-          </div>
-          <div style="flex:1">
-            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px">Tugas 3 — Normalisasi Database</div>
-            <div style="font-size:12px;color:var(--gray-500)">Basis Data · Deadline: 7 hari lagi</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px">8 / 30</div>
-            <div style="font-size:11px;color:var(--gray-500)">sudah kumpul</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <span class="pill pill-blue">Aktif</span>
-            <button onclick="showToast('Fitur penilaian segera hadir')" class="btn-sm btn-outline">Nilai</button>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div style="padding:18px 20px;display:flex;align-items:center;gap:16px">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--yellow-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--yellow)"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
-          </div>
-          <div style="flex:1">
-            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px">Tugas 2 — ERD Diagram</div>
-            <div style="font-size:12px;color:var(--gray-500)">Basis Data · Deadline: 3 hari lalu</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px">28 / 30</div>
-            <div style="font-size:11px;color:var(--gray-500)">sudah kumpul</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <span class="pill pill-yellow">Ditutup</span>
-            <button onclick="showToast('Fitur penilaian segera hadir')" class="btn-sm btn-outline">Nilai</button>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div style="padding:18px 20px;display:flex;align-items:center;gap:16px">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--green-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--green)"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
-          </div>
-          <div style="flex:1">
-            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px">Tugas 1 — HTML & CSS Dasar</div>
-            <div style="font-size:12px;color:var(--gray-500)">Pemrograman Web · Selesai dinilai</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px">30 / 30</div>
-            <div style="font-size:11px;color:var(--gray-500)">sudah kumpul</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <span class="pill pill-green">Selesai</span>
-            <button onclick="showToast('Semua sudah dinilai')" class="btn-sm btn-outline">Lihat</button>
-          </div>
-        </div>
-      </div>
+      <div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">Memuat data tugas...</div>
     </div>
   </div>
 
   <!-- ABSENSI -->
   <div class="content" id="page-absensi">
-    <div class="page-header"><h2>Absensi</h2><p>Catat dan kelola kehadiran mahasiswa per mata kuliah</p></div>
-    <div class="absensi-matkul-tabs">
-      <button class="tab-btn active" onclick="switchAbsensi(this,'pemweb')">Pemrograman Web</button>
-      <button class="tab-btn" onclick="switchAbsensi(this,'bd')">Basis Data</button>
-      <button class="tab-btn" onclick="switchAbsensi(this,'algo')">Algoritma</button>
+    <div class="page-header"><h2>Absensi</h2><p>Catat kehadiran mahasiswa per mata kuliah</p></div>
+    <div class="absensi-matkul-tabs" id="absensi-tabs">
+      <div style="color:var(--gray-500);font-size:13px;padding:8px">Memuat mata kuliah...</div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="font-size:13px;color:var(--gray-500)">Pertemuan ke: <strong id="pertemuan-label" style="color:var(--navy)">14 (Terakhir)</strong></div>
-      <div style="display:flex;gap:8px">
-        <button onclick="showToast('Absensi disimpan!')" style="padding:8px 16px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Simpan Absensi</button>
-      </div>
+    <div id="absensi-info" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:13px;color:var(--gray-500)">Pertemuan ke: <strong id="pertemuan-label" style="color:var(--navy)">—</strong></div>
+      <button onclick="simpanAbsensi()" style="padding:8px 16px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Simpan Absensi</button>
     </div>
     <div class="absensi-table-wrap">
       <table class="abs-table">
         <thead><tr><th>#</th><th>NIM</th><th>Nama Mahasiswa</th><th>Status</th><th>Keterangan</th></tr></thead>
         <tbody id="abs-tbody">
-          <tr><td>1</td><td>2210101001</td><td>Andi Pratama</td><td><select class="abs-select" onchange="updateAbsColor(this)"><option value="H" selected>Hadir</option><option value="I">Izin</option><option value="A">Absen</option></select></td><td><input type="text" class="form-input" placeholder="—" style="height:32px;font-size:12px;padding:0 10px"/></td></tr>
-          <tr><td>2</td><td>2210101002</td><td>Siti Rahayu</td><td><select class="abs-select" onchange="updateAbsColor(this)"><option value="H" selected>Hadir</option><option value="I">Izin</option><option value="A">Absen</option></select></td><td><input type="text" class="form-input" placeholder="—" style="height:32px;font-size:12px;padding:0 10px"/></td></tr>
-          <tr><td>3</td><td>2210101003</td><td>Budi Hartono</td><td><select class="abs-select" onchange="updateAbsColor(this)"><option value="H">Hadir</option><option value="I" selected>Izin</option><option value="A">Absen</option></select></td><td><input type="text" class="form-input" placeholder="Sakit" value="Sakit" style="height:32px;font-size:12px;padding:0 10px"/></td></tr>
-          <tr><td>4</td><td>2210101004</td><td>Dewi Lestari</td><td><select class="abs-select" onchange="updateAbsColor(this)"><option value="H" selected>Hadir</option><option value="I">Izin</option><option value="A">Absen</option></select></td><td><input type="text" class="form-input" placeholder="—" style="height:32px;font-size:12px;padding:0 10px"/></td></tr>
-          <tr><td>5</td><td>2210101005</td><td>Reza Firmansyah</td><td><select class="abs-select" onchange="updateAbsColor(this)"><option value="H">Hadir</option><option value="I">Izin</option><option value="A" selected>Absen</option></select></td><td><input type="text" class="form-input" placeholder="—" style="height:32px;font-size:12px;padding:0 10px"/></td></tr>
+          <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--gray-500)">Pilih mata kuliah untuk melihat daftar mahasiswa.</td></tr>
         </tbody>
       </table>
     </div>
@@ -472,30 +429,17 @@
     <div class="diskusi-layout">
       <div class="diskusi-rooms">
         <div class="diskusi-rooms-header">📚 Ruang Diskusi</div>
-        <div class="diskusi-room-list">
-          <div class="diskusi-room active" onclick="selectRoom(this,'Pemrograman Web')"><div class="dr-name">Pemrograman Web</div><div class="dr-last">Anda: Materi minggu ini di modul 7</div></div>
-          <div class="diskusi-room" onclick="selectRoom(this,'Basis Data')"><div class="dr-name">Basis Data</div><div class="dr-last">Andi: Pak, boleh pakai studi kasus sendiri?</div></div>
-          <div class="diskusi-room" onclick="selectRoom(this,'Algoritma & Pemrograman')"><div class="dr-name">Algoritma & Pemrograman</div><div class="dr-last">Dewi: Pak soal kuis dari bab berapa?</div></div>
+        <div class="diskusi-room-list" id="diskusi-room-list">
+          <div style="padding:16px;font-size:13px;color:var(--gray-500)">Memuat ruang diskusi...</div>
         </div>
       </div>
       <div class="diskusi-chat">
         <div class="chat-header">
           <div class="chat-icon" style="background:var(--blue-pale)"><svg viewBox="0 0 24 24" fill="var(--blue-light)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
-          <div><div class="chat-title-text" id="chat-title">Pemrograman Web</div><div class="chat-sub">30 mahasiswa</div></div>
+          <div><div class="chat-title-text" id="chat-title">Pilih ruang diskusi</div><div class="chat-sub" id="chat-sub">—</div></div>
         </div>
         <div class="chat-messages" id="chat-messages">
-          <div class="chat-msg me">
-            <div class="msg-av" id="chat-my-av">—</div>
-            <div><div class="msg-bubble">Selamat pagi semua. Materi minggu ini kita masuk ke JavaScript DOM. Silakan baca modul 7 dulu sebelum pertemuan.</div><div class="msg-time">07.55</div></div>
-          </div>
-          <div class="chat-msg">
-            <div class="msg-av mhs">AP</div>
-            <div><div class="msg-sender">Andi Pratama</div><div class="msg-bubble">Pak, untuk tugas minggu ini apakah harus menggunakan framework atau boleh vanilla JS?</div><div class="msg-time">08.10</div></div>
-          </div>
-          <div class="chat-msg me">
-            <div class="msg-av" id="chat-my-av2">—</div>
-            <div><div class="msg-bubble">Boleh vanilla JS dulu, nanti semester depan baru kita masuk framework.</div><div class="msg-time">08.13</div></div>
-          </div>
+          <div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">Pilih mata kuliah untuk memulai diskusi.</div>
         </div>
         <div class="chat-input-area">
           <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ketik pesan untuk mahasiswa..." onkeydown="handleChatKey(event)"></textarea>
@@ -541,74 +485,396 @@
 <script src="/auth.js"></script>
 <script>
   let currentUser = null;
+  let myMatkul    = []; // dari currentUser.mata_kuliah
+  let allTugas    = []; // dari API
+  let allMhsList  = []; // semua mahasiswa di jurusan yang sama
+  let activeAbsensiMatkul = null;
+
   const pages  = ['beranda','matkul','tugas','absensi','diskusi','profil'];
   const titles = {beranda:'Beranda',matkul:'Mata Kuliah',tugas:'Manajemen Tugas',absensi:'Absensi',diskusi:'Diskusi',profil:'Profil Saya'};
+  const CARD_COLORS = ['var(--blue-light)','var(--gold)','#DB2777','#7C3AED','#16A34A','#0891B2','#EA580C'];
+
+  // ─── INIT ──────────────────────────────────────────────────────────────────
 
   (async () => {
     currentUser = await Auth.requireLogin(['dosen']);
     if (!currentUser) return;
+
+    myMatkul = currentUser.mata_kuliah || [];
     const inisial = currentUser.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-    ['sb-avatar','top-avatar','profil-avatar','chat-my-av','chat-my-av2'].forEach(id => {
+    ['sb-avatar','top-avatar','profil-avatar'].forEach(id => {
       const el = document.getElementById(id); if(el) el.textContent = inisial;
     });
-    document.getElementById('sb-nama').textContent     = currentUser.nama;
-    document.getElementById('sb-nip').textContent      = currentUser.nim_nip;
-    document.getElementById('profil-nama').textContent = currentUser.nama;
-    document.getElementById('profil-nip').textContent  = currentUser.nim_nip;
+    document.getElementById('sb-nama').textContent      = currentUser.nama;
+    document.getElementById('sb-nip').textContent       = currentUser.nim_nip;
+    document.getElementById('profil-nama').textContent  = currentUser.nama;
+    document.getElementById('profil-nip').textContent   = currentUser.nim_nip;
     document.getElementById('profil-jurusan').textContent = currentUser.jurusan || '—';
-    document.getElementById('profil-mk').textContent   = currentUser.mata_kuliah ? currentUser.mata_kuliah.join(', ') : '—';
+    document.getElementById('profil-mk').textContent    = myMatkul.length ? myMatkul.join(', ') : '—';
     const firstName = currentUser.nama.split(' ')[0];
-    document.getElementById('greeting').textContent    = `Selamat Datang, ${firstName}`;
-    document.getElementById('banner-nama').textContent = `Halo, ${firstName}! 👋`;
+    document.getElementById('greeting').textContent     = `Selamat Datang, ${firstName}`;
+    document.getElementById('banner-nama').textContent  = `Halo, ${firstName}! 👋`;
+
+    // Isi dropdown matkul di modal tugas
+    populateMatkulDropdown();
+    // Isi filter tugas
+    updateTugasMatkulFilter();
+    // Setup absensi tabs
+    renderAbsensiTabs();
+    // Setup diskusi rooms
+    renderDiskusiRooms();
+
+    // Load data dari API
+    await Promise.all([loadTugas(), loadMahasiswaJurusan()]);
+    showPage('beranda');
   })();
 
-  function showPage(id) {
-    pages.forEach(p => {
-      document.getElementById('page-'+p).classList.toggle('active', p===id);
-      const btn = document.querySelector(`[onclick="showPage('${p}')"]`);
-      if(btn) btn.classList.toggle('active', p===id);
-    });
-    document.getElementById('topbar-title').textContent = titles[id]||id;
-    closeSidebar(); window.scrollTo(0,0);
+  // ─── HELPERS ──────────────────────────────────────────────────────────────
+
+  function authHeaders() {
+    return { 'Content-Type': 'application/json', 'x-session-token': Auth.getToken() };
   }
 
-  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
-  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+  function deadlineLabel(deadline) {
+    if (!deadline) return '—';
+    const d = new Date(deadline);
+    const now = new Date();
+    const diff = Math.round((d - now) / (1000*60*60*24));
+    if (diff < 0)  return `${Math.abs(diff)} hari lalu`;
+    if (diff === 0) return 'Hari ini';
+    return `${diff} hari lagi`;
+  }
 
-  function openModal()  { document.getElementById('modal-tugas').classList.add('open'); }
+  function statusPill(status) {
+    const map = { aktif:'pill-blue', ditutup:'pill-yellow', selesai:'pill-green' };
+    const label = { aktif:'Aktif', ditutup:'Ditutup', selesai:'Selesai' };
+    return `<span class="pill ${map[status]||'pill-gray'}">${label[status]||status}</span>`;
+  }
+
+  // ─── TUGAS ────────────────────────────────────────────────────────────────
+
+  async function loadTugas() {
+    try {
+      const res  = await fetch(`/api/tugas/list?dosen_id=${currentUser.id}`, {
+        method: 'GET', headers: authHeaders()
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast('Gagal memuat tugas: ' + (data.error||'')); return; }
+      allTugas = data.tugas || [];
+      renderTugas(allTugas);
+      renderBerandaTugas(allTugas);
+      updateStats();
+      updateNavBadge();
+    } catch { showToast('Tidak dapat terhubung ke server.'); }
+  }
+
+  function updateStats() {
+    const aktif  = allTugas.filter(t => t.status === 'aktif').length;
+    const tutup  = allTugas.filter(t => t.status === 'ditutup').length;
+    document.getElementById('stat-matkul').textContent      = myMatkul.length;
+    document.getElementById('stat-tugas-aktif').textContent = aktif;
+    document.getElementById('stat-tugas-total').textContent = allTugas.length;
+    document.getElementById('stat-tugas-tutup').textContent = tutup;
+    const bannerSub = myMatkul.length
+      ? `Anda mengampu <strong style="color:white">${myMatkul.length} mata kuliah</strong>. Terdapat <strong style="color:white">${aktif} tugas aktif</strong> saat ini.`
+      : 'Belum ada mata kuliah yang ditetapkan. Hubungi admin.';
+    document.getElementById('banner-sub').innerHTML = bannerSub;
+  }
+
+  function updateNavBadge() {
+    const aktif = allTugas.filter(t => t.status === 'aktif').length;
+    const badge = document.getElementById('nav-badge-tugas');
+    if (aktif > 0) { badge.textContent = aktif; badge.style.display = ''; }
+    else badge.style.display = 'none';
+  }
+
+  function renderTugas(list) {
+    const container = document.getElementById('tugas-list');
+    if (!list.length) {
+      container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--gray-500);font-size:13px">Belum ada tugas. Klik <strong>Upload Tugas Baru</strong> untuk memulai.</div>';
+      return;
+    }
+    const statusColor = { aktif:'var(--blue-pale)', ditutup:'var(--yellow-pale)', selesai:'var(--green-pale)' };
+    const statusIcon  = { aktif:'var(--blue)', ditutup:'var(--yellow)', selesai:'var(--green)' };
+    container.innerHTML = list.map(t => `
+      <div class="card">
+        <div style="padding:18px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="width:44px;height:44px;border-radius:12px;background:${statusColor[t.status]||'var(--gray-100)'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="${statusIcon[t.status]||'var(--gray-500)'}"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px">${t.judul}</div>
+            <div style="font-size:12px;color:var(--gray-500)">${t.matkul} · Deadline: ${deadlineLabel(t.deadline)}</div>
+            ${t.deskripsi ? `<div style="font-size:12px;color:var(--gray-500);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px">${t.deskripsi}</div>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            ${statusPill(t.status)}
+            <button onclick='editTugas(${JSON.stringify(t).replace(/'/g,"&#39;")})' style="padding:5px 12px;background:var(--blue-pale);color:var(--blue);border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Edit</button>
+            <button onclick="deleteTugas('${t.id}','${t.judul.replace(/'/g,"\\'")}')'" style="padding:5px 12px;background:var(--red-pale);color:var(--red);border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Hapus</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function renderBerandaTugas(list) {
+    const el = document.getElementById('beranda-tugas-list');
+    const recent = [...list].sort((a,b) => new Date(b.created_at)-new Date(a.created_at)).slice(0,4);
+    if (!recent.length) {
+      el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gray-500);font-size:13px">Belum ada tugas diupload.</div>';
+      return;
+    }
+    el.innerHTML = recent.map(t => `
+      <div class="tugas-row">
+        <div style="flex:1"><div class="tr-name">${t.judul}</div><div class="tr-meta">${t.matkul} · ${deadlineLabel(t.deadline)}</div></div>
+        ${statusPill(t.status)}
+      </div>`).join('');
+  }
+
+  function filterTugas() {
+    const search = document.getElementById('tugas-search').value.toLowerCase();
+    const status = document.getElementById('tugas-filter-status').value;
+    const matkul = document.getElementById('tugas-filter-matkul').value;
+    renderTugas(allTugas.filter(t =>
+      t.judul.toLowerCase().includes(search) &&
+      (!status || t.status === status) &&
+      (!matkul || t.matkul === matkul)
+    ));
+  }
+
+  function populateMatkulDropdown() {
+    const sel = document.getElementById('f-matkul');
+    sel.innerHTML = '<option value="">Pilih mata kuliah...</option>' +
+      myMatkul.map(mk => `<option value="${mk}">${mk}</option>`).join('');
+  }
+
+  function updateTugasMatkulFilter() {
+    const sel = document.getElementById('tugas-filter-matkul');
+    sel.innerHTML = '<option value="">Semua Matkul</option>' +
+      myMatkul.map(mk => `<option value="${mk}">${mk}</option>`).join('');
+  }
+
+  function openModal(mode='add') {
+    document.getElementById('modal-tugas-title').textContent = mode==='add' ? 'Upload Tugas' : 'Edit Tugas';
+    document.getElementById('btn-submit-tugas').textContent  = mode==='add' ? 'Upload Tugas' : 'Simpan Perubahan';
+    if (mode==='add') {
+      ['f-tugas-id','f-judul','f-deskripsi'].forEach(id => document.getElementById(id).value='');
+      document.getElementById('f-matkul').value   = '';
+      document.getElementById('f-deadline').value = '';
+    }
+    document.getElementById('modal-tugas').classList.add('open');
+  }
+
+  function editTugas(t) {
+    document.getElementById('f-tugas-id').value  = t.id;
+    document.getElementById('f-matkul').value    = t.matkul;
+    document.getElementById('f-judul').value     = t.judul;
+    document.getElementById('f-deskripsi').value = t.deskripsi||'';
+    // format deadline for datetime-local input
+    if (t.deadline) {
+      const d = new Date(t.deadline);
+      const local = new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+      document.getElementById('f-deadline').value = local;
+    }
+    openModal('edit');
+  }
+
   function closeModal() { document.getElementById('modal-tugas').classList.remove('open'); }
 
-  function submitTugas() {
+  async function submitTugas() {
+    const id       = document.getElementById('f-tugas-id').value;
     const matkul   = document.getElementById('f-matkul').value;
     const judul    = document.getElementById('f-judul').value.trim();
+    const deskripsi= document.getElementById('f-deskripsi').value.trim();
     const deadline = document.getElementById('f-deadline').value;
-    if (!matkul || !judul || !deadline) { showToast('Lengkapi semua field!'); return; }
-    closeModal();
-    showToast(`Tugas "${judul}" berhasil diupload!`);
-    document.getElementById('f-matkul').value = '';
-    document.getElementById('f-judul').value  = '';
-    document.getElementById('f-deskripsi').value = '';
-    document.getElementById('f-deadline').value  = '';
+    if (!matkul||!judul||!deadline) { showToast('Lengkapi semua field!'); return; }
+
+    const body    = { matkul, judul, deskripsi, deadline };
+    if (id) body.id = id;
+    const action  = id ? 'update' : 'add';
+
+    try {
+      const res  = await fetch(`/api/tugas/${action}`, { method:'POST', headers: authHeaders(), body: JSON.stringify(body) });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.error||'Gagal menyimpan.'); return; }
+      showToast(id ? 'Tugas diperbarui!' : `Tugas "${judul}" berhasil diupload!`);
+      closeModal();
+      await loadTugas();
+    } catch { showToast('Tidak dapat terhubung ke server.'); }
   }
 
-  function switchAbsensi(btn, key) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const labels = {pemweb:'14 (Terakhir)', bd:'13', algo:'14 (Terakhir)'};
-    document.getElementById('pertemuan-label').textContent = labels[key] || '14';
+  function deleteTugas(id, judul) {
+    document.getElementById('confirm-msg').textContent = `Tugas "${judul}" akan dihapus secara permanen.`;
+    document.getElementById('btn-confirm-ok').onclick = async () => {
+      closeConfirm();
+      try {
+        const res  = await fetch('/api/tugas/delete', { method:'POST', headers: authHeaders(), body: JSON.stringify({ id }) });
+        const data = await res.json();
+        if (!res.ok) { showToast(data.error||'Gagal menghapus.'); return; }
+        showToast(`Tugas "${judul}" dihapus.`);
+        await loadTugas();
+      } catch { showToast('Tidak dapat terhubung ke server.'); }
+    };
+    document.getElementById('modal-confirm').classList.add('open');
   }
+
+  function closeConfirm() { document.getElementById('modal-confirm').classList.remove('open'); }
+
+  // ─── MATA KULIAH (tampilan kartu) ─────────────────────────────────────────
+
+  function renderBerandaMatkul() {
+    const el = document.getElementById('beranda-matkul-list');
+    if (!myMatkul.length) {
+      el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gray-500);font-size:13px">Belum ada mata kuliah yang ditetapkan.</div>';
+      return;
+    }
+    el.innerHTML = myMatkul.map((mk, i) => {
+      const color = CARD_COLORS[i % CARD_COLORS.length];
+      const count = allTugas.filter(t => t.matkul === mk).length;
+      return `<div class="matkul-row">
+        <div class="mk-dot" style="background:${color}"></div>
+        <div class="mk-info"><div class="mk-name">${mk}</div><div class="mk-meta">${count} tugas</div></div>
+        <span class="mk-chip">Aktif</span>
+      </div>`;
+    }).join('');
+  }
+
+  function renderMatkulGrid() {
+    const grid = document.getElementById('matkul-grid');
+    if (!myMatkul.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gray-500);font-size:13px">Belum ada mata kuliah. Hubungi admin untuk menetapkan mata kuliah Anda.</div>';
+      return;
+    }
+    grid.innerHTML = myMatkul.map((mk, i) => {
+      const color    = CARD_COLORS[i % CARD_COLORS.length];
+      const tugasCount = allTugas.filter(t => t.matkul === mk).length;
+      const mkObj    = { nama: mk }; // placeholder — bisa diperkaya dari matkul.json
+      return `<div class="matkul-card">
+        <div class="mk-cover" style="background:${color}"></div>
+        <div class="mk-body">
+          <div class="mk-kode" style="font-size:11px;text-transform:uppercase;color:var(--gray-500);font-weight:700;margin-bottom:4px">${currentUser.jurusan||''}</div>
+          <div class="mk-title">${mk}</div>
+          <div class="mk-stats">
+            <div class="mks"><div class="mks-num">${tugasCount}</div><div class="mks-label">Tugas</div></div>
+            <div class="mks"><div class="mks-num">${allMhsList.filter(m=>m.jurusan===currentUser.jurusan).length}</div><div class="mks-label">Mahasiswa</div></div>
+            <div class="mks"><div class="mks-num">16</div><div class="mks-label">Pertemuan</div></div>
+          </div>
+          <div class="mk-actions">
+            <button class="btn-sm btn-primary" onclick="openModal()">+ Tugas</button>
+            <button class="btn-sm btn-outline" onclick="switchAbsensiByMatkul('${mk}');showPage('absensi')">Absensi</button>
+            <button class="btn-sm btn-outline" onclick="switchDiskusiByMatkul('${mk}');showPage('diskusi')">Diskusi</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ─── MAHASISWA (untuk absensi) ────────────────────────────────────────────
+
+  async function loadMahasiswaJurusan() {
+    try {
+      const res  = await fetch('/api/auth/list-users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': '' }, // public fallback
+      });
+      // Jika gagal (butuh admin key), fallback ke empty
+      if (!res.ok) { allMhsList = []; return; }
+      const data = await res.json();
+      allMhsList = (data.users || []).filter(u => u.role === 'mahasiswa' && u.jurusan === currentUser.jurusan);
+      renderBerandaMatkul();
+      renderMatkulGrid();
+    } catch { allMhsList = []; renderBerandaMatkul(); renderMatkulGrid(); }
+  }
+
+  // ─── ABSENSI ──────────────────────────────────────────────────────────────
+
+  function renderAbsensiTabs() {
+    const tabs = document.getElementById('absensi-tabs');
+    if (!myMatkul.length) {
+      tabs.innerHTML = '<div style="color:var(--gray-500);font-size:13px;padding:8px">Tidak ada mata kuliah.</div>';
+      return;
+    }
+    tabs.innerHTML = myMatkul.map((mk, i) =>
+      `<button class="tab-btn${i===0?' active':''}" onclick="switchAbsensiByMatkul('${mk}',this)">${mk}</button>`
+    ).join('');
+    if (myMatkul.length) switchAbsensiByMatkul(myMatkul[0]);
+  }
+
+  function switchAbsensiByMatkul(mk, btn) {
+    activeAbsensiMatkul = mk;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+      const allBtns = document.querySelectorAll('.tab-btn');
+      allBtns.forEach(b => { if(b.textContent.trim()===mk) b.classList.add('active'); });
+    }
+    const mhsJurusan = allMhsList.filter(m => m.jurusan === currentUser.jurusan);
+    document.getElementById('pertemuan-label').textContent = '1';
+    const tbody = document.getElementById('abs-tbody');
+    if (!mhsJurusan.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--gray-500)">Belum ada mahasiswa di jurusan ini.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = mhsJurusan.map((m, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td style="font-family:monospace;font-size:12px">${m.nim_nip}</td>
+        <td>${m.nama}</td>
+        <td><select class="abs-select" onchange="updateAbsColor(this)">
+          <option value="H" selected>Hadir</option>
+          <option value="I">Izin</option>
+          <option value="A">Absen</option>
+        </select></td>
+        <td><input type="text" placeholder="—" style="width:100%;height:32px;padding:0 10px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:12px;font-family:Inter,sans-serif;outline:none"/></td>
+      </tr>`).join('');
+    document.querySelectorAll('.abs-select').forEach(s => updateAbsColor(s));
+  }
+
+  // Untuk dipanggil dari kartu matkul
+  function switchAbsensi(btn, key) { switchAbsensiByMatkul(myMatkul[0]); }
 
   function updateAbsColor(sel) {
     const colors = { H:'var(--green)', I:'var(--yellow)', A:'var(--red)' };
     sel.style.color = colors[sel.value] || 'inherit';
   }
-  // init colors
-  document.querySelectorAll('.abs-select').forEach(s => updateAbsColor(s));
+
+  function simpanAbsensi() {
+    showToast(`Absensi ${activeAbsensiMatkul||''} berhasil disimpan!`);
+  }
+
+  // ─── DISKUSI ──────────────────────────────────────────────────────────────
+
+  function renderDiskusiRooms() {
+    const list = document.getElementById('diskusi-room-list');
+    if (!myMatkul.length) {
+      list.innerHTML = '<div style="padding:16px;font-size:13px;color:var(--gray-500)">Tidak ada mata kuliah.</div>';
+      return;
+    }
+    list.innerHTML = myMatkul.map((mk, i) => `
+      <div class="diskusi-room${i===0?' active':''}" onclick="selectRoom(this,'${mk}')">
+        <div class="dr-name">${mk}</div>
+        <div class="dr-last">Klik untuk membuka diskusi</div>
+      </div>`).join('');
+    if (myMatkul.length) selectRoom(list.querySelector('.diskusi-room'), myMatkul[0]);
+  }
+
+  function switchDiskusiByMatkul(mk) {
+    const rooms = document.querySelectorAll('.diskusi-room');
+    rooms.forEach(r => {
+      if (r.querySelector('.dr-name').textContent === mk) selectRoom(r, mk);
+    });
+  }
 
   function selectRoom(el, nama) {
     document.querySelectorAll('.diskusi-room').forEach(r => r.classList.remove('active'));
     el.classList.add('active');
     document.getElementById('chat-title').textContent = nama;
+    document.getElementById('chat-sub').textContent   = currentUser.jurusan || '—';
+    // Reset chat area dengan pesan selamat datang
+    document.getElementById('chat-messages').innerHTML = `
+      <div style="text-align:center;padding:24px">
+        <div style="font-size:13px;color:var(--gray-500)">Ruang diskusi <strong>${nama}</strong></div>
+        <div style="font-size:12px;color:var(--gray-300);margin-top:4px">Pesan hanya tersimpan di sesi ini</div>
+      </div>`;
   }
 
   function handleChatKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
@@ -627,6 +893,21 @@
     input.value = '';
   }
 
+  // ─── SHARED ───────────────────────────────────────────────────────────────
+
+  function showPage(id) {
+    pages.forEach(p => {
+      document.getElementById('page-'+p).classList.toggle('active', p===id);
+      const btn = document.querySelector(`[onclick="showPage('${p}')"]`);
+      if(btn) btn.classList.toggle('active', p===id);
+    });
+    document.getElementById('topbar-title').textContent = titles[id]||id;
+    closeSidebar(); window.scrollTo(0,0);
+  }
+
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
@@ -642,12 +923,9 @@
     if (!oldPass||!newPass) { alertEl.textContent='Isi kedua kolom.'; alertEl.style.display='block'; return; }
     try {
       await Auth.changePassword(oldPass, newPass);
-      succEl.textContent = 'Password berhasil diubah.';
-      succEl.style.display = 'block';
+      succEl.textContent='Password berhasil diubah.'; succEl.style.display='block';
       document.getElementById('old-pass').value = document.getElementById('new-pass').value = '';
-    } catch(e) {
-      alertEl.textContent = e.message; alertEl.style.display = 'block';
-    }
+    } catch(e) { alertEl.textContent=e.message; alertEl.style.display='block'; }
   }
 </script>
 </body>
