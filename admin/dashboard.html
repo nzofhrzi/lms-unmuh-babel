@@ -501,12 +501,18 @@
 <script>
   let currentUser = null;
   let allUsers = [];
-  const ADMIN_KEY = prompt('Masukkan Admin Key untuk akses:') || '';
+  const ADMIN_KEY = sessionStorage.getItem('lms_admin_key') || '';
 
   const pages  = ['beranda','users','jurusan','matkul','profil'];
   const titles = {beranda:'Beranda',users:'Kelola Pengguna',jurusan:'Jurusan & Prodi',matkul:'Mata Kuliah',profil:'Profil & Akun'};
 
   (async () => {
+    // Jika tidak ada admin key di session, paksa login ulang
+    if (!ADMIN_KEY) {
+      Auth.clearSession();
+      window.location.href = '/login.html';
+      return;
+    }
     currentUser = await Auth.requireLogin(['admin']);
     if (!currentUser) return;
     const inisial = currentUser.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
