@@ -27,7 +27,8 @@ export default async function handler(req, res) {
       case 'list-users':    return await handleListUsers(req, res);
       case 'delete-user':   return await handleDeleteUser(req, res);
       case 'update-user':   return await handleUpdateUser(req, res);
-      case 'change-password': return await handleChangePassword(req, res);
+      case 'change-password':   return await handleChangePassword(req, res);
+      case 'list-mahasiswa':    return await handleListMahasiswa(req, res);
       default:
         return res.status(404).json({ error: `Action tidak dikenal: ${action}` });
     }
@@ -440,4 +441,33 @@ async function handleChangePassword(req, res) {
   }
 
   return res.status(200).json({ message: 'Password berhasil diubah.' });
+}
+
+// ─── LIST MAHASISWA (requires valid session token, any role) ──────────────────
+// Returns only mahasiswa, without passwords — safe for dosen/admin use
+
+async function handleListMahasiswa(req, res) {
+  const token = req.headers['x-session-token'];
+  if (!token) return res.status(401).json({ error: 'Token diperlukan.' });
+  const session = await verifyToken(token);
+  if (!session) return res.status(401).json({ error: 'Sesi tidak valid.' });
+
+  let result;
+  try {
+    result = await getUsers();
+  } catch (e) {
+    return res.status(500).json({ error: 'Gagal membaca data pengguna.' });
+  }
+
+  const mahasiswa = (result.data.users || [])
+    .filter(u => u.role === 'mahasiswa')
+    .map(u => ({
+      id:      u.id,
+      nim_nip: u.nim_nip,
+      nama:    u.nama,
+      jurusan: u.jurusan || null,
+      semester:u.semester || null,
+    }));
+
+  return res.status(200).json({ mahasiswa });
 }
