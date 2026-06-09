@@ -556,7 +556,9 @@
   async function loadTugas() {
     try {
       const res  = await fetch(`/api/tugas/list?dosen_id=${currentUser.id}`, {
-        method: 'GET', headers: authHeaders()
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({})
       });
       const data = await res.json();
       if (!res.ok) { showToast('Gagal memuat tugas: ' + (data.error||'')); return; }
@@ -772,14 +774,14 @@
 
   async function loadMahasiswaJurusan() {
     try {
-      const res  = await fetch('/api/auth/list-users', {
+      const res  = await fetch('/api/auth/list-mahasiswa', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-key': '' }, // public fallback
+        headers: authHeaders(),
+        body: JSON.stringify({})
       });
-      // Jika gagal (butuh admin key), fallback ke empty
-      if (!res.ok) { allMhsList = []; return; }
+      if (!res.ok) { allMhsList = []; renderBerandaMatkul(); renderMatkulGrid(); return; }
       const data = await res.json();
-      allMhsList = (data.users || []).filter(u => u.role === 'mahasiswa' && u.jurusan === currentUser.jurusan);
+      allMhsList = (data.mahasiswa || []).filter(m => m.jurusan === currentUser.jurusan);
       renderBerandaMatkul();
       renderMatkulGrid();
     } catch { allMhsList = []; renderBerandaMatkul(); renderMatkulGrid(); }
