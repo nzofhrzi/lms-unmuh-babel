@@ -34,6 +34,19 @@
         "created_at": "2026-06-10T04:12:56.055Z",
         "dihapus": false
       }
+    ],
+    "pendidikan_agama": [
+      {
+        "id": "msg_1781066743636_zsh41",
+        "sender_id": "usr_1781059243684",
+        "sender_nim": "250241115",
+        "sender_nama": "Novia Savira",
+        "role": "mahasiswa",
+        "matkul": "Pendidikan Agama",
+        "isi": "halo, demo",
+        "created_at": "2026-06-10T04:45:43.636Z",
+        "dihapus": false
+      }
     ]
   }
 }
