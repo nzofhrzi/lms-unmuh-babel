@@ -433,8 +433,11 @@
       </div>
       <button onclick="openModalPertemuan()" class="btn btn-primary flex-shrink-0">+ Buat Pertemuan</button>
     </div>
-    <div class="d-flex flex-wrap gap-2 mb-3" id="absensi-tabs">
-      <div class="text-muted small py-2">Memuat mata kuliah...</div>
+    <div class="mb-3" style="max-width:360px">
+      <label class="form-label fw-semibold small text-muted mb-1">Pilih Mata Kuliah</label>
+      <select class="form-select" id="absensi-tabs" onchange="switchAbsensiByMatkul(this.value)">
+        <option value="">Memuat mata kuliah...</option>
+      </select>
     </div>
     <div id="absensi-content">
       <div class="text-center text-muted py-5 small">Pilih mata kuliah di atas untuk melihat daftar pertemuan.</div>
@@ -655,7 +658,7 @@
           <div class="d-flex align-items-center gap-2 flex-wrap">
             ${statusPill(t.status)}
             <button onclick='editTugas(${JSON.stringify(t).replace(/'/g,"&#39;")})' class="btn btn-sm" style="background:var(--blue-pale);color:var(--blue);font-size:12px">Edit</button>
-            <button onclick="deleteTugas('${t.id}','${t.judul.replace(/'/g,"\\'")}')" class="btn btn-sm" style="background:#FEF2F2;color:#DC2626;font-size:12px">Hapus</button>
+            <button onclick="deleteTugas('${t.id}','${t.judul.replace(/'/g,&quot;\\\'&quot;)}')" class="btn btn-sm" style="background:#FEF2F2;color:#DC2626;font-size:12px">Hapus</button>
           </div>
         </div>
       </div>`).join('');
@@ -835,16 +838,16 @@
   // ─── ABSENSI ──────────────────────────────────────────────────────────────
 
   function renderAbsensiTabs() {
-    const tabs = document.getElementById('absensi-tabs');
+    const sel = document.getElementById('absensi-tabs');
     if (!myMatkul.length) {
-      tabs.innerHTML = '<div class="text-muted small py-2">Tidak ada mata kuliah.</div>';
+      sel.innerHTML = '<option value="">Tidak ada mata kuliah.</option>';
       return;
     }
-    tabs.innerHTML = myMatkul.map((mk, i) =>
-      `<button class="btn btn-sm rounded-pill${i===0?' btn-dark':' btn-outline-secondary'}" onclick="switchAbsensiByMatkul('${mk}',this)">${mk}</button>`
+    sel.innerHTML = myMatkul.map((mk, i) =>
+      `<option value="${mk}">${mk}</option>`
     ).join('');
     populatePtmMatkulDropdown();
-    if (myMatkul.length) switchAbsensiByMatkul(myMatkul[0]);
+    if (myMatkul.length) { sel.value = myMatkul[0]; switchAbsensiByMatkul(myMatkul[0]); }
   }
 
   function populatePtmMatkulDropdown() {
@@ -854,15 +857,10 @@
       myMatkul.map(mk => `<option value="${mk}">${mk}</option>`).join('');
   }
 
-  function switchAbsensiByMatkul(mk, btn) {
+  function switchAbsensiByMatkul(mk) {
+    if (!mk) return;
     activeAbsensiMatkul = mk;
-    document.querySelectorAll('#absensi-tabs .btn').forEach(b => {
-      b.className = b.className.replace('btn-dark','btn-outline-secondary');
-    });
-    if (btn) { btn.className = btn.className.replace('btn-outline-secondary','btn-dark'); }
-    else document.querySelectorAll('#absensi-tabs .btn').forEach(b => {
-      if(b.textContent.trim()===mk) b.className = b.className.replace('btn-outline-secondary','btn-dark');
-    });
+    document.getElementById('absensi-tabs').value = mk;
     loadPertemuan(mk);
   }
 
