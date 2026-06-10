@@ -869,12 +869,21 @@
       const tgl = new Date(ptm.tanggal).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
       const k   = ptm.kehadiran.find(x => x.mhs_id === currentUser.id || x.nim === currentUser.nim_nip);
       const statusBadge = k
-        ? `<span class="badge-${k.status}">${k.status==='hadir'?'✅ Hadir':k.status==='izin'?'📋 Izin':k.status==='tidak_hadir'?'❌ Tidak Hadir':'⏳ Menunggu Verifikasi'}</span>`
+        ? `<span class="badge-${k.status}">${k.status==='hadir'?'✅ Hadir':k.status==='izin'?'📋 Izin':k.status==='sakit'?'🤒 Sakit':k.status==='tidak_hadir'?'❌ Tidak Hadir':'⏳ Menunggu Verifikasi'}</span>`
         : (ptm.status === 'aktif'
             ? '<span class="badge-menunggu" style="background:#DBEAFE;color:var(--blue)">📥 Belum Absen</span>'
             : '<span style="font-size:12px;color:var(--gray-400)">— Tidak Hadir</span>');
 
-      const canSubmit = !k && ptm.status === 'aktif';
+      // Validasi: hanya bisa absen pada hari yang sama dengan tanggal pertemuan
+      const ptmDate = new Date(ptm.tanggal);
+      const today   = new Date();
+      const sameDay = ptmDate.getFullYear() === today.getFullYear() &&
+                      ptmDate.getMonth()    === today.getMonth()    &&
+                      ptmDate.getDate()     === today.getDate();
+      const canSubmit = !k && ptm.status === 'aktif' && sameDay;
+      const wrongDay  = !k && ptm.status === 'aktif' && !sameDay;
+      const ptmDateLabel = ptmDate.toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+
       return `<div class="ptm-card">
         <div class="ptm-card-header">
           <div>
@@ -886,27 +895,68 @@
           </div>
         </div>
         ${canSubmit ? `<div class="ptm-card-body">
-          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px">Tambahkan keterangan jika perlu, lalu klik <strong>Submit Kehadiran</strong>.</div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <input type="text" id="ket-${ptm.id}" placeholder="Keterangan (opsional)" style="flex:1;min-width:160px;padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:12px;font-family:Inter,sans-serif;outline:none"/>
-            <button onclick="submitHadir('${ptm.id}','${ptm.judul.replace(/'/g,'')}')" style="padding:8px 16px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">✋ Submit Hadir</button>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px">Pilih alasan kehadiran, lalu klik <strong>Submit</strong>.</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <label id="lbl-hadir-${ptm.id}" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--gray-200);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;background:white">
+                <input type="radio" name="alasan-${ptm.id}" value="hadir" onchange="updateAlasanStyle('${ptm.id}')" style="accent-color:var(--green)"/> ✅ Hadir
+              </label>
+              <label id="lbl-izin-${ptm.id}" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--gray-200);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;background:white">
+                <input type="radio" name="alasan-${ptm.id}" value="izin" onchange="updateAlasanStyle('${ptm.id}')"/> 📋 Izin
+              </label>
+              <label id="lbl-sakit-${ptm.id}" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--gray-200);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;background:white">
+                <input type="radio" name="alasan-${ptm.id}" value="sakit" onchange="updateAlasanStyle('${ptm.id}')"/> 🤒 Sakit
+              </label>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <input type="text" id="ket-${ptm.id}" placeholder="Keterangan tambahan (opsional)" style="flex:1;min-width:160px;padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:12px;font-family:Inter,sans-serif;outline:none"/>
+              <button onclick="submitHadir('${ptm.id}','${ptm.judul.replace(/'/g,'')}')" style="padding:8px 16px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">✋ Submit</button>
+            </div>
           </div>
+        </div>` : ''}
+        ${wrongDay ? `<div class="ptm-card-body" style="font-size:12px;color:var(--yellow);background:var(--yellow-pale);border-radius:8px;padding:10px 14px;border:1px solid #FDE68A">
+          ⏰ Absensi hanya bisa dilakukan pada hari pertemuan berlangsung (<strong>${ptmDateLabel}</strong>).
         </div>` : ''}
         ${k?.status === 'menunggu' ? `<div class="ptm-card-body" style="font-size:12px;color:var(--gray-500)">⏳ Kehadiran Anda sudah dikirim, menunggu verifikasi dosen.</div>` : ''}
       </div>`;
     }).join('');
   }
 
+  function updateAlasanStyle(ptmId) {
+    const selected = document.querySelector(`input[name="alasan-${ptmId}"]:checked`)?.value;
+    const colorMap = {
+      hadir: { border: 'var(--green)', bg: 'var(--green-pale)' },
+      izin:  { border: 'var(--yellow)', bg: 'var(--yellow-pale)' },
+      sakit: { border: '#7C3AED', bg: '#F5F3FF' },
+    };
+    ['hadir','izin','sakit'].forEach(v => {
+      const lbl = document.getElementById(`lbl-${v}-${ptmId}`);
+      if (!lbl) return;
+      if (v === selected) {
+        lbl.style.borderColor = colorMap[v].border;
+        lbl.style.background  = colorMap[v].bg;
+      } else {
+        lbl.style.borderColor = 'var(--gray-200)';
+        lbl.style.background  = 'white';
+      }
+    });
+  }
+
   async function submitHadir(pertemuanId, judul) {
+    const alasan     = document.querySelector(`input[name="alasan-${pertemuanId}"]:checked`)?.value;
     const keterangan = document.getElementById(`ket-${pertemuanId}`)?.value || '';
+    if (!alasan) {
+      showToast('Pilih alasan kehadiran terlebih dahulu!');
+      return;
+    }
     try {
       const res = await fetch('/api/absensi/submit-hadir', {
         method: 'POST', headers: authHeaders(),
-        body: JSON.stringify({ pertemuan_id: pertemuanId, keterangan, nama: currentUser.nama })
+        body: JSON.stringify({ pertemuan_id: pertemuanId, alasan_tipe: alasan, keterangan, nama: currentUser.nama })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Gagal submit absensi.');
-      showToast(`Absensi untuk "${judul}" berhasil dikirim!`);
+      showToast(`Absensi "${judul}" berhasil dikirim!`);
       loadAbsensiMhs(activeAbsMatkul);
     } catch(e) {
       showToast(e.message);
