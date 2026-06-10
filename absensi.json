@@ -108,6 +108,17 @@
       "status": "aktif",
       "created_at": "2026-06-10T04:43:35.174Z",
       "kehadiran": []
+    },
+    {
+      "id": "abs_1781070460894",
+      "matkul": "Ekonomi Syariah",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-10T05:47",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T05:47:40.894Z",
+      "kehadiran": []
     }
   ]
 }
