@@ -604,6 +604,18 @@
       "created_at": "2026-06-10T05:23:04.562667Z",
       "jurusan": "Ilmu Hukum",
       "semester": 1
+    },
+    {
+      "id": "usr_1781069582657",
+      "nim_nip": "20230101",
+      "nama": "Fathur Rahman, M. Pd,",
+      "password": "1c1c01889750ca05c4717a2e663c218978ec274d679ceadcb492ecb9101a2756",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:33:02.657Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "mata_kuliah": [
+        "Ekonomi Bisnis"
+      ]
     }
   ]
 }
