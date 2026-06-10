@@ -46,6 +46,17 @@
         "isi": "halo, demo",
         "created_at": "2026-06-10T04:45:43.636Z",
         "dihapus": false
+      },
+      {
+        "id": "msg_1781066792919_d3qal",
+        "sender_id": "usr_1781059243684",
+        "sender_nim": "250241115",
+        "sender_nama": "Novia Savira",
+        "role": "mahasiswa",
+        "matkul": "Pendidikan Agama",
+        "isi": "AB bro",
+        "created_at": "2026-06-10T04:46:32.919Z",
+        "dihapus": false
       }
     ]
   }
