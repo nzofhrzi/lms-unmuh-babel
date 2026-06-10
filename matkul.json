@@ -41,6 +41,1206 @@
       "dosen_id": null,
       "dosen_nama": "Said Akhmad Maulana, M. Pd.",
       "created_at": "2026-06-10T05:00:01.208Z"
+    },
+    {
+      "id": "mk_1781187165986",
+      "nama": "Pengantar Ekonomi",
+      "kode": "EKM2601",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781691493338",
+      "nama": "Mikro Ekonomi",
+      "kode": "EKM2602",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781268384575",
+      "nama": "Makro Ekonomi",
+      "kode": "EKM2603",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781917647772",
+      "nama": "Ekonomi Pembangunan",
+      "kode": "EKM2604",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781960698041",
+      "nama": "Ekonomi Syariah",
+      "kode": "EKM2605",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781335828274",
+      "nama": "Manajemen Keuangan",
+      "kode": "EKM2606",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781148164669",
+      "nama": "Statistik Ekonomi",
+      "kode": "EKM2607",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781202175158",
+      "nama": "Ekonomi Internasional",
+      "kode": "EKM2608",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781473596217",
+      "nama": "Kewirausahaan",
+      "kode": "EKM2609",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781089444418",
+      "nama": "Akuntansi Dasar",
+      "kode": "EKM2610",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781517681894",
+      "nama": "Perpajakan",
+      "kode": "EKM2611",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781909723618",
+      "nama": "Manajemen SDM",
+      "kode": "EKM2612",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781933221428",
+      "nama": "Pendidikan Ekonomi",
+      "kode": "EKM2613",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781803391399",
+      "nama": "Ekonomi Kreatif",
+      "kode": "EKM2614",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781194389027",
+      "nama": "Praktik Bisnis",
+      "kode": "EKM2615",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Fajar Ramadhan, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781106225198",
+      "nama": "Basic Grammar",
+      "kode": "ENG2601",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781703482957",
+      "nama": "Speaking",
+      "kode": "ENG2602",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781246259445",
+      "nama": "Listening",
+      "kode": "ENG2603",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781996968306",
+      "nama": "Reading Comprehension",
+      "kode": "ENG2604",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781822758138",
+      "nama": "Writing",
+      "kode": "ENG2605",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781393450389",
+      "nama": "Phonology",
+      "kode": "ENG2606",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781036579139",
+      "nama": "Translation",
+      "kode": "ENG2607",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781017016485",
+      "nama": "Academic Writing",
+      "kode": "ENG2608",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781859688547",
+      "nama": "English Literature",
+      "kode": "ENG2609",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781502617751",
+      "nama": "Linguistics",
+      "kode": "ENG2610",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781107653985",
+      "nama": "Public Speaking",
+      "kode": "ENG2611",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781218963897",
+      "nama": "TOEFL Preparation",
+      "kode": "ENG2612",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781970800687",
+      "nama": "English for Business",
+      "kode": "ENG2613",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781317897006",
+      "nama": "Syntax",
+      "kode": "ENG2614",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781023498487",
+      "nama": "Micro Teaching",
+      "kode": "ENG2615",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Mega Sari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781264048938",
+      "nama": "Kalkulus I",
+      "kode": "MTK2601",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781403036397",
+      "nama": "Kalkulus II",
+      "kode": "MTK2602",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781966231916",
+      "nama": "Aljabar Linear",
+      "kode": "MTK2603",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781018638271",
+      "nama": "Statistika",
+      "kode": "MTK2604",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781459847963",
+      "nama": "Geometri",
+      "kode": "MTK2605",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781741864093",
+      "nama": "Matematika Diskrit",
+      "kode": "MTK2606",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781710918113",
+      "nama": "Persamaan Diferensial",
+      "kode": "MTK2607",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781708609319",
+      "nama": "Trigonometri",
+      "kode": "MTK2608",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781648465515",
+      "nama": "Metode Numerik",
+      "kode": "MTK2609",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781074242180",
+      "nama": "Teori Bilangan",
+      "kode": "MTK2610",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781106083797",
+      "nama": "Analisis Real",
+      "kode": "MTK2611",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781129458971",
+      "nama": "Kapita Selekta Matematika",
+      "kode": "MTK2612",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781992415324",
+      "nama": "Evaluasi Pembelajaran",
+      "kode": "MTK2613",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781996175869",
+      "nama": "Media Pembelajaran",
+      "kode": "MTK2614",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781044086979",
+      "nama": "Micro Teaching",
+      "kode": "MTK2615",
+      "jurusan": "Pendidikan Matematika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Citra Lestari, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781420997569",
+      "nama": "Dasar Pemrograman",
+      "kode": "INF2601",
+      "jurusan": "Teknik Informatika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781552600421",
+      "nama": "Algoritma dan Struktur Data",
+      "kode": "INF2602",
+      "jurusan": "Teknik Informatika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781931137843",
+      "nama": "Basis Data",
+      "kode": "INF2603",
+      "jurusan": "Teknik Informatika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781325228237",
+      "nama": "Pemrograman Web",
+      "kode": "INF2604",
+      "jurusan": "Teknik Informatika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781386495336",
+      "nama": "Jaringan Komputer",
+      "kode": "INF2605",
+      "jurusan": "Teknik Informatika",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781700895285",
+      "nama": "Sistem Operasi",
+      "kode": "INF2606",
+      "jurusan": "Teknik Informatika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781179285264",
+      "nama": "Kecerdasan Buatan",
+      "kode": "INF2607",
+      "jurusan": "Teknik Informatika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781500352879",
+      "nama": "Pemrograman Mobile",
+      "kode": "INF2608",
+      "jurusan": "Teknik Informatika",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781081765920",
+      "nama": "Rekayasa Perangkat Lunak",
+      "kode": "INF2609",
+      "jurusan": "Teknik Informatika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781946214979",
+      "nama": "Cloud Computing",
+      "kode": "INF2610",
+      "jurusan": "Teknik Informatika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781516967841",
+      "nama": "Keamanan Siber",
+      "kode": "INF2611",
+      "jurusan": "Teknik Informatika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781955486231",
+      "nama": "Data Mining",
+      "kode": "INF2612",
+      "jurusan": "Teknik Informatika",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781039857448",
+      "nama": "Machine Learning",
+      "kode": "INF2613",
+      "jurusan": "Teknik Informatika",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781320121357",
+      "nama": "UI UX Design",
+      "kode": "INF2614",
+      "jurusan": "Teknik Informatika",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781862156503",
+      "nama": "Proyek Informatika",
+      "kode": "INF2615",
+      "jurusan": "Teknik Informatika",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781821115835",
+      "nama": "Pengantar Sistem Informasi",
+      "kode": "SIF2601",
+      "jurusan": "Sistem Informasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781851181960",
+      "nama": "Analisis Sistem",
+      "kode": "SIF2602",
+      "jurusan": "Sistem Informasi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781526315523",
+      "nama": "Manajemen Basis Data",
+      "kode": "SIF2603",
+      "jurusan": "Sistem Informasi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781696868443",
+      "nama": "ERP",
+      "kode": "SIF2604",
+      "jurusan": "Sistem Informasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781385545959",
+      "nama": "E-Commerce",
+      "kode": "SIF2605",
+      "jurusan": "Sistem Informasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781145880605",
+      "nama": "Data Warehouse",
+      "kode": "SIF2606",
+      "jurusan": "Sistem Informasi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781494575346",
+      "nama": "Audit Sistem Informasi",
+      "kode": "SIF2607",
+      "jurusan": "Sistem Informasi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781146182730",
+      "nama": "Business Intelligence",
+      "kode": "SIF2608",
+      "jurusan": "Sistem Informasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781673451218",
+      "nama": "Pemrograman Bisnis",
+      "kode": "SIF2609",
+      "jurusan": "Sistem Informasi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781918227000",
+      "nama": "UI UX",
+      "kode": "SIF2610",
+      "jurusan": "Sistem Informasi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781866832015",
+      "nama": "Manajemen Proyek TI",
+      "kode": "SIF2611",
+      "jurusan": "Sistem Informasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781062777013",
+      "nama": "Keamanan Informasi",
+      "kode": "SIF2612",
+      "jurusan": "Sistem Informasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781887263989",
+      "nama": "Big Data",
+      "kode": "SIF2613",
+      "jurusan": "Sistem Informasi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781660656727",
+      "nama": "Cloud System",
+      "kode": "SIF2614",
+      "jurusan": "Sistem Informasi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781266432547",
+      "nama": "Digital Business",
+      "kode": "SIF2615",
+      "jurusan": "Sistem Informasi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Karin Amelia, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781158711513",
+      "nama": "Pengantar Manajemen",
+      "kode": "MJN2601",
+      "jurusan": "Manajemen",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781698238206",
+      "nama": "Manajemen Pemasaran",
+      "kode": "MJN2602",
+      "jurusan": "Manajemen",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781585981162",
+      "nama": "Manajemen SDM",
+      "kode": "MJN2603",
+      "jurusan": "Manajemen",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781263792214",
+      "nama": "Manajemen Operasional",
+      "kode": "MJN2604",
+      "jurusan": "Manajemen",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781855061203",
+      "nama": "Perilaku Organisasi",
+      "kode": "MJN2605",
+      "jurusan": "Manajemen",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781101424566",
+      "nama": "Kewirausahaan",
+      "kode": "MJN2606",
+      "jurusan": "Manajemen",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781642306154",
+      "nama": "Manajemen Strategi",
+      "kode": "MJN2607",
+      "jurusan": "Manajemen",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781876016525",
+      "nama": "Manajemen Risiko",
+      "kode": "MJN2608",
+      "jurusan": "Manajemen",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781246597446",
+      "nama": "Komunikasi Bisnis",
+      "kode": "MJN2609",
+      "jurusan": "Manajemen",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781992350160",
+      "nama": "Ekonomi Bisnis",
+      "kode": "MJN2610",
+      "jurusan": "Manajemen",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781972664906",
+      "nama": "Bisnis Digital",
+      "kode": "MJN2611",
+      "jurusan": "Manajemen",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781128746147",
+      "nama": "Leadership",
+      "kode": "MJN2612",
+      "jurusan": "Manajemen",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781997772911",
+      "nama": "Manajemen Keuangan",
+      "kode": "MJN2613",
+      "jurusan": "Manajemen",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781423899623",
+      "nama": "Etika Bisnis",
+      "kode": "MJN2614",
+      "jurusan": "Manajemen",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781694801882",
+      "nama": "Praktik Manajemen",
+      "kode": "MJN2615",
+      "jurusan": "Manajemen",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Intan Permata, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781817081849",
+      "nama": "Akuntansi Dasar",
+      "kode": "AKN2601",
+      "jurusan": "Akuntansi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781876706349",
+      "nama": "Akuntansi Keuangan",
+      "kode": "AKN2602",
+      "jurusan": "Akuntansi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781625559069",
+      "nama": "Akuntansi Biaya",
+      "kode": "AKN2603",
+      "jurusan": "Akuntansi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781229258429",
+      "nama": "Audit",
+      "kode": "AKN2604",
+      "jurusan": "Akuntansi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781684122844",
+      "nama": "Perpajakan",
+      "kode": "AKN2605",
+      "jurusan": "Akuntansi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781611905780",
+      "nama": "Sistem Informasi Akuntansi",
+      "kode": "AKN2606",
+      "jurusan": "Akuntansi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781751170937",
+      "nama": "Akuntansi Syariah",
+      "kode": "AKN2607",
+      "jurusan": "Akuntansi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781172313595",
+      "nama": "Akuntansi Manajemen",
+      "kode": "AKN2608",
+      "jurusan": "Akuntansi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781154118074",
+      "nama": "Analisis Laporan Keuangan",
+      "kode": "AKN2609",
+      "jurusan": "Akuntansi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781523821506",
+      "nama": "Akuntansi Sektor Publik",
+      "kode": "AKN2610",
+      "jurusan": "Akuntansi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781044468272",
+      "nama": "Pasar Modal",
+      "kode": "AKN2611",
+      "jurusan": "Akuntansi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781741482456",
+      "nama": "Etika Profesi",
+      "kode": "AKN2612",
+      "jurusan": "Akuntansi",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781842146599",
+      "nama": "Akuntansi Lanjutan",
+      "kode": "AKN2613",
+      "jurusan": "Akuntansi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781573361307",
+      "nama": "Manajemen Keuangan",
+      "kode": "AKN2614",
+      "jurusan": "Akuntansi",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781997564901",
+      "nama": "Praktik Audit",
+      "kode": "AKN2615",
+      "jurusan": "Akuntansi",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Budi Santoso, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781320634658",
+      "nama": "Pengantar Ilmu Hukum",
+      "kode": "HKM2601",
+      "jurusan": "Ilmu Hukum",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781510754491",
+      "nama": "Hukum Pidana",
+      "kode": "HKM2602",
+      "jurusan": "Ilmu Hukum",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781560129395",
+      "nama": "Hukum Perdata",
+      "kode": "HKM2603",
+      "jurusan": "Ilmu Hukum",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781544420147",
+      "nama": "Hukum Tata Negara",
+      "kode": "HKM2604",
+      "jurusan": "Ilmu Hukum",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781731668053",
+      "nama": "Hukum Internasional",
+      "kode": "HKM2605",
+      "jurusan": "Ilmu Hukum",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781947182871",
+      "nama": "Hukum Administrasi Negara",
+      "kode": "HKM2606",
+      "jurusan": "Ilmu Hukum",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781292206225",
+      "nama": "Kriminologi",
+      "kode": "HKM2607",
+      "jurusan": "Ilmu Hukum",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781145632657",
+      "nama": "Hukum Bisnis",
+      "kode": "HKM2608",
+      "jurusan": "Ilmu Hukum",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781204011384",
+      "nama": "Hukum Pajak",
+      "kode": "HKM2609",
+      "jurusan": "Ilmu Hukum",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781028390868",
+      "nama": "Hukum Lingkungan",
+      "kode": "HKM2610",
+      "jurusan": "Ilmu Hukum",
+      "sks": 3,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781943472952",
+      "nama": "Hukum HAM",
+      "kode": "HKM2611",
+      "jurusan": "Ilmu Hukum",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781317177279",
+      "nama": "Etika Profesi Hukum",
+      "kode": "HKM2612",
+      "jurusan": "Ilmu Hukum",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781640824035",
+      "nama": "Advokasi",
+      "kode": "HKM2613",
+      "jurusan": "Ilmu Hukum",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781951998026",
+      "nama": "Hukum Acara",
+      "kode": "HKM2614",
+      "jurusan": "Ilmu Hukum",
+      "sks": 4,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "mk_1781840242677",
+      "nama": "Praktik Peradilan",
+      "kode": "HKM2615",
+      "jurusan": "Ilmu Hukum",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Gilang Pratama, M. Pd.",
+      "created_at": "2026-06-10T05:23:04.562667Z"
     }
   ]
 }
