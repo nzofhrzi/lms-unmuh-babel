@@ -130,6 +130,17 @@
           "verified_at": "2026-06-10T05:49:37.251Z"
         }
       ]
+    },
+    {
+      "id": "abs_1781073421265",
+      "matkul": "Ekonomi Syariah",
+      "judul": "Pertemuan 2",
+      "tanggal": "2026-06-17T06:36",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T06:37:01.265Z",
+      "kehadiran": []
     }
   ]
 }
