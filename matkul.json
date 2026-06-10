@@ -24,12 +24,13 @@
     {
       "id": "mk_1781059437112",
       "nama": "Pendidikan Agama",
-      "kode": "PGSD26001",
+      "kode": "GSD12211",
       "jurusan": "Perguruan Sekolah Dasar",
       "sks": 2,
       "dosen_id": null,
-      "dosen_nama": "Yeyen, M. Pd.",
-      "created_at": "2026-06-10T02:43:57.112Z"
+      "dosen_nama": "Rifki Hanif Setiawan, M. Pd.",
+      "created_at": "2026-06-10T02:43:57.112Z",
+      "updated_at": "2026-06-10T05:01:00.895Z"
     },
     {
       "id": "mk_1781067601208",
