@@ -90,6 +90,16 @@
       "mata_kuliah": [
         "Pendidikan Agama"
       ]
+    },
+    {
+      "id": "usr_1781067457861",
+      "nim_nip": "250141200",
+      "nama": "Ilham",
+      "password": "631294283db05796ee3497ed02be7f4926f16f5b49f3a09e687d99476a353a06",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T04:57:37.861Z",
+      "jurusan": "Perguruan Sekolah Dasar",
+      "semester": 2
     }
   ]
 }
