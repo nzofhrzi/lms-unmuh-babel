@@ -76,6 +76,534 @@
       "created_at": "2026-06-10T04:57:37.861Z",
       "jurusan": "Perguruan Sekolah Dasar",
       "semester": 2
+    },
+    {
+      "id": "usr_1781553816595",
+      "nim_nip": "20226799",
+      "nama": "Fajar Ramadhan, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "mata_kuliah": [
+        "Pengantar Ekonomi",
+        "Mikro Ekonomi",
+        "Makro Ekonomi",
+        "Ekonomi Pembangunan",
+        "Ekonomi Syariah"
+      ]
+    },
+    {
+      "id": "usr_1781834130391",
+      "nim_nip": "250241664",
+      "nama": "Vina Oktavia",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "semester": 1
+    },
+    {
+      "id": "usr_1781148788762",
+      "nim_nip": "250241897",
+      "nama": "Vina Oktavia",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "semester": 3
+    },
+    {
+      "id": "usr_1781654218371",
+      "nim_nip": "250241223",
+      "nama": "Vina Oktavia",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "semester": 2
+    },
+    {
+      "id": "usr_1781243621607",
+      "nim_nip": "250241679",
+      "nama": "Nabila Putri",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "semester": 2
+    },
+    {
+      "id": "usr_1781618284940",
+      "nim_nip": "250241785",
+      "nama": "Iqbal Ramadhan",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "semester": 6
+    },
+    {
+      "id": "usr_1781562492312",
+      "nim_nip": "20228154",
+      "nama": "Mega Sari, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "mata_kuliah": [
+        "Basic Grammar",
+        "Speaking",
+        "Listening",
+        "Reading Comprehension",
+        "Writing"
+      ]
+    },
+    {
+      "id": "usr_1781129480322",
+      "nim_nip": "250241337",
+      "nama": "Iqbal Ramadhan",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "semester": 3
+    },
+    {
+      "id": "usr_1781696550853",
+      "nim_nip": "250241362",
+      "nama": "Rizky Pratama",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "semester": 7
+    },
+    {
+      "id": "usr_1781000802724",
+      "nim_nip": "250241587",
+      "nama": "Vina Oktavia",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "semester": 2
+    },
+    {
+      "id": "usr_1781879853090",
+      "nim_nip": "250241976",
+      "nama": "Nabila Putri",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "semester": 8
+    },
+    {
+      "id": "usr_1781736499247",
+      "nim_nip": "250241157",
+      "nama": "Yoga Prasetyo",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Bahasa Inggris",
+      "semester": 6
+    },
+    {
+      "id": "usr_1781002119004",
+      "nim_nip": "20228415",
+      "nama": "Citra Lestari, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Matematika",
+      "mata_kuliah": [
+        "Kalkulus I",
+        "Kalkulus II",
+        "Aljabar Linear",
+        "Statistika",
+        "Geometri"
+      ]
+    },
+    {
+      "id": "usr_1781739101790",
+      "nim_nip": "250241384",
+      "nama": "Farhan Akbar",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Matematika",
+      "semester": 4
+    },
+    {
+      "id": "usr_1781450646120",
+      "nim_nip": "250241385",
+      "nama": "Farhan Akbar",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Matematika",
+      "semester": 6
+    },
+    {
+      "id": "usr_1781165936312",
+      "nim_nip": "250241479",
+      "nama": "Vina Oktavia",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Matematika",
+      "semester": 4
+    },
+    {
+      "id": "usr_1781295402028",
+      "nim_nip": "250241484",
+      "nama": "Rafi Maulana",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Matematika",
+      "semester": 1
+    },
+    {
+      "id": "usr_1781475077985",
+      "nim_nip": "250241501",
+      "nama": "Salsa Azzahra",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Pendidikan Matematika",
+      "semester": 5
+    },
+    {
+      "id": "usr_1781883732733",
+      "nim_nip": "20228668",
+      "nama": "Gilang Pratama, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Teknik Informatika",
+      "mata_kuliah": [
+        "Dasar Pemrograman",
+        "Algoritma dan Struktur Data",
+        "Basis Data",
+        "Pemrograman Web",
+        "Jaringan Komputer"
+      ]
+    },
+    {
+      "id": "usr_1781273367957",
+      "nim_nip": "250241410",
+      "nama": "Iqbal Ramadhan",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Teknik Informatika",
+      "semester": 2
+    },
+    {
+      "id": "usr_1781150018578",
+      "nim_nip": "250241182",
+      "nama": "Salsa Azzahra",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Teknik Informatika",
+      "semester": 2
+    },
+    {
+      "id": "usr_1781613105296",
+      "nim_nip": "250241632",
+      "nama": "Putri Maharani",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Teknik Informatika",
+      "semester": 5
+    },
+    {
+      "id": "usr_1781218302444",
+      "nim_nip": "250241736",
+      "nama": "Iqbal Ramadhan",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Teknik Informatika",
+      "semester": 5
+    },
+    {
+      "id": "usr_1781839195933",
+      "nim_nip": "250241282",
+      "nama": "Nabila Putri",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Teknik Informatika",
+      "semester": 1
+    },
+    {
+      "id": "usr_1781262562934",
+      "nim_nip": "20220340",
+      "nama": "Karin Amelia, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Sistem Informasi",
+      "mata_kuliah": [
+        "Pengantar Sistem Informasi",
+        "Analisis Sistem",
+        "Manajemen Basis Data",
+        "ERP",
+        "E-Commerce"
+      ]
+    },
+    {
+      "id": "usr_1781872808907",
+      "nim_nip": "250241461",
+      "nama": "Yoga Prasetyo",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Sistem Informasi",
+      "semester": 5
+    },
+    {
+      "id": "usr_1781430625477",
+      "nim_nip": "250241822",
+      "nama": "Putri Maharani",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Sistem Informasi",
+      "semester": 4
+    },
+    {
+      "id": "usr_1781974926111",
+      "nim_nip": "250241417",
+      "nama": "Nanda Febriani",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Sistem Informasi",
+      "semester": 7
+    },
+    {
+      "id": "usr_1781744809352",
+      "nim_nip": "250241558",
+      "nama": "Nanda Febriani",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Sistem Informasi",
+      "semester": 8
+    },
+    {
+      "id": "usr_1781544910558",
+      "nim_nip": "250241551",
+      "nama": "Vina Oktavia",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Sistem Informasi",
+      "semester": 4
+    },
+    {
+      "id": "usr_1781665625292",
+      "nim_nip": "20222122",
+      "nama": "Intan Permata, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Manajemen",
+      "mata_kuliah": [
+        "Pengantar Manajemen",
+        "Manajemen Pemasaran",
+        "Manajemen SDM",
+        "Manajemen Operasional",
+        "Perilaku Organisasi"
+      ]
+    },
+    {
+      "id": "usr_1781180649114",
+      "nim_nip": "250241600",
+      "nama": "Farhan Akbar",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Manajemen",
+      "semester": 6
+    },
+    {
+      "id": "usr_1781863952175",
+      "nim_nip": "250241664",
+      "nama": "Iqbal Ramadhan",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Manajemen",
+      "semester": 6
+    },
+    {
+      "id": "usr_1781187646008",
+      "nim_nip": "250241628",
+      "nama": "Rafi Maulana",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Manajemen",
+      "semester": 3
+    },
+    {
+      "id": "usr_1781949005082",
+      "nim_nip": "250241224",
+      "nama": "Rafi Maulana",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Manajemen",
+      "semester": 1
+    },
+    {
+      "id": "usr_1781978569620",
+      "nim_nip": "250241182",
+      "nama": "Dimas Saputra",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Manajemen",
+      "semester": 8
+    },
+    {
+      "id": "usr_1781982857705",
+      "nim_nip": "20222282",
+      "nama": "Budi Santoso, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Akuntansi",
+      "mata_kuliah": [
+        "Akuntansi Dasar",
+        "Akuntansi Keuangan",
+        "Akuntansi Biaya",
+        "Audit",
+        "Perpajakan"
+      ]
+    },
+    {
+      "id": "usr_1781926763310",
+      "nim_nip": "250241663",
+      "nama": "Salsa Azzahra",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Akuntansi",
+      "semester": 3
+    },
+    {
+      "id": "usr_1781143704175",
+      "nim_nip": "250241730",
+      "nama": "Nabila Putri",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Akuntansi",
+      "semester": 3
+    },
+    {
+      "id": "usr_1781631463846",
+      "nim_nip": "250241196",
+      "nama": "Nanda Febriani",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Akuntansi",
+      "semester": 6
+    },
+    {
+      "id": "usr_1781793388953",
+      "nim_nip": "250241772",
+      "nama": "Farhan Akbar",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Akuntansi",
+      "semester": 5
+    },
+    {
+      "id": "usr_1781725965294",
+      "nim_nip": "250241393",
+      "nama": "Iqbal Ramadhan",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Akuntansi",
+      "semester": 7
+    },
+    {
+      "id": "usr_1781882478783",
+      "nim_nip": "20223409",
+      "nama": "Gilang Pratama, M. Pd.",
+      "password": "6a43336baf50915c0042ba1ccecc7c75072763569bf8ad735bd7f6b4419ceb67",
+      "role": "dosen",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Ilmu Hukum",
+      "mata_kuliah": [
+        "Pengantar Ilmu Hukum",
+        "Hukum Pidana",
+        "Hukum Perdata",
+        "Hukum Tata Negara",
+        "Hukum Internasional"
+      ]
+    },
+    {
+      "id": "usr_1781475779793",
+      "nim_nip": "250241727",
+      "nama": "Nanda Febriani",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Ilmu Hukum",
+      "semester": 2
+    },
+    {
+      "id": "usr_1781639514811",
+      "nim_nip": "250241755",
+      "nama": "Salsa Azzahra",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Ilmu Hukum",
+      "semester": 3
+    },
+    {
+      "id": "usr_1781439968246",
+      "nim_nip": "250241678",
+      "nama": "Vina Oktavia",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Ilmu Hukum",
+      "semester": 3
+    },
+    {
+      "id": "usr_1781477329901",
+      "nim_nip": "250241273",
+      "nama": "Nanda Febriani",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Ilmu Hukum",
+      "semester": 5
+    },
+    {
+      "id": "usr_1781681528344",
+      "nim_nip": "250241645",
+      "nama": "Yoga Prasetyo",
+      "password": "9464fb01de62761d5691f5eb89e80aa1e40a84bea6ee5d2ab5ca90efd9776b47",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:23:04.562667Z",
+      "jurusan": "Ilmu Hukum",
+      "semester": 1
     }
   ]
 }
