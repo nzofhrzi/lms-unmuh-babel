@@ -58,6 +58,19 @@
         "created_at": "2026-06-10T04:46:32.919Z",
         "dihapus": false
       }
+    ],
+    "ekonomi_bisnis": [
+      {
+        "id": "msg_1781069749231_sfr7k",
+        "sender_id": "usr_1781069582657",
+        "sender_nim": "20230101",
+        "sender_nama": "Fathur Rahman, M. Pd,",
+        "role": "dosen",
+        "matkul": "Ekonomi Bisnis",
+        "isi": "hai",
+        "created_at": "2026-06-10T05:35:49.231Z",
+        "dihapus": false
+      }
     ]
   }
 }
