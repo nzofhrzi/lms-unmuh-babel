@@ -110,28 +110,6 @@
       "kehadiran": []
     },
     {
-      "id": "abs_1781069714965",
-      "matkul": "Ekonomi Bisnis",
-      "judul": "Pertemuan 1",
-      "tanggal": "2026-06-10T05:34",
-      "keterangan": "CBT Test",
-      "dosen_id": "usr_1781069582657",
-      "status": "aktif",
-      "created_at": "2026-06-10T05:35:14.965Z",
-      "kehadiran": [
-        {
-          "mhs_id": "usr_1781834130391",
-          "nim": "usr_1781834130391",
-          "nama": "Vina Oktavia",
-          "status": "hadir",
-          "keterangan": "",
-          "keterangan_dosen": "",
-          "submitted_at": null,
-          "verified_at": "2026-06-10T05:35:30.708Z"
-        }
-      ]
-    },
-    {
       "id": "abs_1781070230446",
       "matkul": "Mikro Ekonomi",
       "judul": "Pertemuan 1",
