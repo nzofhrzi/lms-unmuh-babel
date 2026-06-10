@@ -556,9 +556,7 @@
   async function loadTugas() {
     try {
       const res  = await fetch(`/api/tugas/list?dosen_id=${currentUser.id}`, {
-        method: 'POST',
         headers: authHeaders(),
-        body: JSON.stringify({})
       });
       const data = await res.json();
       if (!res.ok) { showToast('Gagal memuat tugas: ' + (data.error||'')); return; }
