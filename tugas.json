@@ -60,6 +60,16 @@
       "dosen_id": "usr_1781069582657",
       "status": "aktif",
       "created_at": "2026-06-10T05:36:30.339Z"
+    },
+    {
+      "id": "tgs_1781070401424",
+      "judul": "Tugas 1 - Bikin kelompok & Buatkan makalah PPT",
+      "deskripsi": "kkhvg",
+      "matkul": "Mikro Ekonomi",
+      "deadline": "2026-06-13T12:46",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T05:46:41.424Z"
     }
   ]
 }
