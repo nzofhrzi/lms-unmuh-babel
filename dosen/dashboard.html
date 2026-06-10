@@ -945,16 +945,20 @@
   function renderKehadiranTable(ptm) {
     const mhsJurusan = allMhsJurusan;
     if (!mhsJurusan.length) return '<div style="font-size:13px;color:var(--gray-500)">Belum ada mahasiswa di jurusan ini.</div>';
+    const alasanLabel = { hadir:'✅ Hadir', izin:'📋 Izin', sakit:'🤒 Sakit' };
     const rows = mhsJurusan.map((m, i) => {
       const k = ptm.kehadiran.find(x => x.mhs_id === m.id || x.nim === m.nim_nip);
       const statusHtml = k
-        ? `<span class="status-pill ${k.status}">${k.status === 'menunggu' ? '⏳ Menunggu' : k.status === 'hadir' ? '✅ Hadir' : k.status === 'izin' ? '📋 Izin' : '❌ Tidak Hadir'}</span>`
+        ? `<span class="status-pill ${k.status}">${k.status === 'menunggu' ? '⏳ Menunggu' : k.status === 'hadir' ? '✅ Hadir' : k.status === 'izin' ? '📋 Izin' : k.status === 'sakit' ? '🤒 Sakit' : '❌ Tidak Hadir'}</span>`
         : '<span style="font-size:12px;color:var(--gray-400)">—</span>';
+      const alasanTag = k?.alasan_tipe
+        ? `<span style="font-size:10px;background:var(--blue-pale);color:var(--blue);padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">${alasanLabel[k.alasan_tipe]||k.alasan_tipe}</span>`
+        : '';
       return `<tr>
         <td style="padding:8px 12px;font-size:12px">${i+1}</td>
         <td style="padding:8px 12px;font-family:monospace;font-size:11px">${m.nim_nip}</td>
         <td style="padding:8px 12px;font-size:12px">${m.nama}</td>
-        <td style="padding:8px 12px">${statusHtml}</td>
+        <td style="padding:8px 12px">${statusHtml}${alasanTag}</td>
         <td style="padding:8px 12px;font-size:12px;color:var(--gray-500)">${k?.keterangan||'—'}</td>
       </tr>`;
     }).join('');
@@ -1040,17 +1044,23 @@
       document.getElementById('verif-list').innerHTML = '<div style="font-size:13px;color:var(--gray-500);text-align:center;padding:24px">Belum ada mahasiswa di jurusan ini.</div>';
       return;
     }
+    const alasanLabel = { hadir:'✅ Hadir', izin:'📋 Izin', sakit:'🤒 Sakit' };
     const rows = mhsJurusan.map((m, i) => {
       const k = ptm.kehadiran.find(x => x.mhs_id === m.id || x.nim === m.nim_nip);
       const curStatus = k?.status || '';
-      const options = ['hadir','izin','tidak_hadir'].map(s =>
-        `<option value="${s}" ${curStatus===s?'selected':''}>${s==='hadir'?'✅ Hadir':s==='izin'?'📋 Izin':'❌ Tidak Hadir'}</option>`
+      const options = ['hadir','izin','sakit','tidak_hadir'].map(s =>
+        `<option value="${s}" ${curStatus===s?'selected':''}>${s==='hadir'?'✅ Hadir':s==='izin'?'📋 Izin':s==='sakit'?'🤒 Sakit':'❌ Tidak Hadir'}</option>`
       ).join('');
-      const menungguBadge = curStatus === 'menunggu' ? ' <span style="font-size:10px;color:var(--gold);font-weight:700">⏳ mengajukan</span>' : '';
+      const alasanTag = k?.alasan_tipe
+        ? `<span style="font-size:10px;background:var(--blue-pale);color:var(--blue);padding:2px 6px;border-radius:8px;font-weight:700;white-space:nowrap"> ${alasanLabel[k.alasan_tipe]||k.alasan_tipe}</span>`
+        : '';
+      const menungguBadge = curStatus === 'menunggu'
+        ? ` <span style="font-size:10px;color:var(--gold);font-weight:700">⏳ menunggu${k?.alasan_tipe ? '' : ''}</span>`
+        : '';
       return `<tr>
         <td style="padding:8px 12px;font-size:12px">${i+1}</td>
         <td style="padding:8px 12px;font-family:monospace;font-size:11px">${m.nim_nip}</td>
-        <td style="padding:8px 12px;font-size:12px">${m.nama}${menungguBadge}</td>
+        <td style="padding:8px 12px;font-size:12px">${m.nama}${alasanTag}${menungguBadge}</td>
         <td style="padding:8px 12px">
           <select onchange="updateVerifStatus('${ptm.id}','${m.id}','${m.nim_nip}','${m.nama.replace(/'/g,'')}',this.value)" style="padding:5px 8px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:12px;font-family:Inter,sans-serif;cursor:pointer">
             <option value="">-- pilih --</option>
@@ -1061,7 +1071,7 @@
       </tr>`;
     }).join('');
     document.getElementById('verif-list').innerHTML =
-      `<table class="abs-table" style="font-size:13px;width:100%"><thead><tr><th>#</th><th>NIM</th><th>Nama</th><th>Status</th><th>Ket. Mahasiswa</th></tr></thead><tbody>${rows}</tbody></table>`;
+      `<table class="abs-table" style="font-size:13px;width:100%"><thead><tr><th>#</th><th>NIM</th><th>Nama</th><th>Verifikasi</th><th>Ket. Mahasiswa</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   async function updateVerifStatus(pertemuanId, mhsId, nim, nama, status) {
