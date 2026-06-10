@@ -11,6 +11,17 @@
         "isi": "halo",
         "created_at": "2026-06-10T02:18:21.429Z",
         "dihapus": false
+      },
+      {
+        "id": "msg_1781059668222_qejm9",
+        "sender_id": "usr_1781006363866",
+        "sender_nim": "20220201",
+        "sender_nama": "Ratno Purnamasari, M. Pd.",
+        "role": "dosen",
+        "matkul": "Atletik",
+        "isi": "Haii",
+        "created_at": "2026-06-10T02:47:48.222Z",
+        "dihapus": false
       }
     ]
   }
