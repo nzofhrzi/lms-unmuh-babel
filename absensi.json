@@ -52,27 +52,6 @@
           "verified_at": null
         }
       ]
-    },
-    {
-      "id": "abs_1781064264360",
-      "matkul": "Atletik",
-      "judul": "Pertemuan 3",
-      "tanggal": "2026-06-12T04:03",
-      "keterangan": "pergantinasa s a",
-      "dosen_id": "usr_1781006363866",
-      "status": "aktif",
-      "created_at": "2026-06-10T04:04:24.360Z",
-      "kehadiran": [
-        {
-          "mhs_id": "usr_1781006438509",
-          "nim": "250241114",
-          "nama": "Enzo Fahrezi",
-          "status": "menunggu",
-          "keterangan": "250241114",
-          "submitted_at": "2026-06-10T04:04:44.198Z",
-          "verified_at": null
-        }
-      ]
     }
   ]
 }
