@@ -4,542 +4,270 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login — Sistem Informasi Akademik</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --navy:       #0F2A5E;
-      --blue:       #1B4FBF;
-      --blue-light: #2563EB;
-      --blue-pale:  #EFF4FF;
-      --blue-mid:   #CBD5E1;
-      --gold:       #FAB005;
-      --white:      #FFFFFF;
-      --gray-50:    #F8FAFC;
-      --gray-100:   #F1F5F9;
-      --gray-300:   #94A3B8;
-      --gray-500:   #64748B;
-      --gray-700:   #1E293B;
-      --error:      #E11D48;
-      --error-bg:   #FFF1F2;
+      --navy:      #0F2A5E;
+      --blue:      #1B4FBF;
+      --blue-light:#2563EB;
+      --gold:      #FAB005;
     }
 
-    html, body {
-      height: 100%;
-      font-family: 'Inter', sans-serif;
-      background: var(--navy);
-      color: var(--gray-700);
-      -webkit-font-smoothing: antialiased;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--navy); min-height: 100vh; }
 
-    /* ── LAYOUT ── */
-    .page {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1.2fr 480px;
-    }
-
-    /* ── KIRI: HERO PANEL ── */
+    /* ── HERO ── */
     .hero {
       background:
-        linear-gradient(135deg, rgba(15, 42, 94, 0.95) 0%, rgba(27, 79, 191, 0.85) 100%),
+        linear-gradient(135deg, rgba(15,42,94,.95) 0%, rgba(27,79,191,.85) 100%),
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      background-size: cover;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 64px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -100px;
-      right: -100px;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(37, 99, 235, 0) 70%);
-      pointer-events: none;
-    }
-
-    .hero-logo {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      z-index: 2;
+      min-height: 100vh;
     }
 
     .logo-icon {
-      width: 52px;
-      height: 52px;
+      width: 52px; height: 52px;
       background: var(--gold);
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(250, 176, 5, 0.3);
+      box-shadow: 0 4px 12px rgba(250,176,5,.3);
     }
-
     .logo-icon svg { width: 28px; height: 28px; fill: var(--navy); }
-
-    .logo-text { line-height: 1.3; }
-
-    .logo-text .univ {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--white);
-      letter-spacing: -0.3px;
-    }
-
-    .logo-text .sub {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .hero-body { position: relative; z-index: 2; max-width: 520px; }
 
     .hero-tagline {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 48px;
+      font-size: clamp(36px, 4vw, 52px);
       font-weight: 800;
-      color: var(--white);
-      line-height: 1.2;
+      line-height: 1.15;
       letter-spacing: -1.5px;
-      margin-bottom: 24px;
     }
-
     .hero-tagline span { color: var(--gold); }
-
-    .hero-desc {
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.8);
-      line-height: 1.7;
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 48px;
-      position: relative;
-      z-index: 2;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 32px;
-    }
 
     .stat-num {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--white);
-      line-height: 1;
+      font-size: 32px; font-weight: 800;
     }
-    .stat-label {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-top: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-weight: 500;
-    }
+    .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: .8px; opacity: .65; }
 
-    /* ── KANAN: FORM PANEL ── */
+    /* ── FORM PANEL ── */
     .form-panel {
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 64px 48px;
-      position: relative;
-      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.03);
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: -10px 0 30px rgba(0,0,0,.04);
     }
-
-    .form-header { margin-bottom: 32px; }
 
     .form-welcome {
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px; font-weight: 700;
       color: var(--blue-light);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 1.5px;
     }
-
     .form-title {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--navy);
-      letter-spacing: -0.5px;
-      margin-bottom: 8px;
-    }
-
-    .form-subtitle {
-      font-size: 14px;
-      color: var(--gray-500);
-      line-height: 1.5;
+      font-size: 26px; font-weight: 800;
+      color: var(--navy); letter-spacing: -.5px;
     }
 
     /* ── ROLE TABS ── */
     .role-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-bottom: 28px;
-      background: var(--gray-100);
-      padding: 6px;
-      border-radius: 12px;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 6px;
+      background: #F1F5F9; padding: 6px; border-radius: 12px;
     }
-
     .role-tab {
-      padding: 12px 8px;
-      border: none;
-      background: transparent;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gray-500);
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-family: 'Inter', sans-serif;
+      border: none; background: transparent; border-radius: 8px;
+      padding: 10px 8px; font-size: 13px; font-weight: 600;
+      color: #64748B; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: all .22s ease;
     }
-
-    .role-tab svg { width: 16px; height: 16px; opacity: 0.7; transition: opacity 0.2s; }
-
+    .role-tab svg { width: 16px; height: 16px; opacity: .7; flex-shrink: 0; }
     .role-tab.active {
-      background: var(--white);
-      color: var(--blue-light);
-      box-shadow: 0 4px 12px rgba(15, 42, 94, 0.08);
+      background: #fff; color: var(--blue-light);
+      box-shadow: 0 4px 12px rgba(15,42,94,.08);
     }
-
     .role-tab.active svg { opacity: 1; }
 
-    /* ── FORM ELEMENTS ── */
-    .form-group {
-      margin-bottom: 20px;
+    /* ── INPUTS ── */
+    .input-wrap { position: relative; }
+    .input-wrap .input-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      width: 17px; height: 17px; color: #94A3B8; pointer-events: none;
     }
-
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gray-700);
-      margin-bottom: 8px;
+    .input-wrap input {
+      padding-left: 42px !important;
+      height: 50px; border: 1.5px solid #F1F5F9;
+      background: #F8FAFC; border-radius: 10px; font-size: 14px;
+      transition: all .2s ease;
     }
-
-    .input-wrap {
-      position: relative;
+    .input-wrap input:focus {
+      background: #fff; border-color: var(--blue-light);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
     }
+    .input-wrap input[type="password"] { padding-right: 44px !important; }
 
-    .input-wrap svg {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 18px;
-      height: 18px;
-      color: var(--gray-300);
-      pointer-events: none;
-      transition: color 0.2s;
-    }
-
-    input {
-      width: 100%;
-      height: 50px;
-      padding: 0 14px 0 44px;
-      border: 1.5px solid var(--gray-100);
-      border-radius: 10px;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      color: var(--gray-700);
-      background: var(--gray-50);
-      transition: all 0.2s ease;
-      outline: none;
-    }
-
-    input::placeholder { color: var(--gray-300); }
-
-    input:focus {
-      background: var(--white);
-      border-color: var(--blue-light);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-    }
-
-    input:focus + svg,
-    .input-wrap:focus-within > svg {
-      color: var(--blue-light);
-    }
-
-    /* Toggle password */
     .toggle-pass {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      color: var(--gray-300);
-      display: flex;
-      transition: color 0.2s;
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; padding: 4px; color: #94A3B8; cursor: pointer;
     }
-
-    .toggle-pass:hover { color: var(--gray-500); }
-    .toggle-pass svg { width: 18px; height: 18px; }
-
-    input[type="password"] { padding-right: 46px; }
-
-    /* NIP label dinamis */
-    #nim-label { transition: none; }
-
-    /* ── ALERT ── */
-    .alert {
-      display: none;
-      padding: 14px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 20px;
-      align-items: center;
-      gap: 12px;
-      line-height: 1.4;
-    }
-    .alert.show { display: flex; animation: slideDown 0.3s ease; }
-    .alert-error {
-      background: var(--error-bg);
-      color: var(--error);
-      border: 1px solid rgba(225, 29, 72, 0.15);
-    }
-    .alert svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .toggle-pass svg { width: 17px; height: 17px; }
 
     /* ── BUTTON ── */
     .btn-login {
-      width: 100%;
-      height: 52px;
-      background: var(--blue-light);
-      color: var(--white);
-      font-size: 15px;
-      font-weight: 600;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 12px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+      height: 52px; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px; font-weight: 600; border-radius: 10px;
+      background: var(--blue-light); border: none;
+      box-shadow: 0 4px 14px rgba(37,99,235,.25);
+      transition: all .2s ease;
     }
-
     .btn-login:hover:not(:disabled) {
       background: #1d4ed8;
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 6px 20px rgba(37,99,235,.35);
     }
-
-    .btn-login:active:not(:disabled) { transform: scale(0.985); }
-
-    .btn-login:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
+    .btn-login:disabled { opacity: .65; }
 
     /* Spinner */
     .spinner {
-      width: 20px;
-      height: 20px;
-      border: 2.5px solid rgba(255, 255, 255, 0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      display: none;
+      width: 20px; height: 20px;
+      border: 2.5px solid rgba(255,255,255,.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .6s linear infinite; display: none;
     }
-    .btn-login.loading .spinner { display: block; }
+    .btn-login.loading .spinner { display: inline-block; }
     .btn-login.loading .btn-text { display: none; }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── FOOTER ── */
-    .form-footer {
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid var(--gray-100);
-      text-align: center;
-      font-size: 13px;
-      color: var(--gray-500);
-      line-height: 1.6;
+    /* ── ALERT ── */
+    #alert-error { display: none; border-radius: 10px; }
+    #alert-error.show { display: flex; animation: slideDown .3s ease; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ── MOBILE ── */
-    @media (max-width: 992px) {
-      .page { grid-template-columns: 1fr; }
-      .hero { display: none; }
-      .form-panel {
-        padding: 48px 24px;
-        min-height: 100vh;
-        justify-content: center;
-      }
+    @media (max-width: 991px) {
+      .form-panel { min-height: 100vh; }
       .mobile-logo { display: flex !important; }
-    }
-
-    .mobile-logo {
-      display: none;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 32px;
-    }
-
-    .mobile-logo .logo-icon {
-      width: 48px;
-      height: 48px;
-      box-shadow: 0 4px 10px rgba(250, 176, 5, 0.2);
-    }
-
-    .mobile-logo .logo-icon svg { width: 26px; height: 26px; fill: var(--navy); }
-    .mobile-logo .logo-text .univ {
-      color: var(--navy);
-      font-size: 16px;
-    }
-    .mobile-logo .logo-text .sub {
-      color: var(--gray-500);
     }
   </style>
 </head>
 <body>
 
-<div class="page">
+<div class="container-fluid p-0">
+  <div class="row g-0 min-vh-100">
 
-  <div class="hero">
-    <div class="hero-logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+    <!-- ══ HERO (kiri) ══ -->
+    <div class="col-lg-7 hero d-none d-lg-flex flex-column justify-content-between p-5">
+      <!-- Logo -->
+      <div class="d-flex align-items-center gap-3">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="fw-bold text-white" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;">Universitas Muhammadiyah</div>
+          <div class="text-white-50" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;">Sistem Informasi Akademik</div>
+        </div>
+      </div>
+
+      <!-- Tagline -->
+      <div>
+        <div class="hero-tagline text-white mb-3">
+          Platform<br>Akademik<br><span>Terpadu.</span>
+        </div>
+        <p class="text-white-75" style="font-size:16px;line-height:1.7;opacity:.82;">
+          Kelola perkuliahan, tugas, absensi, dan diskusi dalam satu sistem yang terintegrasi untuk mahasiswa dan dosen.
+        </p>
+      </div>
+
+      <!-- Stats -->
+      <div class="d-flex gap-5 pt-4 border-top border-white border-opacity-10">
+        <div>
+          <div class="stat-num text-white">3</div>
+          <div class="stat-label text-white">Akses Peran</div>
+        </div>
+        <div>
+          <div class="stat-num text-white">24/7</div>
+          <div class="stat-label text-white">Tersedia</div>
+        </div>
+        <div>
+          <div class="stat-num text-white">100%</div>
+          <div class="stat-label text-white">Digital</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FORM PANEL (kanan) ══ -->
+    <div class="col-lg-5 form-panel d-flex flex-column justify-content-center px-4 px-md-5 py-5">
+
+      <!-- Mobile logo -->
+      <div class="mobile-logo d-none align-items-center gap-3 mb-4">
+        <div class="logo-icon" style="width:44px;height:44px;">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="fw-bold" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;color:var(--navy);">Universitas Muhammadiyah</div>
+          <div class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;">Sistem Informasi Akademik</div>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div class="mb-4">
+        <div class="form-welcome mb-1">Selamat Datang</div>
+        <h1 class="form-title mb-1">Masuk ke Akun Anda</h1>
+        <p class="text-muted" style="font-size:14px;">Pilih peran dan masukkan kredensial Anda</p>
+      </div>
+
+      <!-- Role Tabs -->
+      <div class="role-tabs mb-4">
+        <button class="role-tab active" data-role="mahasiswa" onclick="selectRole('mahasiswa')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>
+          Mahasiswa
+        </button>
+        <button class="role-tab" data-role="dosen" onclick="selectRole('dosen')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 17a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.46c.35.61.54 1.3.54 2h10v11h-9v2h3v2h2v-2h3v2h2v-2h-2zM15 7H9V5a3 3 0 0 0-6 0v2H1v10h14V7zM8 5a1 1 0 0 1 2 0v2H8V5zM3 15V9h8v6H3z"/></svg>
+          Dosen
+        </button>
+        <button class="role-tab" data-role="admin" onclick="selectRole('admin')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+          Admin
+        </button>
+      </div>
+
+      <!-- Alert Error -->
+      <div class="alert alert-danger align-items-center gap-2 mb-3" id="alert-error" role="alert">
+        <svg style="width:18px;height:18px;flex-shrink:0;" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
         </svg>
+        <span id="alert-text">—</span>
       </div>
-      <div class="logo-text">
-        <div class="univ">Universitas Muhammadiyah</div>
-        <div class="sub">Sistem Informasi Akademik</div>
-      </div>
-    </div>
 
-    <div class="hero-body">
-      <div class="hero-tagline">
-        Platform<br>Akademik<br><span>Terpadu.</span>
-      </div>
-      <p class="hero-desc">
-        Kelola perkuliahan, tugas, absensi, dan diskusi dalam satu sistem yang terintegrasi untuk mahasiswa dan dosen.
-      </p>
-    </div>
+      <!-- Form -->
+      <form id="login-form" onsubmit="handleLogin(event)" novalidate>
 
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num">3</div>
-        <div class="stat-label">Akses Peran</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">24/7</div>
-        <div class="stat-label">Tersedia</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Digital</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-panel">
-
-    <div class="mobile-logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-        </svg>
-      </div>
-      <div class="logo-text">
-        <div class="univ">Universitas Muhammadiyah</div>
-        <div class="sub">Sistem Informasi Akademik</div>
-      </div>
-    </div>
-
-    <div class="form-header">
-      <div class="form-welcome">Selamat Datang</div>
-      <h1 class="form-title">Masuk ke Akun Anda</h1>
-      <p class="form-subtitle">Pilih peran dan masukkan kredensial Anda</p>
-    </div>
-
-    <div class="role-tabs">
-      <button class="role-tab active" data-role="mahasiswa" onclick="selectRole('mahasiswa')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>
-        Mahasiswa
-      </button>
-      <button class="role-tab" data-role="dosen" onclick="selectRole('dosen')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 17a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.46c.35.61.54 1.3.54 2h10v11h-9v2h3v2h2v-2h3v2h2v-2h-2zM15 7H9V5a3 3 0 0 0-6 0v2H1v10h14V7zM8 5a1 1 0 0 1 2 0v2H8V5zM3 15V9h8v6H3z"/></svg>
-        Dosen
-      </button>
-      <button class="role-tab" data-role="admin" onclick="selectRole('admin')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-        Admin
-      </button>
-    </div>
-
-    <div class="alert alert-error" id="alert-error">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
-      <span id="alert-text">—</span>
-    </div>
-
-    <form id="login-form" onsubmit="handleLogin(event)">
-
-      <div id="nim-group">
-        <div class="form-group">
-          <label id="nim-label" for="nim-input">Nomor Induk Mahasiswa (NIM)</label>
+        <!-- NIM / NIP (mahasiswa & dosen) -->
+        <div id="nim-group" class="mb-3">
+          <label id="nim-label" class="form-label fw-semibold" style="font-size:13px;" for="nim-input">
+            Nomor Induk Mahasiswa (NIM)
+          </label>
           <div class="input-wrap">
-            <input
-              type="text"
-              id="nim-input"
-              placeholder="Masukkan NIM Anda"
-              autocomplete="username"
-            />
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <input type="text" class="form-control" id="nim-input"
+              placeholder="Masukkan NIM Anda" autocomplete="username" />
+            <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
           </div>
         </div>
-      </div>
 
-      <div id="pass-group">
-        <div class="form-group">
-          <label for="pass-input">Password</label>
+        <!-- Password (mahasiswa & dosen) -->
+        <div id="pass-group" class="mb-3">
+          <label class="form-label fw-semibold" style="font-size:13px;" for="pass-input">Password</label>
           <div class="input-wrap">
-            <input
-              type="password"
-              id="pass-input"
-              placeholder="Masukkan password Anda"
-              autocomplete="current-password"
-            />
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <input type="password" class="form-control" id="pass-input"
+              placeholder="Masukkan password Anda" autocomplete="current-password" />
+            <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
             </svg>
             <button type="button" class="toggle-pass" onclick="togglePassword()" aria-label="Tampilkan password">
@@ -549,32 +277,30 @@
             </button>
           </div>
         </div>
-      </div>
 
-      <div class="form-group" id="admin-key-group" style="display:none">
-        <label for="admin-key-input">Admin Key</label>
-        <div class="input-wrap">
-          <input
-            type="password"
-            id="admin-key-input"
-            placeholder="Masukkan admin key"
-            autocomplete="off"
-          />
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-          </svg>
+        <!-- Admin Key (admin only) -->
+        <div id="admin-key-group" class="mb-3" style="display:none;">
+          <label class="form-label fw-semibold" style="font-size:13px;" for="admin-key-input">Admin Key</label>
+          <div class="input-wrap">
+            <input type="password" class="form-control" id="admin-key-input"
+              placeholder="Masukkan admin key" autocomplete="off" />
+            <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+            </svg>
+          </div>
         </div>
+
+        <button type="submit" class="btn btn-login btn-primary w-100 d-flex align-items-center justify-content-center gap-2 mt-2" id="btn-login">
+          <div class="spinner"></div>
+          <span class="btn-text">Masuk</span>
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <div class="mt-4 pt-4 border-top text-center text-muted" style="font-size:13px;line-height:1.6;">
+        Lupa password? Hubungi administrator kampus.<br>
+        &copy; 2026 Universitas Muhammadiyah — Sistem Informasi Akademik
       </div>
-
-      <button type="submit" class="btn-login" id="btn-login">
-        <div class="spinner"></div>
-        <span class="btn-text">Masuk</span>
-      </button>
-    </form>
-
-    <div class="form-footer">
-      Lupa password? Hubungi administrator kampus.<br>
-      &copy; 2026 Universitas Muhammadiyah — Sistem Informasi Akademik
     </div>
 
   </div>
@@ -610,15 +336,15 @@
       admin:     { label: 'ID Admin',                    placeholder: 'Masukkan ID Admin' },
     };
 
-    label.textContent   = config[role].label;
-    input.placeholder   = config[role].placeholder;
-    input.value         = '';
+    label.textContent  = config[role].label;
+    input.placeholder  = config[role].placeholder;
+    input.value        = '';
 
     const isAdmin = role === 'admin';
-    adminKeyGroup.style.display = isAdmin ? 'block' : 'none';
-    document.getElementById('nim-group').style.display  = isAdmin ? 'none' : 'block';
-    document.getElementById('pass-group').style.display = isAdmin ? 'none' : 'block';
-    
+    adminKeyGroup.style.display                              = isAdmin ? 'block' : 'none';
+    document.getElementById('nim-group').style.display      = isAdmin ? 'none'  : 'block';
+    document.getElementById('pass-group').style.display     = isAdmin ? 'none'  : 'block';
+
     const btnText = document.querySelector('.btn-text');
     if (btnText) btnText.textContent = isAdmin ? 'Masuk sebagai Admin' : 'Masuk';
 
@@ -629,7 +355,6 @@
     const input = document.getElementById('pass-input');
     const icon  = document.getElementById('eye-icon');
     const isHidden = input.type === 'password';
-
     input.type = isHidden ? 'text' : 'password';
     icon.innerHTML = isHidden
       ? '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>'
@@ -658,28 +383,23 @@
     btn.disabled = true;
 
     try {
-      // ── LOGIKAL BARU: Alur Admin dipisahkan di paling atas ──
+      // ── ADMIN ──
       if (selectedRole === 'admin') {
         if (!adminKey) {
           showAlert('Admin Key wajib diisi.');
-          btn.classList.remove('loading');
-          btn.disabled = false;
+          btn.classList.remove('loading'); btn.disabled = false;
           return;
         }
-        
         const res = await fetch('/api/auth/list-users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
           body: JSON.stringify({ key: adminKey })
         });
-        
         if (!res.ok) {
           showAlert('Admin Key salah atau tidak valid.');
-          btn.classList.remove('loading');
-          btn.disabled = false;
+          btn.classList.remove('loading'); btn.disabled = false;
           return;
         }
-        
         sessionStorage.setItem('lms_admin_key', adminKey);
         if (typeof Auth !== 'undefined' && Auth.setSession) {
           Auth.setSession('admin-key-auth', { id: 'admin', nim_nip: 'ADMIN', nama: 'Administrator', role: 'admin' });
@@ -688,11 +408,10 @@
         return;
       }
 
-      // ── ALUR MAHASISWA / DOSEN ──
+      // ── MAHASISWA / DOSEN ──
       if (!nim_nip || !password) {
         showAlert('Harap isi NIM/NIP dan password.');
-        btn.classList.remove('loading');
-        btn.disabled = false;
+        btn.classList.remove('loading'); btn.disabled = false;
         return;
       }
 
@@ -701,8 +420,7 @@
       if (user.role !== selectedRole) {
         Auth.clearSession();
         showAlert(`Akun ini terdaftar sebagai ${getRoleLabel(user.role)}, bukan ${getRoleLabel(selectedRole)}.`);
-        btn.classList.remove('loading');
-        btn.disabled = false;
+        btn.classList.remove('loading'); btn.disabled = false;
         return;
       }
 
