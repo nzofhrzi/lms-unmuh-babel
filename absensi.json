@@ -75,6 +75,17 @@
         }
       ],
       "ditutup_at": "2026-06-10T04:23:03.547Z"
+    },
+    {
+      "id": "abs_1781066601833",
+      "matkul": "Pendidikan Agama",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-10T04:43",
+      "keterangan": "",
+      "dosen_id": "usr_1781059403678",
+      "status": "aktif",
+      "created_at": "2026-06-10T04:43:21.833Z",
+      "kehadiran": []
     }
   ]
 }
