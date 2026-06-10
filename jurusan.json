@@ -15,6 +15,70 @@
       "fakultas": "Fakultas Keguruan dan Ilmu Pendidikan",
       "jenjang": "S1",
       "created_at": "2026-06-10T02:41:27.748Z"
+    },
+    {
+      "id": "jur_1781594813865",
+      "nama": "Pendidikan Ilmu Ekonomi",
+      "kode": "PIE26",
+      "fakultas": "Fakultas Keguruan dan Ilmu Pendidikan",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "jur_1781348249179",
+      "nama": "Pendidikan Bahasa Inggris",
+      "kode": "PBI26",
+      "fakultas": "Fakultas Keguruan dan Ilmu Pendidikan",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "jur_1781872061617",
+      "nama": "Pendidikan Matematika",
+      "kode": "PMT26",
+      "fakultas": "Fakultas Keguruan dan Ilmu Pendidikan",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "jur_1781985159029",
+      "nama": "Teknik Informatika",
+      "kode": "TIF26",
+      "fakultas": "Fakultas Umum",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "jur_1781320495544",
+      "nama": "Sistem Informasi",
+      "kode": "SIF26",
+      "fakultas": "Fakultas Umum",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "jur_1781358496540",
+      "nama": "Manajemen",
+      "kode": "MJN26",
+      "fakultas": "Fakultas Umum",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "jur_1781319786628",
+      "nama": "Akuntansi",
+      "kode": "AKT26",
+      "fakultas": "Fakultas Umum",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
+    },
+    {
+      "id": "jur_1781526902237",
+      "nama": "Ilmu Hukum",
+      "kode": "HKM26",
+      "fakultas": "Fakultas Umum",
+      "jenjang": "S1",
+      "created_at": "2026-06-10T05:23:04.562667Z"
     }
   ]
 }
