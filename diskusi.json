@@ -22,6 +22,17 @@
         "isi": "Haii",
         "created_at": "2026-06-10T02:47:48.222Z",
         "dihapus": false
+      },
+      {
+        "id": "msg_1781064776055_a524b",
+        "sender_id": "usr_1781006438509",
+        "sender_nim": "250241114",
+        "sender_nama": "Enzo Fahrezi",
+        "role": "mahasiswa",
+        "matkul": "Atletik",
+        "isi": "untuk lari 5km kapan pak",
+        "created_at": "2026-06-10T04:12:56.055Z",
+        "dihapus": false
       }
     ]
   }
