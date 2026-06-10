@@ -62,6 +62,16 @@
           "keterangan": "",
           "submitted_at": "2026-06-10T04:21:39.239Z",
           "verified_at": "2026-06-10T04:22:37.593Z"
+        },
+        {
+          "mhs_id": "usr_1781059243684",
+          "nim": "usr_1781059243684",
+          "nama": "Novia Savira",
+          "status": "tidak_hadir",
+          "keterangan": "",
+          "keterangan_dosen": "",
+          "submitted_at": null,
+          "verified_at": "2026-06-10T04:22:42.555Z"
         }
       ]
     }
