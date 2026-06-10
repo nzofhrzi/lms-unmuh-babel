@@ -236,9 +236,15 @@ async function handleSubmitHadir(req, res) {
   const session = await requireAuth(req, res, ['mahasiswa']);
   if (!session) return;
 
-  const { pertemuan_id, keterangan, nama } = req.body || {};
+  const { pertemuan_id, alasan_tipe, keterangan, nama } = req.body || {};
   if (!pertemuan_id) {
     return res.status(400).json({ error: 'pertemuan_id diperlukan.' });
+  }
+
+  // Validasi alasan_tipe
+  const validAlasan = ['hadir', 'izin', 'sakit'];
+  if (!alasan_tipe || !validAlasan.includes(alasan_tipe)) {
+    return res.status(400).json({ error: 'alasan_tipe diperlukan: hadir, izin, atau sakit.' });
   }
 
   let result;
@@ -255,17 +261,33 @@ async function handleSubmitHadir(req, res) {
     return res.status(400).json({ error: 'Pertemuan sudah ditutup, tidak bisa absen.' });
   }
 
+  // Validasi: hanya bisa absen pada hari yang sama dengan tanggal pertemuan
+  const ptmDate = new Date(pertemuan.tanggal);
+  const now     = new Date();
+  const sameDay = ptmDate.getFullYear() === now.getFullYear() &&
+                  ptmDate.getMonth()    === now.getMonth()    &&
+                  ptmDate.getDate()     === now.getDate();
+  if (!sameDay) {
+    const tgl = ptmDate.toLocaleDateString('id-ID', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+    return res.status(400).json({ error: `Absensi hanya bisa dilakukan pada hari pertemuan berlangsung (${tgl}).` });
+  }
+
   // Cek apakah sudah pernah submit
   const existing = pertemuan.kehadiran.find(k => k.mhs_id === session.id);
   if (existing) {
     return res.status(409).json({ error: 'Anda sudah mengajukan absensi untuk pertemuan ini.', status: existing.status });
   }
 
+  // Tentukan status berdasarkan alasan:
+  // - hadir  → menunggu (perlu verifikasi dosen)
+  // - izin   → menunggu (perlu verifikasi dosen)
+  // - sakit  → menunggu (perlu verifikasi dosen)
   const entry = {
     mhs_id:       session.id,
     nim:          session.nim_nip,
     nama:         (nama || session.nim_nip).trim(),
-    status:       'menunggu',   // menunggu | hadir | izin | tidak_hadir
+    status:       'menunggu',
+    alasan_tipe,          // hadir | izin | sakit
     keterangan:   (keterangan || '').trim(),
     submitted_at: new Date().toISOString(),
     verified_at:  null,
@@ -317,8 +339,8 @@ async function handleVerifikasi(req, res) {
   if (!mhs_id || !status) {
     return res.status(400).json({ error: 'mhs_id dan status diperlukan untuk verifikasi.' });
   }
-  if (!['hadir', 'izin', 'tidak_hadir'].includes(status)) {
-    return res.status(400).json({ error: 'Status tidak valid. Gunakan: hadir, izin, tidak_hadir.' });
+  if (!['hadir', 'izin', 'sakit', 'tidak_hadir'].includes(status)) {
+    return res.status(400).json({ error: 'Status tidak valid. Gunakan: hadir, izin, sakit, tidak_hadir.' });
   }
 
   const kidx = data.pertemuan[idx].kehadiran.findIndex(k => k.mhs_id === mhs_id);
