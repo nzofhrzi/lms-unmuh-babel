@@ -40,6 +40,16 @@
       "dosen_id": "usr_1781059403678",
       "status": "aktif",
       "created_at": "2026-06-10T04:47:30.123Z"
+    },
+    {
+      "id": "tgs_1781066862050",
+      "judul": "Tugas 1",
+      "deskripsi": "asasas",
+      "matkul": "Pendidikan Agama",
+      "deadline": "2026-06-11T11:47",
+      "dosen_id": "usr_1781059403678",
+      "status": "aktif",
+      "created_at": "2026-06-10T04:47:42.050Z"
     }
   ]
 }
