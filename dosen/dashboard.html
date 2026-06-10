@@ -655,7 +655,7 @@
           <div class="d-flex align-items-center gap-2 flex-wrap">
             ${statusPill(t.status)}
             <button onclick='editTugas(${JSON.stringify(t).replace(/'/g,"&#39;")})' class="btn btn-sm" style="background:var(--blue-pale);color:var(--blue);font-size:12px">Edit</button>
-            <button onclick="deleteTugas('${t.id}','${t.judul.replace(/'/g,"\\'")}')'" class="btn btn-sm" style="background:#FEF2F2;color:#DC2626;font-size:12px">Hapus</button>
+            <button onclick="deleteTugas('${t.id}','${t.judul.replace(/'/g,"\\'")}')" class="btn btn-sm" style="background:#FEF2F2;color:#DC2626;font-size:12px">Hapus</button>
           </div>
         </div>
       </div>`).join('');
