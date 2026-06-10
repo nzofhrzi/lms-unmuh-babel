@@ -1,27 +1,33 @@
 // api/jurusan/[action].js
 // CRUD Jurusan — disimpan di jurusan.json via GitHub API
-// Actions: list, add, update, delete
-// Semua action butuh x-admin-key
+// Actions: list (public), list-admin, add, update, delete
+// list → publik (dapat diakses tanpa auth)
+// add/update/delete/list-admin → butuh x-admin-key
 
 import { Buffer } from 'buffer';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key, x-session-token');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const action = req.query.action;
 
-  // Semua endpoint butuh admin key
+  // Endpoint publik
+  if (action === 'list') {
+    return await handleList(req, res);
+  }
+
+  // Semua endpoint lain butuh admin key
   if (!checkAdmin(req, res)) return;
 
   try {
     switch (action) {
-      case 'list':   return await handleList(req, res);
-      case 'add':    return await handleAdd(req, res);
-      case 'update': return await handleUpdate(req, res);
-      case 'delete': return await handleDelete(req, res);
+      case 'list-admin': return await handleList(req, res);
+      case 'add':        return await handleAdd(req, res);
+      case 'update':     return await handleUpdate(req, res);
+      case 'delete':     return await handleDelete(req, res);
       default:
         return res.status(404).json({ error: `Action tidak dikenal: ${action}` });
     }
@@ -93,7 +99,7 @@ function checkAdmin(req, res) {
   return true;
 }
 
-// ─── LIST ─────────────────────────────────────────────────────────────────────
+// ─── LIST (PUBLIK) ────────────────────────────────────────────────────────────
 
 async function handleList(req, res) {
   let result;
