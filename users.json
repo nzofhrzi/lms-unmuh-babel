@@ -57,14 +57,15 @@
     {
       "id": "usr_1781059403678",
       "nim_nip": "20220101",
-      "nama": "Yeyen, M. Pd.",
+      "nama": "Rifki Hanif Setiawan, M. Pd.",
       "password": "1c1c01889750ca05c4717a2e663c218978ec274d679ceadcb492ecb9101a2756",
       "role": "dosen",
       "created_at": "2026-06-10T02:43:23.678Z",
       "jurusan": "Perguruan Sekolah Dasar",
       "mata_kuliah": [
         "Pendidikan Agama"
-      ]
+      ],
+      "updated_at": "2026-06-10T05:01:17.101Z"
     },
     {
       "id": "usr_1781067457861",
