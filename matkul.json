@@ -30,6 +30,16 @@
       "dosen_id": null,
       "dosen_nama": "Yeyen, M. Pd.",
       "created_at": "2026-06-10T02:43:57.112Z"
+    },
+    {
+      "id": "mk_1781067601208",
+      "nama": "Pengantar Pendidikan ABK",
+      "kode": "GSD32215",
+      "jurusan": "Perguruan Sekolah Dasar",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Said Akhmad Maulana, M. Pd.",
+      "created_at": "2026-06-10T05:00:01.208Z"
     }
   ]
 }
