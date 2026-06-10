@@ -620,6 +620,16 @@
         "Makro Ekonomi"
       ],
       "updated_at": "2026-06-10T05:38:11.741Z"
+    },
+    {
+      "id": "usr_1781069991402",
+      "nim_nip": "250241116",
+      "nama": "Ragil Satria",
+      "password": "1c1c01889750ca05c4717a2e663c218978ec274d679ceadcb492ecb9101a2756",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T05:39:51.402Z",
+      "jurusan": "Pendidikan Ilmu Ekonomi",
+      "semester": 2
     }
   ]
 }
