@@ -1,26 +1,33 @@
 // api/matkul/[action].js
 // CRUD Mata Kuliah — disimpan di matkul.json via GitHub API
-// Actions: list, add, update, delete
-// Semua action butuh x-admin-key
+// Actions: list (public), list-admin (admin), add, update, delete
+// list     → publik, dapat diakses dosen & mahasiswa
+// add/update/delete/list-admin → butuh x-admin-key
 
 import { Buffer } from 'buffer';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key, x-session-token');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const action = req.query.action;
 
+  // Endpoint publik tidak butuh admin key
+  if (action === 'list') {
+    return await handleList(req, res);
+  }
+
+  // Semua endpoint lain butuh admin key
   if (!checkAdmin(req, res)) return;
 
   try {
     switch (action) {
-      case 'list':   return await handleList(req, res);
-      case 'add':    return await handleAdd(req, res);
-      case 'update': return await handleUpdate(req, res);
-      case 'delete': return await handleDelete(req, res);
+      case 'list-admin': return await handleList(req, res);
+      case 'add':        return await handleAdd(req, res);
+      case 'update':     return await handleUpdate(req, res);
+      case 'delete':     return await handleDelete(req, res);
       default:
         return res.status(404).json({ error: `Action tidak dikenal: ${action}` });
     }
@@ -92,7 +99,7 @@ function checkAdmin(req, res) {
   return true;
 }
 
-// ─── LIST ─────────────────────────────────────────────────────────────────────
+// ─── LIST (PUBLIK) ────────────────────────────────────────────────────────────
 
 async function handleList(req, res) {
   let result;
@@ -104,7 +111,14 @@ async function handleList(req, res) {
       : 'Gagal membaca data mata kuliah.';
     return res.status(500).json({ error: msg });
   }
-  return res.status(200).json({ matkul: result.data.matkul || [] });
+
+  // Filter opsional berdasarkan query param
+  let list = result.data.matkul || [];
+  const { jurusan, dosen_id } = req.query;
+  if (jurusan) list = list.filter(m => m.jurusan === jurusan);
+  if (dosen_id) list = list.filter(m => m.dosen_id === dosen_id);
+
+  return res.status(200).json({ matkul: list });
 }
 
 // ─── ADD ──────────────────────────────────────────────────────────────────────
@@ -177,7 +191,7 @@ async function handleUpdate(req, res) {
   if (kode)       data.matkul[idx].kode       = kode.trim().toUpperCase();
   if (jurusan)    data.matkul[idx].jurusan    = jurusan.trim();
   if (sks)        data.matkul[idx].sks        = parseInt(sks);
-  if (dosen_id)   data.matkul[idx].dosen_id   = dosen_id;
+  if (dosen_id !== undefined)   data.matkul[idx].dosen_id   = dosen_id;
   if (dosen_nama) data.matkul[idx].dosen_nama = dosen_nama.trim();
   data.matkul[idx].updated_at = new Date().toISOString();
 
