@@ -130,6 +130,17 @@
           "verified_at": "2026-06-10T05:35:30.708Z"
         }
       ]
+    },
+    {
+      "id": "abs_1781070230446",
+      "matkul": "Mikro Ekonomi",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-11T05:43",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T05:43:50.446Z",
+      "kehadiran": []
     }
   ]
 }
