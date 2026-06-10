@@ -10,6 +10,17 @@
       "status": "aktif",
       "created_at": "2026-06-10T02:47:05.157Z",
       "kehadiran": []
+    },
+    {
+      "id": "abs_1781059653091",
+      "matkul": "Atletik",
+      "judul": "Pertemuan 2",
+      "tanggal": "2026-06-12T02:47",
+      "keterangan": "KBM",
+      "dosen_id": "usr_1781006363866",
+      "status": "aktif",
+      "created_at": "2026-06-10T02:47:33.091Z",
+      "kehadiran": []
     }
   ]
 }
