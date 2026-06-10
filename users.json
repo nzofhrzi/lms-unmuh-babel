@@ -66,6 +66,16 @@
       "mata_kuliah": [
         "Renang"
       ]
+    },
+    {
+      "id": "usr_1781059243684",
+      "nim_nip": "250241115",
+      "nama": "Novia Savira",
+      "password": "1c1c01889750ca05c4717a2e663c218978ec274d679ceadcb492ecb9101a2756",
+      "role": "mahasiswa",
+      "created_at": "2026-06-10T02:40:43.684Z",
+      "jurusan": "Pendidikan Jasmani Kesehatan dan Rekreasi",
+      "semester": 2
     }
   ]
 }
