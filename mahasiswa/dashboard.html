@@ -581,14 +581,7 @@
   // ═══════════════════════════════════════════════════════
   async function loadMatkul() {
     try {
-      // Ambil semua matkul via admin key tidak tersedia dari sisi mahasiswa
-      // Gunakan endpoint list yang open (tidak perlu admin key untuk read)
-      // API matkul butuh admin key, jadi kita fetch tanpa key dan filter dari response
-      // Alternatif: gunakan endpoint yang sudah ada, namun matkul/list memerlukan admin key
-      // Solusi: baca dari tugas (matkul field) + fallback langsung query
-      // Karena API matkul/list butuh x-admin-key, kita tidak bisa panggilnya dari client mahasiswa.
-      // Kita ambil mata kuliah dari data tugas saja, dan tampilkan info dari sana.
-      // Ini by-design: mahasiswa melihat matkul dari tugas yang ada.
+      // Gunakan endpoint publik /api/matkul/list — tidak butuh admin key
       allMatkul = await fetchMatkulByJurusan();
     } catch(e) {
       allMatkul = [];
@@ -599,28 +592,27 @@
   }
 
   async function fetchMatkulByJurusan() {
-    // Matkul API butuh admin key — mahasiswa tidak punya.
-    // Kita manfaatkan endpoint tugas/list (public) untuk dapat nama matkul,
-    // lalu tampilkan kartu dari sana.
-    // Untuk info lengkap (SKS, dosen), kita parse dari tugas.
-    if (!currentUser.jurusan) return [];
-
-    // Tugas list bisa diakses tanpa auth (hanya GET)
-    const res = await fetch(`/api/tugas/list`);
-    if (!res.ok) return [];
-    const json = await res.json();
-    const semua = json.tugas || [];
-
-    // Kumpulkan nama matkul unik dari jurusan user
-    const seen = new Set();
-    const list = [];
-    semua.forEach(t => {
-      if (!seen.has(t.matkul)) {
-        seen.add(t.matkul);
-        list.push({ id: t.matkul, nama: t.matkul, dosen_nama: '—', sks: '—', kode: '—', jurusan: '' });
-      }
-    });
-    return list;
+    // Gunakan endpoint publik /api/matkul/list (tidak butuh admin key)
+    // Filter berdasarkan jurusan user jika tersedia
+    try {
+      const url = currentUser.jurusan
+        ? `/api/matkul/list?jurusan=${encodeURIComponent(currentUser.jurusan)}`
+        : `/api/matkul/list`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Gagal memuat mata kuliah.');
+      const json = await res.json();
+      return (json.matkul || []).map(m => ({
+        id: m.id,
+        nama: m.nama,
+        kode: m.kode || '—',
+        sks: m.sks || '—',
+        dosen_nama: m.dosen_nama || '—',
+        jurusan: m.jurusan || '',
+      }));
+    } catch (e) {
+      console.warn('fetchMatkulByJurusan error:', e.message);
+      return [];
+    }
   }
 
   // ═══════════════════════════════════════════════════════
