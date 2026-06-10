@@ -142,6 +142,17 @@
     .pill-gray{background:var(--gray-100);color:var(--gray-500)}
     .pill-blue{background:var(--blue-pale);color:var(--blue)}
 
+    /* ABSENSI MAHASISWA */
+    .ptm-card{background:white;border-radius:12px;border:1px solid var(--gray-200);margin-bottom:10px;overflow:hidden}
+    .ptm-card-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .ptm-card-body{border-top:1px solid var(--gray-100);padding:14px 16px}
+    .badge-menunggu{background:#FEF3C7;color:#D97706;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
+    .badge-hadir{background:var(--green-pale);color:var(--green);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
+    .badge-tidak_hadir{background:var(--red-pale);color:var(--red);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
+    .badge-izin{background:#EDE9FE;color:#7C3AED;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
+    .tab-btn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--gray-200);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--gray-500);font-family:'Inter',sans-serif;transition:all .15s}
+    .tab-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+    .abs-tab-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
     /* DISKUSI */
     .diskusi-layout{display:grid;grid-template-columns:260px 1fr;gap:20px;height:calc(100vh - var(--topbar-h) - 80px);min-height:500px}
     .diskusi-rooms{background:white;border-radius:14px;border:1px solid var(--gray-200);overflow:hidden;display:flex;flex-direction:column}
@@ -261,6 +272,10 @@
       <button class="nav-item" onclick="showPage('tugas')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Tugas
         <span class="nav-badge" id="badge-tugas" style="display:none">0</span>
+      </button>
+      <button class="nav-item" onclick="showPage('absensi')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Absensi
+        <span class="nav-badge" id="badge-absensi" style="display:none">0</span>
       </button>
       <button class="nav-item" onclick="showPage('diskusi')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>Diskusi
@@ -383,6 +398,20 @@
     </div>
   </div>
 
+  <!-- ═══════════════ ABSENSI ═══════════════ -->
+  <div class="content" id="page-absensi">
+    <div class="page-header">
+      <h2>Absensi</h2>
+      <p>Daftar pertemuan mata kuliah — klik pertemuan untuk submit kehadiran.</p>
+    </div>
+    <div class="abs-tab-row" id="abs-matkul-tabs">
+      <div style="color:var(--gray-500);font-size:13px">Memuat mata kuliah...</div>
+    </div>
+    <div id="abs-pertemuan-content">
+      <div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">Pilih mata kuliah di atas.</div>
+    </div>
+  </div>
+
   <!-- ═══════════════ DISKUSI ═══════════════ -->
   <div class="content" id="page-diskusi">
     <div class="page-header">
@@ -401,10 +430,11 @@
           <div class="chat-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
           </div>
-          <div>
+          <div style="flex:1">
             <div class="chat-matkul" id="chat-title">Pilih ruang diskusi</div>
             <div class="chat-sub" id="chat-dosen">—</div>
           </div>
+          <button onclick="if(activeDiskusi)loadChatMessages(activeDiskusi)" style="padding:5px 10px;background:var(--gray-100);border:none;border-radius:8px;cursor:pointer;font-size:12px;color:var(--gray-600)" title="Refresh">🔄</button>
         </div>
         <div class="chat-messages" id="chat-messages">
           <div class="chat-empty">
@@ -481,11 +511,10 @@
   let allMatkul      = [];   // mata kuliah sesuai jurusan mahasiswa
   let allTugas       = [];   // tugas sesuai matkul mahasiswa
   let currentFilter  = 'semua';
-  let activeDiskusi  = null; // nama matkul yang sedang dibuka di diskusi
-  const chatHistory  = {};   // { [matkulNama]: [{role,text,time}] }
+  // diskusi & absensi state now declared in their own sections
 
-  const pages  = ['beranda','matkul','tugas','diskusi','profil'];
-  const titles = { beranda:'Beranda', matkul:'Mata Kuliah', tugas:'Tugas', diskusi:'Diskusi', profil:'Profil Saya' };
+  const pages  = ['beranda','matkul','tugas','absensi','diskusi','profil'];
+  const titles = { beranda:'Beranda', matkul:'Mata Kuliah', tugas:'Tugas', absensi:'Absensi', diskusi:'Diskusi', profil:'Profil Saya' };
 
   const COVER_COLORS = ['#2563EB','#C9A84C','#16A34A','#7C3AED','#DB2777','#0891B2','#D97706','#059669'];
 
@@ -777,26 +806,132 @@
   }
 
   // ═══════════════════════════════════════════════════════
+  //  ABSENSI MAHASISWA
+  // ═══════════════════════════════════════════════════════
+
+  let activeAbsMatkul = null;
+
+  function initAbsensiMhs() {
+    const tabsEl = document.getElementById('abs-matkul-tabs');
+    if (!allMatkul.length) {
+      tabsEl.innerHTML = '<div style="font-size:13px;color:var(--gray-500)">Tidak ada mata kuliah.</div>';
+      return;
+    }
+    tabsEl.innerHTML = allMatkul.map((m, i) =>
+      `<button class="tab-btn${i===0?' active':''}" onclick="switchAbsMatkul('${m.nama}',this)">${m.nama}</button>`
+    ).join('');
+    switchAbsMatkul(allMatkul[0].nama);
+  }
+
+  function switchAbsMatkul(matkul, btn) {
+    activeAbsMatkul = matkul;
+    document.querySelectorAll('#abs-matkul-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else document.querySelectorAll('#abs-matkul-tabs .tab-btn').forEach(b => { if(b.textContent.trim()===matkul) b.classList.add('active'); });
+    loadAbsensiMhs(matkul);
+  }
+
+  async function loadAbsensiMhs(matkul) {
+    const container = document.getElementById('abs-pertemuan-content');
+    container.innerHTML = '<div style="text-align:center;padding:24px;color:var(--gray-500);font-size:13px">⏳ Memuat pertemuan...</div>';
+    try {
+      const res = await fetch(`/api/absensi/list-pertemuan?matkul=${encodeURIComponent(matkul)}`, {
+        method: 'GET', headers: authHeaders()
+      });
+      const data = await res.json();
+      renderAbsensiMhs(data.pertemuan || [], matkul);
+    } catch(e) {
+      container.innerHTML = '<div style="text-align:center;padding:24px;color:var(--red);font-size:13px">Gagal memuat data pertemuan.</div>';
+    }
+  }
+
+  function renderAbsensiMhs(list, matkul) {
+    const container = document.getElementById('abs-pertemuan-content');
+    if (!list.length) {
+      container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">
+        Belum ada pertemuan untuk <strong>${matkul}</strong>.</div>`;
+      return;
+    }
+
+    // Count pending for badge
+    const pending = list.filter(p => {
+      const k = p.kehadiran.find(x => x.mhs_id === currentUser.id || x.nim === currentUser.nim_nip);
+      return !k; // belum submit
+    }).filter(p => p.status === 'aktif').length;
+    const badgeEl = document.getElementById('badge-absensi');
+    if (badgeEl) {
+      badgeEl.textContent = pending;
+      badgeEl.style.display = pending > 0 ? 'flex' : 'none';
+    }
+
+    const sorted = [...list].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+    container.innerHTML = sorted.map(ptm => {
+      const tgl = new Date(ptm.tanggal).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      const k   = ptm.kehadiran.find(x => x.mhs_id === currentUser.id || x.nim === currentUser.nim_nip);
+      const statusBadge = k
+        ? `<span class="badge-${k.status}">${k.status==='hadir'?'✅ Hadir':k.status==='izin'?'📋 Izin':k.status==='tidak_hadir'?'❌ Tidak Hadir':'⏳ Menunggu Verifikasi'}</span>`
+        : (ptm.status === 'aktif'
+            ? '<span class="badge-menunggu" style="background:#DBEAFE;color:var(--blue)">📥 Belum Absen</span>'
+            : '<span style="font-size:12px;color:var(--gray-400)">— Tidak Hadir</span>');
+
+      const canSubmit = !k && ptm.status === 'aktif';
+      return `<div class="ptm-card">
+        <div class="ptm-card-header">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px">${ptm.judul}</div>
+            <div style="font-size:12px;color:var(--gray-500)">📅 ${tgl}${ptm.keterangan ? ' · ' + ptm.keterangan : ''}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            ${statusBadge}
+          </div>
+        </div>
+        ${canSubmit ? `<div class="ptm-card-body">
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px">Tambahkan keterangan jika perlu, lalu klik <strong>Submit Kehadiran</strong>.</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="text" id="ket-${ptm.id}" placeholder="Keterangan (opsional)" style="flex:1;min-width:160px;padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:12px;font-family:Inter,sans-serif;outline:none"/>
+            <button onclick="submitHadir('${ptm.id}','${ptm.judul.replace(/'/g,'')}')" style="padding:8px 16px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">✋ Submit Hadir</button>
+          </div>
+        </div>` : ''}
+        ${k?.status === 'menunggu' ? `<div class="ptm-card-body" style="font-size:12px;color:var(--gray-500)">⏳ Kehadiran Anda sudah dikirim, menunggu verifikasi dosen.</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  async function submitHadir(pertemuanId, judul) {
+    const keterangan = document.getElementById(`ket-${pertemuanId}`)?.value || '';
+    try {
+      const res = await fetch('/api/absensi/submit-hadir', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ pertemuan_id: pertemuanId, keterangan, nama: currentUser.nama })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gagal submit absensi.');
+      showToast(`Absensi untuk "${judul}" berhasil dikirim!`);
+      loadAbsensiMhs(activeAbsMatkul);
+    } catch(e) {
+      showToast(e.message);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════
   //  DISKUSI
   // ═══════════════════════════════════════════════════════
+
+  let activeDiskusi   = null;
+  let diskusiPolling  = null;
+
   function renderDiskusiRooms() {
     const el = document.getElementById('diskusi-rooms');
-
     if (!allMatkul.length) {
       el.innerHTML = `<div class="loading-row" style="font-size:12px;color:var(--gray-500)">Belum ada ruang diskusi.</div>`;
       return;
     }
-
-    el.innerHTML = allMatkul.map((m, i) => {
-      const isActive = activeDiskusi === m.nama;
-      const lastMsg = chatHistory[m.nama]?.slice(-1)[0];
-      const last = lastMsg ? lastMsg.text.substring(0,40)+'…' : 'Belum ada pesan.';
-      return `
-        <div class="diskusi-room${isActive?' active':''}" onclick="selectRoom(this,'${m.nama}','${m.dosen_nama}')">
-          <div class="dr-name">${m.nama}</div>
-          <div class="dr-last">${last}</div>
-        </div>`;
-    }).join('');
+    el.innerHTML = allMatkul.map((m, i) => `
+      <div class="diskusi-room${i===0?' active':''}" onclick="selectRoom(this,'${m.nama}','${m.dosen_nama}')">
+        <div class="dr-name">${m.nama}</div>
+        <div class="dr-last" id="dr-mhs-last-${m.nama.replace(/\s+/g,'_')}">Klik untuk membuka</div>
+      </div>`).join('');
+    if (allMatkul.length) selectRoom(el.querySelector('.diskusi-room'), allMatkul[0].nama, allMatkul[0].dosen_nama);
   }
 
   function selectRoom(el, matkulNama, dosenNama) {
@@ -805,56 +940,79 @@
     activeDiskusi = matkulNama;
     document.getElementById('chat-title').textContent = matkulNama;
     document.getElementById('chat-dosen').textContent = dosenNama || '—';
-    renderChatMessages(matkulNama);
+    if (diskusiPolling) clearInterval(diskusiPolling);
+    loadChatMessages(matkulNama);
+    diskusiPolling = setInterval(() => loadChatMessages(matkulNama), 15000);
   }
 
-  function renderChatMessages(matkul) {
-    const container = document.getElementById('chat-messages');
-    const msgs = chatHistory[matkul] || [];
+  async function loadChatMessages(matkul) {
+    try {
+      const res = await fetch(`/api/diskusi/pesan?matkul=${encodeURIComponent(matkul)}&limit=60`, {
+        method: 'GET', headers: authHeaders()
+      });
+      const data = await res.json();
+      renderChatMessages(data.pesan || [], matkul);
+    } catch(e) {
+      document.getElementById('chat-messages').innerHTML = '<div style="text-align:center;padding:24px;font-size:13px;color:var(--red)">Gagal memuat pesan.</div>';
+    }
+  }
 
-    if (!msgs.length) {
-      container.innerHTML = `
-        <div class="chat-empty">
-          <div>
-            <span style="font-size:36px;display:block;margin-bottom:10px">💬</span>
-            Belum ada pesan di ruang <strong>${matkul}</strong>.<br>Mulai diskusi!
-          </div>
-        </div>`;
+  function renderChatMessages(messages, matkul) {
+    const container = document.getElementById('chat-messages');
+    const wasAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 50;
+
+    if (!messages.length) {
+      container.innerHTML = `<div class="chat-empty"><div>
+        <span style="font-size:36px;display:block;margin-bottom:10px">💬</span>
+        Belum ada pesan di ruang <strong>${matkul}</strong>.<br>Mulai diskusi!
+      </div></div>`;
       return;
     }
 
-    container.innerHTML = msgs.map(m => {
-      const isMe = m.role === 'me';
-      const inisial = isMe ? getInisial(currentUser.nama) : getInisial(m.sender || 'User');
-      const avClass = isMe ? '' : (m.role === 'dosen' ? 'dosen-av' : '');
-      return `
-        <div class="chat-msg${isMe?' me':''}">
-          <div class="msg-avatar ${avClass}">${inisial}</div>
-          <div>
-            ${!isMe ? `<div class="msg-sender">${m.sender}</div>` : ''}
-            <div class="msg-bubble">${m.text.replace(/</g,'&lt;')}</div>
-            <div class="msg-time">${m.time}</div>
-          </div>
-        </div>`;
+    container.innerHTML = messages.map(m => {
+      const isMe    = m.sender_id === currentUser.id;
+      const inisial = (m.sender_nama || '?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      const time    = new Date(m.created_at).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+      const roleTag = m.role === 'dosen' ? ` <span style="font-size:10px;background:var(--blue-pale);color:var(--blue);padding:1px 5px;border-radius:4px;font-weight:600">Dosen</span>` : '';
+      return `<div class="chat-msg${isMe?' me':''}">
+        <div class="msg-avatar" style="${m.role==='dosen'?'background:var(--navy);color:white':''}">${inisial}</div>
+        <div>
+          ${!isMe ? `<div class="msg-sender">${m.sender_nama}${roleTag}</div>` : ''}
+          <div class="msg-bubble">${m.isi.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>
+          <div class="msg-time">${time}</div>
+        </div>
+      </div>`;
     }).join('');
-    container.scrollTop = container.scrollHeight;
+
+    // Update dr-last preview
+    if (messages.length > 0 && matkul) {
+      const last    = messages[messages.length - 1];
+      const safeKey = matkul.replace(/\s+/g,'_');
+      const drEl    = document.getElementById(`dr-mhs-last-${safeKey}`);
+      if (drEl) drEl.textContent = last.sender_nama.split(' ')[0] + ': ' + last.isi.substring(0,35) + (last.isi.length > 35 ? '…' : '');
+    }
+
+    if (wasAtBottom) container.scrollTop = container.scrollHeight;
   }
 
   function handleChatKey(e) {
     if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   }
 
-  function sendMessage() {
+  async function sendMessage() {
     const input = document.getElementById('chat-input');
     const text  = input.value.trim();
     if (!text || !currentUser || !activeDiskusi) return;
-    const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-    if (!chatHistory[activeDiskusi]) chatHistory[activeDiskusi] = [];
-    chatHistory[activeDiskusi].push({ role:'me', text, time:now });
-    renderChatMessages(activeDiskusi);
-    renderDiskusiRooms();
     input.value = '';
-    showToast('Pesan terkirim.');
+    try {
+      const res = await fetch('/api/diskusi/kirim', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ matkul: activeDiskusi, isi: text, nama: currentUser.nama })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadChatMessages(activeDiskusi);
+    } catch(e) { showToast('Gagal mengirim pesan: ' + e.message); }
   }
 
   // ═══════════════════════════════════════════════════════
@@ -877,7 +1035,8 @@
       if (btn) btn.classList.toggle('active', p===id);
     });
     document.getElementById('topbar-title').textContent = titles[id] || id;
-    if (id === 'diskusi') renderDiskusiRooms();
+    if (id === 'diskusi') { renderDiskusiRooms(); }
+    if (id === 'absensi' && activeAbsMatkul === null) initAbsensiMhs();
     closeSidebar();
     window.scrollTo(0,0);
   }
