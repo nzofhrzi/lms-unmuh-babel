@@ -149,9 +149,18 @@
     .btn-md{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none}
 
     /* ABSENSI PAGE */
-    .absensi-matkul-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+    .absensi-matkul-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
     .tab-btn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--gray-200);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--gray-500);font-family:'Inter',sans-serif;transition:all .15s}
     .tab-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+    .absensi-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+    .pertemuan-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+    .pertemuan-card{background:white;border-radius:12px;border:1px solid var(--gray-200);overflow:hidden}
+    .pertemuan-card-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+    .pertemuan-card-header:hover{background:var(--gray-50)}
+    .pertemuan-card-body{border-top:1px solid var(--gray-100);padding:16px}
+    .ptm-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+    .ptm-badge.aktif{background:var(--green-pale);color:var(--green)}
+    .ptm-badge.ditutup{background:var(--gray-100);color:var(--gray-500)}
     .absensi-table-wrap{background:white;border-radius:14px;border:1px solid var(--gray-200);overflow:hidden}
     table.abs-table{width:100%;border-collapse:collapse;font-size:13px}
     .abs-table th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
@@ -160,6 +169,11 @@
     .abs-table tr:hover td{background:var(--gray-50)}
     .abs-select{padding:5px 10px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:12px;font-family:'Inter',sans-serif;outline:none;cursor:pointer;background:white}
     .abs-select:focus{border-color:var(--blue-light)}
+    .status-pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+    .status-pill.hadir{background:var(--green-pale);color:var(--green)}
+    .status-pill.izin{background:#FEF3C7;color:#D97706}
+    .status-pill.tidak_hadir{background:var(--red-pale);color:var(--red)}
+    .status-pill.menunggu{background:var(--gray-100);color:var(--gray-500)}
 
     /* DISKUSI */
     .diskusi-layout{display:grid;grid-template-columns:260px 1fr;gap:20px;height:calc(100vh - var(--topbar-h) - 80px);min-height:500px}
@@ -405,27 +419,72 @@
 
   <!-- ABSENSI -->
   <div class="content" id="page-absensi">
-    <div class="page-header"><h2>Absensi</h2><p>Catat kehadiran mahasiswa per mata kuliah</p></div>
+    <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div><h2>Absensi</h2><p>Kelola pertemuan dan verifikasi kehadiran mahasiswa</p></div>
+      <button onclick="openModalPertemuan()" style="padding:9px 18px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap;flex-shrink:0">+ Buat Pertemuan</button>
+    </div>
     <div class="absensi-matkul-tabs" id="absensi-tabs">
       <div style="color:var(--gray-500);font-size:13px;padding:8px">Memuat mata kuliah...</div>
     </div>
-    <div id="absensi-info" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="font-size:13px;color:var(--gray-500)">Pertemuan ke: <strong id="pertemuan-label" style="color:var(--navy)">—</strong></div>
-      <button onclick="simpanAbsensi()" style="padding:8px 16px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Simpan Absensi</button>
+    <div id="absensi-content">
+      <div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">Pilih mata kuliah di atas untuk melihat daftar pertemuan.</div>
     </div>
-    <div class="absensi-table-wrap">
-      <table class="abs-table">
-        <thead><tr><th>#</th><th>NIM</th><th>Nama Mahasiswa</th><th>Status</th><th>Keterangan</th></tr></thead>
-        <tbody id="abs-tbody">
-          <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--gray-500)">Pilih mata kuliah untuk melihat daftar mahasiswa.</td></tr>
-        </tbody>
-      </table>
+  </div>
+
+  <!-- MODAL BUAT PERTEMUAN -->
+  <div class="modal-overlay" id="modal-pertemuan" style="display:none">
+    <div class="modal" style="max-width:440px">
+      <div class="modal-header">
+        <span class="modal-title">Buat Pertemuan Baru</span>
+        <button class="modal-close" onclick="closeModalPertemuan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Mata Kuliah</label>
+          <select class="form-input" id="ptm-matkul"><option value="">-- Pilih Mata Kuliah --</option></select>
+        </div>
+        <div class="form-group">
+          <label>Judul / Topik Pertemuan</label>
+          <input type="text" class="form-input" id="ptm-judul" placeholder="cth. Pertemuan 1 — Pengenalan Atletik"/>
+        </div>
+        <div class="form-group">
+          <label>Tanggal &amp; Waktu</label>
+          <input type="datetime-local" class="form-input" id="ptm-tanggal"/>
+        </div>
+        <div class="form-group">
+          <label>Keterangan (opsional)</label>
+          <textarea class="form-input" id="ptm-keterangan" rows="2" placeholder="Informasi tambahan untuk mahasiswa..."></textarea>
+        </div>
+        <div id="ptm-alert" style="display:none;padding:10px 14px;border-radius:8px;font-size:13px;background:var(--red-pale);color:var(--red);margin-top:8px"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-md" onclick="closeModalPertemuan()" style="background:var(--gray-100);color:var(--gray-600)">Batal</button>
+        <button class="btn-md" onclick="submitBuatPertemuan()" id="ptm-submit-btn" style="background:var(--blue);color:white">Buat Pertemuan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL VERIFIKASI KEHADIRAN -->
+  <div class="modal-overlay" id="modal-verifikasi" style="display:none">
+    <div class="modal" style="max-width:680px">
+      <div class="modal-header">
+        <span class="modal-title" id="verif-modal-title">Verifikasi Kehadiran</span>
+        <button class="modal-close" onclick="closeModalVerifikasi()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div id="verif-list"></div>
+        <div id="verif-alert" style="display:none;padding:10px;border-radius:8px;font-size:13px;background:var(--red-pale);color:var(--red);margin-top:8px"></div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between">
+        <button onclick="tutupPertemuan()" id="btn-tutup-ptm" style="padding:9px 16px;background:var(--gray-200);color:var(--gray-700);border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">🔒 Tutup Pertemuan</button>
+        <button class="btn-md" onclick="closeModalVerifikasi()" style="background:var(--blue);color:white">Selesai</button>
+      </div>
     </div>
   </div>
 
   <!-- DISKUSI -->
   <div class="content" id="page-diskusi">
-    <div class="page-header"><h2>Diskusi</h2><p>Ruang diskusi dengan mahasiswa per mata kuliah</p></div>
+    <div class="page-header"><h2>Diskusi</h2><p>Ruang diskusi real-time dengan mahasiswa per mata kuliah</p></div>
     <div class="diskusi-layout">
       <div class="diskusi-rooms">
         <div class="diskusi-rooms-header">📚 Ruang Diskusi</div>
@@ -436,12 +495,16 @@
       <div class="diskusi-chat">
         <div class="chat-header">
           <div class="chat-icon" style="background:var(--blue-pale)"><svg viewBox="0 0 24 24" fill="var(--blue-light)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
-          <div><div class="chat-title-text" id="chat-title">Pilih ruang diskusi</div><div class="chat-sub" id="chat-sub">—</div></div>
+          <div style="flex:1">
+            <div class="chat-title-text" id="chat-title">Pilih ruang diskusi</div>
+            <div class="chat-sub" id="chat-sub">—</div>
+          </div>
+          <button onclick="refreshChat()" id="btn-refresh-chat" style="display:none;padding:6px 10px;background:var(--gray-100);border:none;border-radius:8px;cursor:pointer;font-size:12px;color:var(--gray-600)" title="Refresh pesan">🔄</button>
         </div>
         <div class="chat-messages" id="chat-messages">
           <div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">Pilih mata kuliah untuk memulai diskusi.</div>
         </div>
-        <div class="chat-input-area">
+        <div class="chat-input-area" id="chat-input-area" style="display:none">
           <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ketik pesan untuk mahasiswa..." onkeydown="handleChatKey(event)"></textarea>
           <button class="btn-send" onclick="sendMessage()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></button>
         </div>
@@ -787,6 +850,11 @@
 
   // ─── ABSENSI ──────────────────────────────────────────────────────────────
 
+  let activeAbsensiMatkul = null;
+  let pertemuanData = [];   // cache pertemuan yang sedang ditampilkan
+  let verifPertemuanId = null;  // pertemuan yang sedang diverifikasi
+  let allMhsJurusan = [];   // cache mahasiswa jurusan dari allMhsList
+
   function renderAbsensiTabs() {
     const tabs = document.getElementById('absensi-tabs');
     if (!myMatkul.length) {
@@ -796,52 +864,262 @@
     tabs.innerHTML = myMatkul.map((mk, i) =>
       `<button class="tab-btn${i===0?' active':''}" onclick="switchAbsensiByMatkul('${mk}',this)">${mk}</button>`
     ).join('');
+    // populate dropdown di modal
+    populatePtmMatkulDropdown();
     if (myMatkul.length) switchAbsensiByMatkul(myMatkul[0]);
+  }
+
+  function populatePtmMatkulDropdown() {
+    const sel = document.getElementById('ptm-matkul');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">-- Pilih Mata Kuliah --</option>' +
+      myMatkul.map(mk => `<option value="${mk}">${mk}</option>`).join('');
   }
 
   function switchAbsensiByMatkul(mk, btn) {
     activeAbsensiMatkul = mk;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
-    else {
-      const allBtns = document.querySelectorAll('.tab-btn');
-      allBtns.forEach(b => { if(b.textContent.trim()===mk) b.classList.add('active'); });
+    else document.querySelectorAll('.tab-btn').forEach(b => { if(b.textContent.trim()===mk) b.classList.add('active'); });
+    loadPertemuan(mk);
+  }
+
+  async function loadPertemuan(matkul) {
+    const container = document.getElementById('absensi-content');
+    container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gray-500);font-size:13px">⏳ Memuat data pertemuan...</div>';
+    try {
+      const res = await fetch(`/api/absensi/list-pertemuan?matkul=${encodeURIComponent(matkul)}`, {
+        method: 'GET', headers: authHeaders()
+      });
+      const data = await res.json();
+      pertemuanData = data.pertemuan || [];
+      allMhsJurusan = allMhsList.filter(m => m.jurusan === currentUser.jurusan);
+      renderPertemuanList(pertemuanData, matkul);
+    } catch(e) {
+      container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--red);font-size:13px">Gagal memuat data pertemuan.</div>';
     }
-    const mhsJurusan = allMhsList.filter(m => m.jurusan === currentUser.jurusan);
-    document.getElementById('pertemuan-label').textContent = '1';
-    const tbody = document.getElementById('abs-tbody');
-    if (!mhsJurusan.length) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--gray-500)">Belum ada mahasiswa di jurusan ini.</td></tr>';
+  }
+
+  function renderPertemuanList(list, matkul) {
+    const container = document.getElementById('absensi-content');
+    if (!list.length) {
+      container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">
+        Belum ada pertemuan untuk <strong>${matkul}</strong>. Klik <strong>+ Buat Pertemuan</strong> untuk memulai.
+      </div>`;
       return;
     }
-    tbody.innerHTML = mhsJurusan.map((m, i) => `
-      <tr>
-        <td>${i+1}</td>
-        <td style="font-family:monospace;font-size:12px">${m.nim_nip}</td>
-        <td>${m.nama}</td>
-        <td><select class="abs-select" onchange="updateAbsColor(this)">
-          <option value="H" selected>Hadir</option>
-          <option value="I">Izin</option>
-          <option value="A">Absen</option>
-        </select></td>
-        <td><input type="text" placeholder="—" style="width:100%;height:32px;padding:0 10px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:12px;font-family:Inter,sans-serif;outline:none"/></td>
-      </tr>`).join('');
-    document.querySelectorAll('.abs-select').forEach(s => updateAbsColor(s));
+    // Sort: terbaru di atas
+    const sorted = [...list].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+    container.innerHTML = '<div class="pertemuan-list">' + sorted.map((ptm, i) => {
+      const tgl = new Date(ptm.tanggal).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      const totalHadir   = ptm.kehadiran.filter(k => k.status === 'hadir').length;
+      const totalMenunggu= ptm.kehadiran.filter(k => k.status === 'menunggu').length;
+      const totalMhs     = allMhsJurusan.length;
+      const badge = ptm.status === 'aktif'
+        ? '<span class="ptm-badge aktif">🟢 Aktif</span>'
+        : '<span class="ptm-badge ditutup">🔒 Ditutup</span>';
+      return `<div class="pertemuan-card">
+        <div class="pertemuan-card-header" onclick="togglePtmCard('ptm-body-${ptm.id}')">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px">${ptm.judul}</div>
+            <div style="font-size:12px;color:var(--gray-500)">📅 ${tgl}${ptm.keterangan ? ' · ' + ptm.keterangan : ''}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+            ${badge}
+            <span style="font-size:12px;color:var(--gray-500)">${totalHadir}/${totalMhs} hadir${totalMenunggu > 0 ? ` · <span style="color:var(--gold);font-weight:700">${totalMenunggu} menunggu</span>` : ''}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gray-400)"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+        <div class="pertemuan-card-body" id="ptm-body-${ptm.id}" style="display:none">
+          ${renderKehadiranTable(ptm)}
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <button onclick="openModalVerifikasi('${ptm.id}')" style="padding:7px 14px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">✅ Verifikasi Kehadiran</button>
+            ${ptm.status==='aktif' ? `<button onclick="konfirmasiTutupPertemuan('${ptm.id}')" style="padding:7px 14px;background:var(--gray-200);color:var(--gray-700);border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">🔒 Tutup Pertemuan</button>` : ''}
+            <button onclick="konfirmasiHapusPertemuan('${ptm.id}','${ptm.judul.replace(/'/g,'')}')" style="padding:7px 14px;background:var(--red-pale);color:var(--red);border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">🗑 Hapus</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
   }
 
-  // Untuk dipanggil dari kartu matkul
-  function switchAbsensi(btn, key) { switchAbsensiByMatkul(myMatkul[0]); }
-
-  function updateAbsColor(sel) {
-    const colors = { H:'var(--green)', I:'var(--yellow)', A:'var(--red)' };
-    sel.style.color = colors[sel.value] || 'inherit';
+  function renderKehadiranTable(ptm) {
+    const mhsJurusan = allMhsJurusan;
+    if (!mhsJurusan.length) return '<div style="font-size:13px;color:var(--gray-500)">Belum ada mahasiswa di jurusan ini.</div>';
+    const rows = mhsJurusan.map((m, i) => {
+      const k = ptm.kehadiran.find(x => x.mhs_id === m.id || x.nim === m.nim_nip);
+      const statusHtml = k
+        ? `<span class="status-pill ${k.status}">${k.status === 'menunggu' ? '⏳ Menunggu' : k.status === 'hadir' ? '✅ Hadir' : k.status === 'izin' ? '📋 Izin' : '❌ Tidak Hadir'}</span>`
+        : '<span style="font-size:12px;color:var(--gray-400)">—</span>';
+      return `<tr>
+        <td style="padding:8px 12px;font-size:12px">${i+1}</td>
+        <td style="padding:8px 12px;font-family:monospace;font-size:11px">${m.nim_nip}</td>
+        <td style="padding:8px 12px;font-size:12px">${m.nama}</td>
+        <td style="padding:8px 12px">${statusHtml}</td>
+        <td style="padding:8px 12px;font-size:12px;color:var(--gray-500)">${k?.keterangan||'—'}</td>
+      </tr>`;
+    }).join('');
+    return `<div class="absensi-table-wrap"><table class="abs-table"><thead><tr><th>#</th><th>NIM</th><th>Nama</th><th>Status</th><th>Keterangan</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
 
-  function simpanAbsensi() {
-    showToast(`Absensi ${activeAbsensiMatkul||''} berhasil disimpan!`);
+  function togglePtmCard(bodyId) {
+    const el = document.getElementById(bodyId);
+    if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // ── Modal Buat Pertemuan ──
+
+  function openModalPertemuan() {
+    document.getElementById('modal-pertemuan').style.display = 'flex';
+    document.getElementById('ptm-alert').style.display = 'none';
+    document.getElementById('ptm-judul').value = '';
+    document.getElementById('ptm-tanggal').value = new Date().toISOString().slice(0,16);
+    document.getElementById('ptm-keterangan').value = '';
+    populatePtmMatkulDropdown();
+    if (activeAbsensiMatkul) document.getElementById('ptm-matkul').value = activeAbsensiMatkul;
+  }
+
+  function closeModalPertemuan() {
+    document.getElementById('modal-pertemuan').style.display = 'none';
+  }
+
+  async function submitBuatPertemuan() {
+    const matkul     = document.getElementById('ptm-matkul').value;
+    const judul      = document.getElementById('ptm-judul').value.trim();
+    const tanggal    = document.getElementById('ptm-tanggal').value;
+    const keterangan = document.getElementById('ptm-keterangan').value.trim();
+    const alertEl    = document.getElementById('ptm-alert');
+    alertEl.style.display = 'none';
+    if (!matkul || !judul || !tanggal) {
+      alertEl.textContent = 'Mata kuliah, judul, dan tanggal wajib diisi.';
+      alertEl.style.display = 'block'; return;
+    }
+    const btn = document.getElementById('ptm-submit-btn');
+    btn.disabled = true; btn.textContent = 'Menyimpan...';
+    try {
+      const res = await fetch('/api/absensi/buat-pertemuan', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ matkul, judul, tanggal, keterangan })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gagal membuat pertemuan.');
+      closeModalPertemuan();
+      showToast(`Pertemuan "${judul}" berhasil dibuat!`);
+      switchAbsensiByMatkul(matkul);
+    } catch(e) {
+      alertEl.textContent = e.message; alertEl.style.display = 'block';
+    } finally { btn.disabled = false; btn.textContent = 'Buat Pertemuan'; }
+  }
+
+  // ── Modal Verifikasi ──
+
+  function openModalVerifikasi(pertemuanId) {
+    verifPertemuanId = pertemuanId;
+    const ptm = pertemuanData.find(p => p.id === pertemuanId);
+    if (!ptm) return;
+    document.getElementById('verif-modal-title').textContent = `Verifikasi: ${ptm.judul}`;
+    document.getElementById('btn-tutup-ptm').style.display = ptm.status === 'aktif' ? 'inline-block' : 'none';
+    document.getElementById('verif-alert').style.display = 'none';
+    renderVerifList(ptm);
+    document.getElementById('modal-verifikasi').style.display = 'flex';
+  }
+
+  function closeModalVerifikasi() {
+    document.getElementById('modal-verifikasi').style.display = 'none';
+    verifPertemuanId = null;
+  }
+
+  function renderVerifList(ptm) {
+    const mhsJurusan = allMhsJurusan;
+    if (!mhsJurusan.length) {
+      document.getElementById('verif-list').innerHTML = '<div style="font-size:13px;color:var(--gray-500);text-align:center;padding:24px">Belum ada mahasiswa di jurusan ini.</div>';
+      return;
+    }
+    const rows = mhsJurusan.map((m, i) => {
+      const k = ptm.kehadiran.find(x => x.mhs_id === m.id || x.nim === m.nim_nip);
+      const curStatus = k?.status || '';
+      const options = ['hadir','izin','tidak_hadir'].map(s =>
+        `<option value="${s}" ${curStatus===s?'selected':''}>${s==='hadir'?'✅ Hadir':s==='izin'?'📋 Izin':'❌ Tidak Hadir'}</option>`
+      ).join('');
+      const menungguBadge = curStatus === 'menunggu' ? ' <span style="font-size:10px;color:var(--gold);font-weight:700">⏳ mengajukan</span>' : '';
+      return `<tr>
+        <td style="padding:8px 12px;font-size:12px">${i+1}</td>
+        <td style="padding:8px 12px;font-family:monospace;font-size:11px">${m.nim_nip}</td>
+        <td style="padding:8px 12px;font-size:12px">${m.nama}${menungguBadge}</td>
+        <td style="padding:8px 12px">
+          <select onchange="updateVerifStatus('${ptm.id}','${m.id}','${m.nim_nip}','${m.nama.replace(/'/g,'')}',this.value)" style="padding:5px 8px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:12px;font-family:Inter,sans-serif;cursor:pointer">
+            <option value="">-- pilih --</option>
+            ${options}
+          </select>
+        </td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--gray-500)">${k?.keterangan||''}</td>
+      </tr>`;
+    }).join('');
+    document.getElementById('verif-list').innerHTML =
+      `<table class="abs-table" style="font-size:13px;width:100%"><thead><tr><th>#</th><th>NIM</th><th>Nama</th><th>Status</th><th>Ket. Mahasiswa</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  async function updateVerifStatus(pertemuanId, mhsId, nim, nama, status) {
+    if (!status) return;
+    try {
+      const res = await fetch('/api/absensi/verifikasi', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ pertemuan_id: pertemuanId, mhs_id: mhsId, nim, nama, status })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      showToast(`Status ${nama}: ${status}`);
+      // Update cache lokal
+      const ptmIdx = pertemuanData.findIndex(p => p.id === pertemuanId);
+      if (ptmIdx !== -1) {
+        const kidx = pertemuanData[ptmIdx].kehadiran.findIndex(k => k.mhs_id === mhsId || k.nim === nim);
+        if (kidx !== -1) pertemuanData[ptmIdx].kehadiran[kidx].status = status;
+        else pertemuanData[ptmIdx].kehadiran.push({ mhs_id: mhsId, nim, nama, status, submitted_at: null, verified_at: new Date().toISOString() });
+      }
+    } catch(e) {
+      const alertEl = document.getElementById('verif-alert');
+      alertEl.textContent = e.message; alertEl.style.display = 'block';
+    }
+  }
+
+  async function tutupPertemuan() {
+    if (!verifPertemuanId) return;
+    if (!confirm('Tutup pertemuan ini? Mahasiswa tidak bisa submit absen lagi.')) return;
+    try {
+      const res = await fetch('/api/absensi/verifikasi', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ pertemuan_id: verifPertemuanId, tutup: true })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      showToast('Pertemuan ditutup.');
+      closeModalVerifikasi();
+      loadPertemuan(activeAbsensiMatkul);
+    } catch(e) { showToast('Gagal menutup pertemuan.'); }
+  }
+
+  function konfirmasiTutupPertemuan(pertemuanId) {
+    verifPertemuanId = pertemuanId;
+    tutupPertemuan();
+  }
+
+  async function konfirmasiHapusPertemuan(id, judul) {
+    if (!confirm(`Hapus pertemuan "${judul}"? Semua data kehadiran akan ikut terhapus.`)) return;
+    try {
+      const res = await fetch('/api/absensi/hapus-pertemuan', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ id })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      showToast('Pertemuan berhasil dihapus.');
+      loadPertemuan(activeAbsensiMatkul);
+    } catch(e) { showToast('Gagal menghapus pertemuan.'); }
   }
 
   // ─── DISKUSI ──────────────────────────────────────────────────────────────
+
+  let activeDiscMatkul = null;
+  let diskusiPolling   = null;
 
   function renderDiskusiRooms() {
     const list = document.getElementById('diskusi-room-list');
@@ -852,14 +1130,13 @@
     list.innerHTML = myMatkul.map((mk, i) => `
       <div class="diskusi-room${i===0?' active':''}" onclick="selectRoom(this,'${mk}')">
         <div class="dr-name">${mk}</div>
-        <div class="dr-last">Klik untuk membuka diskusi</div>
+        <div class="dr-last" id="dr-last-${mk.replace(/\s+/g,'_')}">Klik untuk membuka</div>
       </div>`).join('');
     if (myMatkul.length) selectRoom(list.querySelector('.diskusi-room'), myMatkul[0]);
   }
 
   function switchDiskusiByMatkul(mk) {
-    const rooms = document.querySelectorAll('.diskusi-room');
-    rooms.forEach(r => {
+    document.querySelectorAll('.diskusi-room').forEach(r => {
       if (r.querySelector('.dr-name').textContent === mk) selectRoom(r, mk);
     });
   }
@@ -867,30 +1144,89 @@
   function selectRoom(el, nama) {
     document.querySelectorAll('.diskusi-room').forEach(r => r.classList.remove('active'));
     el.classList.add('active');
+    activeDiscMatkul = nama;
     document.getElementById('chat-title').textContent = nama;
     document.getElementById('chat-sub').textContent   = currentUser.jurusan || '—';
-    // Reset chat area dengan pesan selamat datang
-    document.getElementById('chat-messages').innerHTML = `
-      <div style="text-align:center;padding:24px">
-        <div style="font-size:13px;color:var(--gray-500)">Ruang diskusi <strong>${nama}</strong></div>
-        <div style="font-size:12px;color:var(--gray-300);margin-top:4px">Pesan hanya tersimpan di sesi ini</div>
-      </div>`;
+    document.getElementById('btn-refresh-chat').style.display = 'inline-block';
+    document.getElementById('chat-input-area').style.display  = 'flex';
+    if (diskusiPolling) clearInterval(diskusiPolling);
+    loadChatMessages(nama);
+    diskusiPolling = setInterval(() => loadChatMessages(nama), 15000);
   }
+
+  async function loadChatMessages(matkul) {
+    try {
+      const res = await fetch(`/api/diskusi/pesan?matkul=${encodeURIComponent(matkul)}&limit=60`, {
+        method: 'GET', headers: authHeaders()
+      });
+      const data = await res.json();
+      renderChatMessages(data.pesan || []);
+      const safeKey = matkul.replace(/\s+/g,'_');
+      const el = document.getElementById(`dr-last-${safeKey}`);
+      if (el && data.pesan && data.pesan.length > 0) {
+        const last = data.pesan[data.pesan.length - 1];
+        el.textContent = last.sender_nama.split(' ')[0] + ': ' + last.isi.substring(0, 30) + (last.isi.length > 30 ? '…' : '');
+      }
+    } catch(e) {
+      document.getElementById('chat-messages').innerHTML = '<div style="text-align:center;padding:24px;font-size:13px;color:var(--red)">Gagal memuat pesan.</div>';
+    }
+  }
+
+  function renderChatMessages(messages) {
+    const c = document.getElementById('chat-messages');
+    const wasAtBottom = c.scrollHeight - c.scrollTop <= c.clientHeight + 50;
+    if (!messages.length) {
+      c.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px">Belum ada pesan. Mulai diskusi!</div>';
+      return;
+    }
+    c.innerHTML = messages.map(m => {
+      const isMe    = m.sender_id === currentUser.id;
+      const inisial = (m.sender_nama || '?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      const time    = new Date(m.created_at).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+      const roleTag = m.role === 'dosen' ? ' <span style="font-size:10px;background:var(--blue-pale);color:var(--blue);padding:1px 5px;border-radius:4px;font-weight:600">Dosen</span>' : '';
+      const deleteBtn = (isMe || currentUser.role === 'dosen')
+        ? `<button onclick="hapusPesan('${m.id}')" style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:11px;padding:0 4px" title="Hapus">✕</button>` : '';
+      return `<div class="chat-msg ${isMe?'me':'other'}">
+        <div class="msg-av" style="${m.role==='dosen'?'background:var(--navy);color:white':''}">${inisial}</div>
+        <div>
+          <div style="font-size:11px;color:var(--gray-500);margin-bottom:3px">${isMe?'Anda':m.sender_nama}${roleTag} ${deleteBtn}</div>
+          <div class="msg-bubble">${m.isi.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>
+          <div class="msg-time">${time}</div>
+        </div>
+      </div>`;
+    }).join('');
+    if (wasAtBottom) c.scrollTop = c.scrollHeight;
+  }
+
+  function refreshChat() { if (activeDiscMatkul) loadChatMessages(activeDiscMatkul); }
 
   function handleChatKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
 
-  function sendMessage() {
+  async function sendMessage() {
     const input = document.getElementById('chat-input');
     const text  = input.value.trim();
-    if (!text || !currentUser) return;
-    const inisial = currentUser.nama.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-    const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-    const msg = document.createElement('div');
-    msg.className = 'chat-msg me';
-    msg.innerHTML = `<div class="msg-av">${inisial}</div><div><div class="msg-bubble">${text.replace(/</g,'&lt;')}</div><div class="msg-time">${now}</div></div>`;
-    const c = document.getElementById('chat-messages');
-    c.appendChild(msg); c.scrollTop = c.scrollHeight;
+    if (!text || !currentUser || !activeDiscMatkul) return;
     input.value = '';
+    try {
+      const res = await fetch('/api/diskusi/kirim', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ matkul: activeDiscMatkul, isi: text, nama: currentUser.nama })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadChatMessages(activeDiscMatkul);
+    } catch(e) { showToast('Gagal mengirim pesan: ' + e.message); }
+  }
+
+  async function hapusPesan(pesanId) {
+    if (!activeDiscMatkul) return;
+    try {
+      const res = await fetch('/api/diskusi/hapus', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ matkul: activeDiscMatkul, pesan_id: pesanId })
+      });
+      if (res.ok) loadChatMessages(activeDiscMatkul);
+    } catch(e) { showToast('Gagal menghapus pesan.'); }
   }
 
   // ─── SHARED ───────────────────────────────────────────────────────────────
