@@ -9,21 +9,6 @@
       "created_at": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "usr_dosen_001",
-      "nim_nip": "198501012010011001",
-      "nama": "Dr. Budi Santoso, M.T.",
-      "password": "dosen123",
-      "role": "dosen",
-      "jurusan": "Teknik Informatika",
-      "mata_kuliah": [
-        "Pemrograman Web",
-        "Basis Data",
-        "Algoritma"
-      ],
-      "created_at": "2026-01-01T00:00:00.000Z",
-      "updated_at": "2026-06-09T10:32:20.776Z"
-    },
-    {
       "id": "usr_mhs_001",
       "nim_nip": "2210101001",
       "nama": "Andi Pratama",
