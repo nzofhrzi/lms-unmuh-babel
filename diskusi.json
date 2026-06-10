@@ -94,6 +94,17 @@
         "isi": "waalaikumsalam",
         "created_at": "2026-06-10T06:38:45.750Z",
         "dihapus": false
+      },
+      {
+        "id": "msg_1781073542583_ka3d7",
+        "sender_id": "usr_1781069991402",
+        "sender_nim": "250241116",
+        "sender_nama": "Ragil Satria",
+        "role": "mahasiswa",
+        "matkul": "Mikro Ekonomi",
+        "isi": "pak izin bertanys, untuk pertemuan selanjutnya membahas apa",
+        "created_at": "2026-06-10T06:39:02.583Z",
+        "dihapus": false
       }
     ]
   }
