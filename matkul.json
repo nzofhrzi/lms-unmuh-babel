@@ -20,6 +20,16 @@
       "dosen_nama": "Kenzo, M. Pd.",
       "created_at": "2026-06-09T22:49:26.536Z",
       "updated_at": "2026-06-09T22:51:06.481Z"
+    },
+    {
+      "id": "mk_1781059437112",
+      "nama": "Pendidikan Agama",
+      "kode": "PGSD26001",
+      "jurusan": "Perguruan Sekolah Dasar",
+      "sks": 2,
+      "dosen_id": null,
+      "dosen_nama": "Yeyen, M. Pd.",
+      "created_at": "2026-06-10T02:43:57.112Z"
     }
   ]
 }
