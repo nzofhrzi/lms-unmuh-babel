@@ -163,6 +163,17 @@
       "status": "aktif",
       "created_at": "2026-06-10T06:37:47.105Z",
       "kehadiran": []
+    },
+    {
+      "id": "abs_1781140018214",
+      "matkul": "Mikro Ekonomi",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-11T01:06",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-11T01:06:58.214Z",
+      "kehadiran": []
     }
   ]
 }
