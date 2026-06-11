@@ -173,7 +173,18 @@
       "dosen_id": "usr_1781069582657",
       "status": "aktif",
       "created_at": "2026-06-11T01:06:58.214Z",
-      "kehadiran": []
+      "kehadiran": [
+        {
+          "mhs_id": "usr_1781069991402",
+          "nim": "usr_1781069991402",
+          "nama": "Ragil Satria",
+          "status": "hadir",
+          "keterangan": "",
+          "keterangan_dosen": "",
+          "submitted_at": null,
+          "verified_at": "2026-06-11T01:07:10.245Z"
+        }
+      ]
     }
   ]
 }
