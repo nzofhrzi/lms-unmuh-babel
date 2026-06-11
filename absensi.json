@@ -183,6 +183,16 @@
           "keterangan_dosen": "",
           "submitted_at": null,
           "verified_at": "2026-06-11T01:07:10.245Z"
+        },
+        {
+          "mhs_id": "usr_1781618284940",
+          "nim": "usr_1781618284940",
+          "nama": "Iqbal Ramadhan",
+          "status": "izin",
+          "keterangan": "",
+          "keterangan_dosen": "",
+          "submitted_at": null,
+          "verified_at": "2026-06-11T01:07:12.560Z"
         }
       ]
     }
