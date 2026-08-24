@@ -188,6 +188,26 @@
       .banner-badge{display:none}
       .form-row{grid-template-columns:1fr}
     }
+  
+    /* ── Panduan praktis ── */
+    .guide-card{background:linear-gradient(135deg,#EFF4FF 0%,#F8FAFC 100%);border:1px solid var(--blue-mid);border-radius:16px;padding:20px 22px;margin-bottom:22px}
+    .guide-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+    .guide-card p.lead{font-size:13px;color:var(--gray-500);margin-bottom:14px;line-height:1.5}
+    .guide-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+    .guide-step{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .15s;text-align:left;font-family:inherit}
+    .guide-step:hover{border-color:var(--blue-light);box-shadow:0 4px 12px rgba(27,79,191,.1);transform:translateY(-1px)}
+    .guide-step .num{width:24px;height:24px;border-radius:8px;background:var(--blue);color:white;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
+    .guide-step .title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+    .guide-step .desc{font-size:11px;color:var(--gray-500);line-height:1.4}
+    .tip-bar{display:flex;align-items:flex-start;gap:10px;background:var(--yellow-pale);border:1px solid #FDE68A;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:#92400E;line-height:1.45}
+    .tip-bar svg{flex-shrink:0;width:16px;height:16px;margin-top:1px;fill:#D97706}
+    .quick-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+    .qa-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;border:1px solid var(--gray-200);background:white;font-size:12.5px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;transition:all .15s}
+    .qa-btn:hover{border-color:var(--blue-light);background:var(--blue-pale);color:var(--blue)}
+    .qa-btn svg{width:14px;height:14px}
+    .guide-dismiss{float:right;background:none;border:none;color:var(--gray-500);cursor:pointer;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px}
+    .guide-dismiss:hover{background:var(--gray-100)}
+
   </style>
 </head>
 <body>
@@ -206,11 +226,11 @@
       <input type="hidden" id="f-user-id"/>
       <div class="form-row">
         <div class="form-group">
-          <label>NIM / NIP</label>
+          <label>NIM / NIP <span style="color:var(--gray-500);font-weight:400">(ID login)</span></label>
           <input type="text" class="form-input" id="f-nim-nip" placeholder="cth. 2210101001"/>
         </div>
         <div class="form-group">
-          <label>Role</label>
+          <label>Peran (Role)</label>
           <select class="form-input" id="f-role" onchange="toggleRoleFields()">
             <option value="">Pilih role...</option>
             <option value="mahasiswa">Mahasiswa</option>
@@ -224,7 +244,7 @@
         <input type="text" class="form-input" id="f-nama" placeholder="cth. Andi Pratama"/>
       </div>
       <div class="form-group" id="f-group-password">
-        <label>Password</label>
+        <label>Password awal <span style="color:var(--gray-500);font-weight:400">(bisa diganti user nanti)</span></label>
         <input type="password" class="form-input" id="f-password" placeholder="••••••••"/>
       </div>
       <div class="form-row">
@@ -394,7 +414,53 @@
       </div>
       <div class="banner-badge">Super Admin</div>
     </div>
-    <div class="stats-grid">
+    
+    <div class="guide-card" id="admin-guide" style="display:none">
+      <button class="guide-dismiss" onclick="dismissGuide('admin')">Sembunyikan</button>
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Panduan Cepat Admin — urutan kerja yang disarankan
+      </h3>
+      <p class="lead">Ikuti langkah berurutan agar data sistem lengkap dan dosen/mahasiswa bisa langsung memakai LMS.</p>
+      <div class="guide-steps">
+        <button type="button" class="guide-step" onclick="showPage('jurusan')">
+          <div class="num">1</div>
+          <div class="title">Tambah Jurusan</div>
+          <div class="desc">Buat program studi dulu sebelum mata kuliah & pengguna.</div>
+        </button>
+        <button type="button" class="guide-step" onclick="showPage('matkul')">
+          <div class="num">2</div>
+          <div class="title">Tambah Mata Kuliah</div>
+          <div class="desc">Kaitkan ke jurusan. Nanti bisa diampu dosen.</div>
+        </button>
+        <button type="button" class="guide-step" onclick="showPage('users')">
+          <div class="num">3</div>
+          <div class="title">Buat Akun Dosen</div>
+          <div class="desc">Role dosen + isi mata kuliah yang diampu.</div>
+        </button>
+        <button type="button" class="guide-step" onclick="showPage('users')">
+          <div class="num">4</div>
+          <div class="title">Buat Akun Mahasiswa</div>
+          <div class="desc">Role mahasiswa + jurusan & semester.</div>
+        </button>
+      </div>
+    </div>
+    <div class="quick-actions">
+      <button type="button" class="qa-btn" onclick="showPage('users');setTimeout(()=>openModalUser&&openModalUser(),200)">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Pengguna
+      </button>
+      <button type="button" class="qa-btn" onclick="showPage('jurusan')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>Kelola Jurusan
+      </button>
+      <button type="button" class="qa-btn" onclick="showPage('matkul')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>Kelola Matkul
+      </button>
+      <button type="button" class="qa-btn" onclick="showGuide('admin')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Lihat Panduan
+      </button>
+    </div>
+
+<div class="stats-grid">
       <div class="stat-card"><div class="sc-icon ic-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg></div><div class="sc-label">Total Mahasiswa</div><div class="sc-num" id="stat-mhs">—</div><div class="sc-sub">Terdaftar aktif</div></div>
       <div class="stat-card"><div class="sc-icon ic-yellow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 17a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.46c.35.61.54 1.3.54 2h10v11h-9v2h3v2h2v-2h3v2h2v-2h-2z"/></svg></div><div class="sc-label">Total Dosen</div><div class="sc-num" id="stat-dosen">—</div><div class="sc-sub">Aktif mengajar</div></div>
       <div class="stat-card"><div class="sc-icon ic-green"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg></div><div class="sc-label">Jurusan</div><div class="sc-num" id="stat-jurusan">—</div><div class="sc-sub">Program studi</div></div>
@@ -424,7 +490,12 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Pengguna
       </button>
     </div>
-    <div class="toolbar">
+    <div 
+    <div class="tip-bar"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <div><strong>Tips:</strong> Buat akun <em>dosen</em> dulu dan isi field Mata Kuliah Diampu. Untuk mahasiswa, pilih jurusan & semester. Password default bisa diganti user sendiri di menu Profil.</div>
+    </div>
+
+    class="toolbar">
       <input type="text" class="search-input" placeholder="Cari nama atau NIM/NIP..." oninput="filterUsers(this.value)" id="user-search"/>
       <select class="filter-select" onchange="filterUsers()" id="user-role-filter">
         <option value="">Semua Role</option>
@@ -451,7 +522,12 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Jurusan
       </button>
     </div>
-    <div class="toolbar">
+    <div 
+    <div class="tip-bar"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <div><strong>Langkah 1 dari 4:</strong> Jurusan harus ada dulu. Setelah itu baru bisa menambah mata kuliah dan mendaftarkan mahasiswa ke prodi tersebut.</div>
+    </div>
+
+    class="toolbar">
       <input type="text" class="search-input" placeholder="Cari nama atau kode jurusan..." oninput="filterJurusan(this.value)" id="jurusan-search"/>
     </div>
     <div class="jurusan-grid" id="jurusan-grid">
@@ -467,7 +543,12 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Matkul
       </button>
     </div>
-    <div class="toolbar">
+    <div 
+    <div class="tip-bar"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <div><strong>Langkah 2 dari 4:</strong> Tambah mata kuliah, pilih jurusan, isi SKS. Lalu di menu Pengguna, edit dosen dan masukkan nama matkul yang diampu agar muncul di dashboard dosen.</div>
+    </div>
+
+    class="toolbar">
       <input type="text" class="search-input" placeholder="Cari nama atau kode mata kuliah..." oninput="filterMatkul(this.value)" id="matkul-search"/>
       <select class="filter-select" onchange="filterMatkul()" id="matkul-jurusan-filter">
         <option value="">Semua Jurusan</option>
