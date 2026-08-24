@@ -240,7 +240,11 @@
     </button>
 
     <div class="nav-section-label mt-2">Akun</div>
-    <button class="nav-btn" onclick="showPage('profil')">
+    
+    <button class="nav-btn" onclick="showPage('krs')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>Registrasi Semester
+    </button>
+<button class="nav-btn" onclick="showPage('profil')">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Profil Saya
     </button>
   </nav>
@@ -260,6 +264,10 @@
   </button>
   <div class="topbar-title" id="topbar-title">Beranda</div>
   <div class="avatar" id="top-avatar">—</div>
+  <button type="button" onclick="Auth.logout()" title="Keluar" style="margin-left:10px;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;border:1px solid #E2E8F0;background:white;color:#DC2626;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+    Keluar
+  </button>
 </header>
 
 <!-- ══ MAIN ══ -->
@@ -433,7 +441,16 @@
   </div>
 
   <!-- ═══ PROFIL ═══ -->
-  <div class="content" id="page-profil">
+  
+  <div class="content" id="page-krs">
+    <div class="page-header mb-3">
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--navy)">Registrasi Semester</h2>
+      <p class="text-muted small">Pilih mata kuliah dari sebaran admin untuk naik ke semester berikutnya</p>
+    </div>
+    <div id="krs-mhs-status" class="mb-3"></div>
+    <div id="krs-sebaran-list"><div class="text-center text-muted py-4 small">Memuat sebaran...</div></div>
+  </div>
+<div class="content" id="page-profil">
     <div class="page-header mb-4">
       <h2>Profil Saya</h2>
       <p class="text-muted" style="font-size:14px;">Informasi akun dan data akademik kamu.</p>
@@ -493,8 +510,8 @@
   let allTugas      = [];
   let currentFilter = 'semua';
 
-  const pages  = ['beranda','matkul','tugas','absensi','diskusi','profil'];
-  const titles = { beranda:'Beranda', matkul:'Mata Kuliah', tugas:'Tugas', absensi:'Absensi', diskusi:'Diskusi', profil:'Profil Saya' };
+  const pages = ['beranda','matkul','tugas','absensi','diskusi','profil', 'krs'];
+  const titles = { beranda:'Beranda', matkul:'Mata Kuliah', tugas:'Tugas', absensi:'Absensi', diskusi:'Diskusi', krs: 'Registrasi Semester', profil:'Profil Saya' };
   const COVER_COLORS = ['#2563EB','#C9A84C','#16A34A','#7C3AED','#DB2777','#0891B2','#D97706','#059669'];
 
   // ═══════════════════════════════════════════════════════
@@ -979,6 +996,8 @@
   //  NAVIGASI
   // ═══════════════════════════════════════════════════════
   function showPage(id) {
+    if (id === 'krs') loadKrsMahasiswa();
+
     pages.forEach(p => {
       document.getElementById('page-'+p).classList.toggle('active', p===id);
       const btn = document.querySelector(`button.nav-btn[onclick="showPage('${p}')"]`);
@@ -1019,6 +1038,70 @@
       document.getElementById('new-pass').value = '';
     } catch(e) { alertEl.textContent = e.message; alertEl.style.display = 'block'; }
   }
+
+  async function loadKrsMahasiswa() {
+    const box = document.getElementById('krs-sebaran-list');
+    const st = document.getElementById('krs-mhs-status');
+    if (!box) return;
+    try {
+      const [rs, rk] = await Promise.all([
+        fetch('/api/sebaran/list?status=buka'),
+        fetch('/api/krs/list', { headers: Auth.authHeaders() })
+      ]);
+      const ds = await rs.json();
+      const dk = await rk.json();
+      const user = Auth.getUser() || {};
+      const myRegs = (dk.registrasi || []);
+      st.innerHTML = myRegs.slice(0,5).map(r =>
+        `<div class="small mb-1">Pengajuan <strong>${r.sebaran_judul||r.sebaran_id}</strong>:
+          <span style="font-weight:700;color:${r.status==='disetujui'?'#16A34A':r.status==='ditolak'?'#DC2626':'#D97706'}">${r.status}</span>
+          ${r.status==='disetujui' ? `(semester → ${r.semester_target})` : ''}
+        </div>`
+      ).join('') || '<div class="small text-muted">Belum ada pengajuan KRS.</div>';
+
+      let list = (ds.sebaran || []).filter(s => !user.jurusan || s.jurusan === user.jurusan);
+      // also show if jurusan empty match all open
+      if (!list.length) list = ds.sebaran || [];
+      if (!list.length) {
+        box.innerHTML = '<div class="text-center text-muted py-5 small">Belum ada sebaran yang dibuka admin.</div>';
+        return;
+      }
+      box.innerHTML = list.map(s => {
+        const already = myRegs.find(r => r.sebaran_id === s.id && r.status === 'menunggu');
+        const done = myRegs.find(r => r.sebaran_id === s.id && r.status === 'disetujui');
+        return `<div class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <div class="fw-bold" style="color:var(--navy)">${s.judul}</div>
+            <div class="small text-muted mb-2">${s.jurusan} · Naik ke semester ${s.semester_target}</div>
+            <div class="mb-2">${(s.matkul||[]).map(m =>
+              `<label class="d-inline-flex align-items-center gap-1 me-2 mb-1 small" style="cursor:pointer">
+                <input type="checkbox" class="seb-mk" data-seb="${s.id}" value="${m}" ${done||already?'disabled':''}/> ${m}
+              </label>`).join('')}</div>
+            ${done ? '<span class="badge bg-success">Sudah disetujui</span>' :
+              already ? '<span class="badge bg-warning text-dark">Menunggu verifikasi admin</span>' :
+              `<button class="btn btn-primary btn-sm" onclick="submitKrsMhs('${s.id}')">Kirim Registrasi</button>`}
+          </div>
+        </div>`;
+      }).join('');
+    } catch (e) {
+      box.innerHTML = '<div class="text-danger small">Gagal memuat data registrasi.</div>';
+    }
+  }
+
+  async function submitKrsMhs(sebaranId) {
+    const mats = [...document.querySelectorAll(`.seb-mk[data-seb="${sebaranId}"]:checked`)].map(i => i.value);
+    if (!mats.length) { alert('Pilih minimal 1 mata kuliah.'); return; }
+    const user = Auth.getUser() || {};
+    const r = await fetch('/api/krs/submit', {
+      method: 'POST',
+      headers: Auth.authHeaders(),
+      body: JSON.stringify({ sebaran_id: sebaranId, matkul: mats, nama: user.nama })
+    });
+    const d = await r.json();
+    alert(d.message || d.error || 'Selesai');
+    loadKrsMahasiswa();
+  }
+
 </script>
 </body>
 </html>
