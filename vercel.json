@@ -2,18 +2,13 @@
   "version": 2,
   "outputDirectory": "public",
   "functions": {
-    "api/**/*.js": {
+    "api/index.js": {
       "memory": 128,
       "maxDuration": 10
     }
   },
   "rewrites": [
-    { "source": "/api/auth/:action",     "destination": "/api/auth/[action]" },
-    { "source": "/api/jurusan/:action",  "destination": "/api/jurusan/[action]" },
-    { "source": "/api/matkul/:action",   "destination": "/api/matkul/[action]" },
-    { "source": "/api/tugas/:action",    "destination": "/api/tugas/[action]" },
-    { "source": "/api/absensi/:action",  "destination": "/api/absensi/[action]" },
-    { "source": "/api/diskusi/:action",  "destination": "/api/diskusi/[action]" }
+    { "source": "/api/:path*", "destination": "/api/index?path=:path*" }
   ],
   "git": {
     "deploymentEnabled": {
