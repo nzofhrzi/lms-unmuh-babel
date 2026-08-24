@@ -3,10 +3,11 @@
     {
       "id": "jur_1781006274358",
       "nama": "Pendidikan Jasmani Kesehatan dan Rekreasi",
-      "kode": "PJKR25",
+      "kode": "PJKR26",
       "fakultas": "Fakultas Keguruan dan Ilmu Pendidikan",
       "jenjang": "S1",
-      "created_at": "2026-06-09T11:57:54.358Z"
+      "created_at": "2026-06-09T11:57:54.358Z",
+      "updated_at": "2026-08-24T03:14:22.879Z"
     },
     {
       "id": "jur_1781059287748",
