@@ -33,6 +33,17 @@
         "isi": "untuk lari 5km kapan pak",
         "created_at": "2026-06-10T04:12:56.055Z",
         "dihapus": false
+      },
+      {
+        "id": "msg_1787542728698_b11xs",
+        "sender_id": "usr_1787542672340",
+        "sender_nim": "123125",
+        "sender_nama": "Kenzo Kiro",
+        "role": "mahasiswa",
+        "matkul": "Atletik",
+        "isi": "haiii",
+        "created_at": "2026-08-24T03:38:48.698Z",
+        "dihapus": false
       }
     ],
     "pendidikan_agama": [
