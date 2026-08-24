@@ -2,10 +2,10 @@
   "name": "lms-universitas-anak-indonesia",
   "version": "2.0.0",
   "private": true,
-  "description": "LMS Universitas Anak Indonesia — dual-branch (main + data) architecture",
+  "description": "LMS Universitas Anak Indonesia \u2014 dual-branch (main + data) architecture",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'Static site — no build step required'"
+    "build": "echo Static site \u2014 files served from public/"
   },
   "engines": {
     "node": ">=18"
