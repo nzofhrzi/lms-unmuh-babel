@@ -1,11 +1,11 @@
 // auth.js
-// Client-side auth helper untuk LMS
+// Client-side auth helper untuk LMS Universitas Anak Indonesia
 // Include di semua halaman yang butuh auth
 
 const Auth = (() => {
-  const TOKEN_KEY  = 'lms_token';
-  const USER_KEY   = 'lms_user';
-  const BASE_URL   = '/api/auth';
+  const TOKEN_KEY = 'lms_token';
+  const USER_KEY  = 'lms_user';
+  const BASE_URL  = '/api/auth';
 
   function getToken() {
     return localStorage.getItem(TOKEN_KEY);
@@ -44,12 +44,6 @@ const Auth = (() => {
 
   async function verify() {
     const token = getToken();
-
-    // Bypass khusus admin login menggunakan ADMIN_KEY
-    if (token === 'admin-key-auth') {
-      return getUser();
-    }
-
     if (!token) return null;
     try {
       const res = await fetch(`${BASE_URL}/verify`, {
@@ -64,10 +58,10 @@ const Auth = (() => {
         clearSession();
         return null;
       }
-      // Update cache user terbaru
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
       return data.user;
     } catch {
+      clearSession();
       return null;
     }
   }
@@ -90,19 +84,15 @@ const Auth = (() => {
 
   function logout() {
     clearSession();
-    sessionStorage.removeItem('lms_admin_key');
     window.location.href = '/login.html';
   }
 
-  // Guard: redirect ke login jika belum login
-  // Gunakan: Auth.requireLogin(['mahasiswa','dosen'])
   async function requireLogin(allowedRoles = null) {
     const cached = getUser();
     if (!cached) {
       window.location.href = '/login.html';
       return null;
     }
-    // Verify ke server di background
     const user = await verify();
     if (!user) {
       window.location.href = '/login.html';
@@ -115,7 +105,6 @@ const Auth = (() => {
     return user;
   }
 
-  // Guard: redirect ke dashboard jika sudah login
   async function redirectIfLoggedIn() {
     const cached = getUser();
     if (!cached) return;
@@ -132,6 +121,16 @@ const Auth = (() => {
     window.location.href = routes[role] || '/login.html';
   }
 
+  /** Header helper for authenticated API calls */
+  function authHeaders(extra = {}) {
+    const token = getToken();
+    return {
+      'Content-Type': 'application/json',
+      ...(token ? { 'x-session-token': token } : {}),
+      ...extra,
+    };
+  }
+
   return {
     getToken,
     getUser,
@@ -144,5 +143,6 @@ const Auth = (() => {
     requireLogin,
     redirectIfLoggedIn,
     redirectToDashboard,
+    authHeaders,
   };
 })();

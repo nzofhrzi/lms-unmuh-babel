@@ -165,7 +165,7 @@
           </svg>
         </div>
         <div>
-          <div class="fw-bold text-white" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;">Universitas Muhammadiyah</div>
+          <div class="fw-bold text-white" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;">Universitas Anak Indonesia</div>
           <div class="text-white-50" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;">Sistem Informasi Akademik</div>
         </div>
       </div>
@@ -208,7 +208,7 @@
           </svg>
         </div>
         <div>
-          <div class="fw-bold" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;color:var(--navy);">Universitas Muhammadiyah</div>
+          <div class="fw-bold" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;color:var(--navy);">Universitas Anak Indonesia</div>
           <div class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;">Sistem Informasi Akademik</div>
         </div>
       </div>
@@ -278,18 +278,6 @@
           </div>
         </div>
 
-        <!-- Admin Key (admin only) -->
-        <div id="admin-key-group" class="mb-3" style="display:none;">
-          <label class="form-label fw-semibold" style="font-size:13px;" for="admin-key-input">Admin Key</label>
-          <div class="input-wrap">
-            <input type="password" class="form-control" id="admin-key-input"
-              placeholder="Masukkan admin key" autocomplete="off" />
-            <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-            </svg>
-          </div>
-        </div>
-
         <button type="submit" class="btn btn-login btn-primary w-100 d-flex align-items-center justify-content-center gap-2 mt-2" id="btn-login">
           <div class="spinner"></div>
           <span class="btn-text">Masuk</span>
@@ -299,7 +287,7 @@
       <!-- Footer -->
       <div class="mt-4 pt-4 border-top text-center text-muted" style="font-size:13px;line-height:1.6;">
         Lupa password? Hubungi administrator kampus.<br>
-        &copy; 2026 Universitas Muhammadiyah — Sistem Informasi Akademik
+        &copy; 2026 Universitas Anak Indonesia — Sistem Informasi Akademik
       </div>
     </div>
 
@@ -328,7 +316,6 @@
 
     const label = document.getElementById('nim-label');
     const input = document.getElementById('nim-input');
-    const adminKeyGroup = document.getElementById('admin-key-group');
 
     const config = {
       mahasiswa: { label: 'Nomor Induk Mahasiswa (NIM)', placeholder: 'Masukkan NIM Anda' },
@@ -340,13 +327,12 @@
     input.placeholder  = config[role].placeholder;
     input.value        = '';
 
-    const isAdmin = role === 'admin';
-    adminKeyGroup.style.display                              = isAdmin ? 'block' : 'none';
-    document.getElementById('nim-group').style.display      = isAdmin ? 'none'  : 'block';
-    document.getElementById('pass-group').style.display     = isAdmin ? 'none'  : 'block';
+    // Semua role (termasuk admin) login dengan NIM/NIP + password via JWT
+    document.getElementById('nim-group').style.display  = 'block';
+    document.getElementById('pass-group').style.display = 'block';
 
     const btnText = document.querySelector('.btn-text');
-    if (btnText) btnText.textContent = isAdmin ? 'Masuk sebagai Admin' : 'Masuk';
+    if (btnText) btnText.textContent = 'Masuk';
 
     hideAlert();
   }
@@ -376,41 +362,14 @@
 
     const nim_nip  = document.getElementById('nim-input').value.trim();
     const password = document.getElementById('pass-input').value;
-    const adminKey = document.getElementById('admin-key-input').value.trim();
     const btn      = document.getElementById('btn-login');
 
     btn.classList.add('loading');
     btn.disabled = true;
 
     try {
-      // ── ADMIN ──
-      if (selectedRole === 'admin') {
-        if (!adminKey) {
-          showAlert('Admin Key wajib diisi.');
-          btn.classList.remove('loading'); btn.disabled = false;
-          return;
-        }
-        const res = await fetch('/api/auth/list-users', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
-          body: JSON.stringify({ key: adminKey })
-        });
-        if (!res.ok) {
-          showAlert('Admin Key salah atau tidak valid.');
-          btn.classList.remove('loading'); btn.disabled = false;
-          return;
-        }
-        sessionStorage.setItem('lms_admin_key', adminKey);
-        if (typeof Auth !== 'undefined' && Auth.setSession) {
-          Auth.setSession('admin-key-auth', { id: 'admin', nim_nip: 'ADMIN', nama: 'Administrator', role: 'admin' });
-        }
-        window.location.href = '/admin/dashboard.html';
-        return;
-      }
-
-      // ── MAHASISWA / DOSEN ──
       if (!nim_nip || !password) {
-        showAlert('Harap isi NIM/NIP dan password.');
+        showAlert('Harap isi ID/NIM/NIP dan password.');
         btn.classList.remove('loading'); btn.disabled = false;
         return;
       }
