@@ -29,7 +29,9 @@
       "role": "mahasiswa",
       "created_at": "2026-06-09T12:00:38.509Z",
       "jurusan": "Pendidikan Jasmani Kesehatan dan Rekreasi",
-      "semester": 2
+      "semester": "3",
+      "mata_kuliah": [],
+      "updated_at": "2026-08-24T03:15:11.836Z"
     },
     {
       "id": "usr_1781045446222",
