@@ -387,6 +387,11 @@
       <button class="nav-item" onclick="showPage('users')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>3 · Pengguna
       </button>
+
+      <button class="nav-item" onclick="showPage('sebaran')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>4 · Sebaran & KRS
+      </button>
+
     </div>
     <div class="nav-section">
       <div class="nav-label">Sistem</div>
@@ -409,6 +414,10 @@
   </button>
   <div class="topbar-title" id="topbar-title">Beranda</div>
   <div class="topbar-right">
+    <button type="button" class="btn-logout-top" onclick="Auth.logout()" title="Keluar" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;border:1px solid #E2E8F0;background:white;color:#DC2626;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+      Keluar
+    </button>
     <div class="topbar-avatar" id="top-avatar">AD</div>
   </div>
 </header>
@@ -517,7 +526,66 @@
   </div>
 
   <!-- PROFIL -->
-  <div class="content" id="page-profil">
+  
+  <!-- SEBARAN & KRS -->
+  <div class="content" id="page-sebaran">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h2>Sebaran Matkul & KRS</h2>
+        <p>Buat sebaran semester berikutnya → mahasiswa daftar → setujui agar semester naik</p>
+      </div>
+      <button class="btn btn-primary" onclick="openModalSebaran()">＋ Buat Sebaran</button>
+    </div>
+
+    <div class="toolbar" style="margin-bottom:16px">
+      <button class="btn btn-sm" id="tab-seb-list" onclick="switchSebTab('list')" style="background:var(--blue);color:white">Daftar Sebaran</button>
+      <button class="btn btn-sm" id="tab-seb-krs" onclick="switchSebTab('krs')" style="background:var(--gray-100);color:var(--gray-700)">Pengajuan KRS</button>
+    </div>
+
+    <div id="seb-panel-list">
+      <div id="sebaran-list"><div style="text-align:center;padding:24px;color:var(--gray-500)">Memuat...</div></div>
+    </div>
+    <div id="seb-panel-krs" style="display:none">
+      <div class="table-wrap">
+        <table class="main-table">
+          <thead><tr><th>Mahasiswa</th><th>Sebaran</th><th>Semester</th><th>Matkul dipilih</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="krs-tbody"><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--gray-500)">Memuat...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Sebaran -->
+  <div class="modal-bg" id="modal-sebaran">
+    <div class="modal" style="max-width:520px">
+      <div class="modal-header">
+        <h3>Buat Sebaran Matkul</h3>
+        <button class="modal-close" onclick="closeModalSebaran()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Judul</label><input class="form-input" id="seb-judul" placeholder="cth. Sebaran Semester 3 — PJOK"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>Jurusan</label><select class="form-input" id="seb-jurusan"><option value="">Pilih...</option></select></div>
+          <div class="form-group"><label>Semester tujuan</label>
+            <select class="form-input" id="seb-semester">
+              <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+              <option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mata kuliah (centang yang disebar)</label>
+          <div id="seb-matkul-checks" style="max-height:200px;overflow:auto;border:1px solid var(--gray-200);border-radius:8px;padding:10px"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-md" onclick="closeModalSebaran()" style="background:var(--gray-100)">Batal</button>
+        <button class="btn-md" style="background:var(--blue);color:white" onclick="submitSebaran()">Simpan & Buka Registrasi</button>
+      </div>
+    </div>
+  </div>
+
+<div class="content" id="page-profil">
     <div class="page-header"><div class="page-header-left"><h2>Profil & Akun</h2><p>Informasi dan pengaturan akun administrator</p></div></div>
     <div style="max-width:560px">
       <div class="card" style="margin-bottom:16px">
@@ -556,8 +624,8 @@
   let allMatkul   = [];
   const getToken = () => Auth.getToken() || '';
 
-  const pages  = ['beranda','users','jurusan','matkul','profil'];
-  const titles = {beranda:'Beranda',users:'Kelola Pengguna',jurusan:'Jurusan & Prodi',matkul:'Mata Kuliah',profil:'Profil & Akun'};
+  const pages  = ['beranda','users','jurusan','matkul','sebaran','profil'];
+  const titles = {beranda:'Beranda',users:'Kelola Pengguna',jurusan:'Jurusan & Prodi',matkul:'Mata Kuliah',sebaran: 'Sebaran & KRS', profil:'Profil & Akun'};
 
   // ─── INIT ──────────────────────────────────────────────────────────────────
 
@@ -1012,6 +1080,8 @@
   function closeConfirm() { document.getElementById('modal-confirm').classList.remove('open'); }
 
   function showPage(id) {
+    if (id === 'sebaran') { loadSebaranAdmin(); loadKrsAdmin(); }
+
     pages.forEach(p => {
       document.getElementById('page-'+p).classList.toggle('active', p===id);
       const btn = document.querySelector(`[onclick="showPage('${p}')"]`);
@@ -1051,6 +1121,181 @@
     const pages = ['users','users','jurusan','matkul'];
     el.addEventListener('click', () => { if (pages[i]) showPage(pages[i]); });
   });
+
+
+  // ─── SEBARAN & KRS ────────────────────────────────────────────────────────
+  let allSebaran = [];
+  let allKrs = [];
+
+  function switchSebTab(tab) {
+    document.getElementById('seb-panel-list').style.display = tab === 'list' ? 'block' : 'none';
+    document.getElementById('seb-panel-krs').style.display = tab === 'krs' ? 'block' : 'none';
+    document.getElementById('tab-seb-list').style.background = tab === 'list' ? 'var(--blue)' : 'var(--gray-100)';
+    document.getElementById('tab-seb-list').style.color = tab === 'list' ? 'white' : 'var(--gray-700)';
+    document.getElementById('tab-seb-krs').style.background = tab === 'krs' ? 'var(--blue)' : 'var(--gray-100)';
+    document.getElementById('tab-seb-krs').style.color = tab === 'krs' ? 'white' : 'var(--gray-700)';
+    if (tab === 'krs') loadKrsAdmin();
+  }
+
+  async function loadSebaranAdmin() {
+    try {
+      const r = await fetch('/api/sebaran/list', { headers: Auth.authHeaders() });
+      const d = await r.json();
+      allSebaran = d.sebaran || [];
+      renderSebaranList();
+    } catch (e) {
+      document.getElementById('sebaran-list').innerHTML = '<div style="padding:20px;color:var(--red)">Gagal memuat sebaran.</div>';
+    }
+  }
+
+  function renderSebaranList() {
+    const el = document.getElementById('sebaran-list');
+    if (!allSebaran.length) {
+      el.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gray-500)">Belum ada sebaran. Klik <strong>Buat Sebaran</strong>.</div>';
+      return;
+    }
+    el.innerHTML = allSebaran.map(s => `
+      <div class="card" style="margin-bottom:12px" id="seb-card-${s.id}">
+        <div class="card-body" style="padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+            <div>
+              <div style="font-weight:700;color:var(--navy);font-size:15px">${s.judul}</div>
+              <div style="font-size:12px;color:var(--gray-500);margin-top:4px">${s.jurusan} · Semester ${s.semester_target} · ${s.matkul?.length||0} matkul</div>
+              <div style="margin-top:8px;font-size:12px">${(s.matkul||[]).map(m=>`<span style="display:inline-block;background:var(--blue-pale);color:var(--blue);padding:2px 8px;border-radius:6px;margin:2px">${m}</span>`).join('')}</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:${s.status==='buka'?'#F0FDF4':'#F1F5F9'};color:${s.status==='buka'?'#16A34A':'#64748B'}">${s.status==='buka'?'REGISTRASI BUKA':'DITUTUP'}</span>
+              <button class="btn btn-sm btn-primary" onclick="exportSebaranPng('${s.id}')">Export PNG</button>
+              <button class="btn btn-sm" style="background:var(--gray-100)" onclick="toggleSebaranStatus('${s.id}','${s.status==='buka'?'tutup':'buka'}')">${s.status==='buka'?'Tutup':'Buka'}</button>
+              <button class="btn btn-sm btn-danger" onclick="hapusSebaran('${s.id}')">Hapus</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  async function openModalSebaran() {
+    // fill jurusan
+    const sel = document.getElementById('seb-jurusan');
+    try {
+      const r = await fetch('/api/jurusan/list');
+      const d = await r.json();
+      sel.innerHTML = '<option value="">Pilih...</option>' + (d.jurusan||[]).map(j => `<option value="${j.nama}">${j.nama}</option>`).join('');
+    } catch {}
+    // fill matkul checks
+    const box = document.getElementById('seb-matkul-checks');
+    try {
+      const r = await fetch('/api/matkul/list');
+      const d = await r.json();
+      box.innerHTML = (d.matkul||[]).map(m => `
+        <label style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;cursor:pointer">
+          <input type="checkbox" value="${m.nama}" data-kode="${m.kode||''}"/> ${m.nama} <span style="color:var(--gray-500)">(${m.kode||'-'} · ${m.sks||0} SKS)</span>
+        </label>`).join('') || '<div style="color:var(--gray-500)">Belum ada mata kuliah.</div>';
+    } catch {
+      box.innerHTML = '<div style="color:var(--red)">Gagal memuat matkul.</div>';
+    }
+    document.getElementById('modal-sebaran').classList.add('open');
+  }
+  function closeModalSebaran() { document.getElementById('modal-sebaran').classList.remove('open'); }
+
+  async function submitSebaran() {
+    const judul = document.getElementById('seb-judul').value.trim();
+    const jurusan = document.getElementById('seb-jurusan').value;
+    const semester_target = document.getElementById('seb-semester').value;
+    const matkul = [...document.querySelectorAll('#seb-matkul-checks input:checked')].map(i => i.value);
+    if (!judul || !jurusan || !matkul.length) { alert('Lengkapi judul, jurusan, dan pilih minimal 1 matkul.'); return; }
+    const r = await fetch('/api/sebaran/add', {
+      method: 'POST',
+      headers: Auth.authHeaders(),
+      body: JSON.stringify({ judul, jurusan, semester_target, matkul, status: 'buka' })
+    });
+    const d = await r.json();
+    if (!r.ok) { alert(d.error || 'Gagal'); return; }
+    closeModalSebaran();
+    loadSebaranAdmin();
+    if (typeof showToast === 'function') showToast('Sebaran dibuat & registrasi dibuka');
+  }
+
+  async function toggleSebaranStatus(id, status) {
+    const r = await fetch('/api/sebaran/update', {
+      method: 'POST', headers: Auth.authHeaders(),
+      body: JSON.stringify({ id, status })
+    });
+    if (r.ok) loadSebaranAdmin();
+  }
+  async function hapusSebaran(id) {
+    if (!confirm('Hapus sebaran ini?')) return;
+    await fetch('/api/sebaran/delete', { method:'POST', headers: Auth.authHeaders(), body: JSON.stringify({ id }) });
+    loadSebaranAdmin();
+  }
+
+  async function exportSebaranPng(id) {
+    const s = allSebaran.find(x => x.id === id);
+    if (!s) return;
+    // Build printable node
+    const w = window.open('', '_blank', 'width=800,height=900');
+    w.document.write(`<!DOCTYPE html><html><head><title>${s.judul}</title>
+      <style>
+        body{font-family:system-ui,sans-serif;padding:40px;color:#0F172A}
+        h1{font-size:22px;margin:0 0 8px}
+        .meta{color:#64748B;font-size:14px;margin-bottom:24px}
+        table{width:100%;border-collapse:collapse}
+        th,td{border:1px solid #E2E8F0;padding:10px 12px;text-align:left;font-size:14px}
+        th{background:#F8FAFC}
+        .foot{margin-top:28px;font-size:12px;color:#94A3B8}
+      </style></head><body>
+      <h1>${s.judul}</h1>
+      <div class="meta">Jurusan: <strong>${s.jurusan}</strong> · Semester tujuan: <strong>${s.semester_target}</strong> · Status: ${s.status}</div>
+      <table><thead><tr><th>No</th><th>Mata Kuliah</th></tr></thead>
+      <tbody>${(s.matkul||[]).map((m,i)=>`<tr><td>${i+1}</td><td>${m}</td></tr>`).join('')}</tbody></table>
+      <div class="foot">Universitas Anak Indonesia · Sebaran Matkul · ${new Date().toLocaleDateString('id-ID')}</div>
+      <script>setTimeout(()=>{window.print()},400)<\/script>
+      </body></html>`);
+    w.document.close();
+  }
+
+  async function loadKrsAdmin() {
+    try {
+      const r = await fetch('/api/krs/list', { headers: Auth.authHeaders() });
+      const d = await r.json();
+      allKrs = d.registrasi || [];
+      const tb = document.getElementById('krs-tbody');
+      if (!allKrs.length) {
+        tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--gray-500)">Belum ada pengajuan.</td></tr>';
+        return;
+      }
+      tb.innerHTML = allKrs.map(k => `
+        <tr>
+          <td><strong>${k.mhs_nama||'-'}</strong><div style="font-size:11px;color:var(--gray-500)">${k.mhs_nim||''}</div></td>
+          <td>${k.sebaran_judul||k.sebaran_id}</td>
+          <td>${k.semester_target}</td>
+          <td style="font-size:12px">${(k.matkul||[]).join(', ')}</td>
+          <td><span style="font-size:11px;font-weight:700;color:${k.status==='disetujui'?'#16A34A':k.status==='ditolak'?'#DC2626':'#D97706'}">${k.status}</span></td>
+          <td>${k.status==='menunggu' ? `
+            <button class="btn btn-sm btn-primary" onclick="approveKrs('${k.id}')">Setujui</button>
+            <button class="btn btn-sm btn-danger" onclick="rejectKrs('${k.id}')">Tolak</button>
+          ` : '—'}</td>
+        </tr>`).join('');
+    } catch {
+      document.getElementById('krs-tbody').innerHTML = '<tr><td colspan="6">Gagal memuat</td></tr>';
+    }
+  }
+
+  async function approveKrs(id) {
+    if (!confirm('Setujui KRS? Semester mahasiswa akan naik & matkul diperbarui.')) return;
+    const r = await fetch('/api/krs/approve', { method:'POST', headers: Auth.authHeaders(), body: JSON.stringify({ id }) });
+    const d = await r.json();
+    alert(d.message || d.error);
+    loadKrsAdmin();
+  }
+  async function rejectKrs(id) {
+    const alasan = prompt('Alasan penolakan (opsional):') || '';
+    await fetch('/api/krs/reject', { method:'POST', headers: Auth.authHeaders(), body: JSON.stringify({ id, alasan }) });
+    loadKrsAdmin();
+  }
+
+  // hook showPage
+  const _showPageOrig = typeof showPage === 'function' ? showPage : null;
 
 </script>
 </body>
