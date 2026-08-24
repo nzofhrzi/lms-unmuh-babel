@@ -208,6 +208,17 @@
     .guide-dismiss{float:right;background:none;border:none;color:var(--gray-500);cursor:pointer;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px}
     .guide-dismiss:hover{background:var(--gray-100)}
 
+  
+    .sc{cursor:pointer;transition:transform .15s,box-shadow .15s}
+    .sc:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(15,42,94,.1)}
+    .action-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+    @media(max-width:700px){.action-strip{grid-template-columns:1fr}}
+    .action-tile{background:white;border:1px solid var(--gray-200);border-radius:14px;padding:16px;cursor:pointer;text-align:left;font-family:inherit;transition:all .15s}
+    .action-tile:hover{border-color:var(--blue-light);background:var(--blue-pale)}
+    .action-tile .at-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
+    .action-tile .at-desc{font-size:12px;color:var(--gray-500);line-height:1.4}
+    .action-tile .at-cta{margin-top:10px;font-size:12px;font-weight:700;color:var(--blue)}
+
   </style>
 </head>
 <body>
@@ -363,18 +374,18 @@
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">
-      <div class="nav-label">Menu Utama</div>
+      <div class="nav-label">Kelola Akademik</div>
       <button class="nav-item active" onclick="showPage('beranda')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Beranda
       </button>
-      <button class="nav-item" onclick="showPage('users')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Kelola Pengguna
-      </button>
       <button class="nav-item" onclick="showPage('jurusan')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>Jurusan & Prodi
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>1 · Jurusan
       </button>
       <button class="nav-item" onclick="showPage('matkul')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>Mata Kuliah
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>2 · Mata Kuliah
+      </button>
+      <button class="nav-item" onclick="showPage('users')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>3 · Pengguna
       </button>
     </div>
     <div class="nav-section">
@@ -406,7 +417,7 @@
 
   <!-- BERANDA -->
   <div class="content active" id="page-beranda">
-    <div class="page-header"><div class="page-header-left"><h2 id="greeting">Panel Administrator</h2><p>Ringkasan sistem akademik LMS Universitas Anak Indonesia</p></div></div>
+    <div class="page-header"><div class="page-header-left"><h2 id="greeting">Panel Administrator</h2><p>Kelola jurusan → matkul → akun dari tombol di bawah</p></div></div>
     <div class="banner">
       <div class="banner-text">
         <h3 id="banner-nama">Selamat Datang, Admin! 🛡️</h3>
@@ -415,50 +426,7 @@
       <div class="banner-badge">Super Admin</div>
     </div>
     
-    <div class="guide-card" id="admin-guide" style="display:none">
-      <button class="guide-dismiss" onclick="dismissGuide('admin')">Sembunyikan</button>
-      <h3>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        Panduan Cepat Admin — urutan kerja yang disarankan
-      </h3>
-      <p class="lead">Ikuti langkah berurutan agar data sistem lengkap dan dosen/mahasiswa bisa langsung memakai LMS.</p>
-      <div class="guide-steps">
-        <button type="button" class="guide-step" onclick="showPage('jurusan')">
-          <div class="num">1</div>
-          <div class="title">Tambah Jurusan</div>
-          <div class="desc">Buat program studi dulu sebelum mata kuliah & pengguna.</div>
-        </button>
-        <button type="button" class="guide-step" onclick="showPage('matkul')">
-          <div class="num">2</div>
-          <div class="title">Tambah Mata Kuliah</div>
-          <div class="desc">Kaitkan ke jurusan. Nanti bisa diampu dosen.</div>
-        </button>
-        <button type="button" class="guide-step" onclick="showPage('users')">
-          <div class="num">3</div>
-          <div class="title">Buat Akun Dosen</div>
-          <div class="desc">Role dosen + isi mata kuliah yang diampu.</div>
-        </button>
-        <button type="button" class="guide-step" onclick="showPage('users')">
-          <div class="num">4</div>
-          <div class="title">Buat Akun Mahasiswa</div>
-          <div class="desc">Role mahasiswa + jurusan & semester.</div>
-        </button>
-      </div>
-    </div>
-    <div class="quick-actions">
-      <button type="button" class="qa-btn" onclick="showPage('users');setTimeout(()=>openModalUser&&openModalUser(),200)">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Pengguna
-      </button>
-      <button type="button" class="qa-btn" onclick="showPage('jurusan')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>Kelola Jurusan
-      </button>
-      <button type="button" class="qa-btn" onclick="showPage('matkul')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>Kelola Matkul
-      </button>
-      <button type="button" class="qa-btn" onclick="showGuide('admin')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Lihat Panduan
-      </button>
-    </div>
+    
 
 <div class="stats-grid">
       <div class="stat-card"><div class="sc-icon ic-blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg></div><div class="sc-label">Total Mahasiswa</div><div class="sc-num" id="stat-mhs">—</div><div class="sc-sub">Terdaftar aktif</div></div>
@@ -485,17 +453,12 @@
   <!-- KELOLA PENGGUNA -->
   <div class="content" id="page-users">
     <div class="page-header">
-      <div class="page-header-left"><h2>Kelola Pengguna</h2><p>Manajemen akun mahasiswa, dosen, dan admin</p></div>
+      <div class="page-header-left"><h2>Pengguna</h2><p>Buat akun dosen & mahasiswa, atur jurusan dan matkul diampu</p></div>
       <button class="btn btn-primary" onclick="openModalUser()">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Pengguna
       </button>
     </div>
-    <div 
-    <div class="tip-bar"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      <div><strong>Tips:</strong> Buat akun <em>dosen</em> dulu dan isi field Mata Kuliah Diampu. Untuk mahasiswa, pilih jurusan & semester. Password default bisa diganti user sendiri di menu Profil.</div>
-    </div>
-
-    class="toolbar">
+    <div class="toolbar">
       <input type="text" class="search-input" placeholder="Cari nama atau NIM/NIP..." oninput="filterUsers(this.value)" id="user-search"/>
       <select class="filter-select" onchange="filterUsers()" id="user-role-filter">
         <option value="">Semua Role</option>
@@ -517,17 +480,11 @@
   <!-- JURUSAN -->
   <div class="content" id="page-jurusan">
     <div class="page-header">
-      <div class="page-header-left"><h2>Jurusan & Prodi</h2><p>Kelola program studi yang tersedia</p></div>
-      <button class="btn btn-primary" onclick="openModalJurusan('add')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Jurusan
+      <div class="page-header-left"><h2>Jurusan</h2><p>Tambah prodi — langkah pertama sebelum matkul & mahasiswa</p></div>
+      <button class="btn btn-primary" onclick="openModalJurusan('add')"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Tambah Jurusan
       </button>
     </div>
-    <div 
-    <div class="tip-bar"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      <div><strong>Langkah 1 dari 4:</strong> Jurusan harus ada dulu. Setelah itu baru bisa menambah mata kuliah dan mendaftarkan mahasiswa ke prodi tersebut.</div>
-    </div>
-
-    class="toolbar">
+    <div class="toolbar">
       <input type="text" class="search-input" placeholder="Cari nama atau kode jurusan..." oninput="filterJurusan(this.value)" id="jurusan-search"/>
     </div>
     <div class="jurusan-grid" id="jurusan-grid">
@@ -538,17 +495,12 @@
   <!-- MATA KULIAH -->
   <div class="content" id="page-matkul">
     <div class="page-header">
-      <div class="page-header-left"><h2>Mata Kuliah</h2><p>Daftar semua mata kuliah aktif</p></div>
+      <div class="page-header-left"><h2>Mata Kuliah</h2><p>Daftarkan matkul, hubungkan ke jurusan, lalu assign ke dosen di menu Pengguna</p></div>
       <button class="btn btn-primary" onclick="openModalMatkul('add')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Matkul
       </button>
     </div>
-    <div 
-    <div class="tip-bar"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      <div><strong>Langkah 2 dari 4:</strong> Tambah mata kuliah, pilih jurusan, isi SKS. Lalu di menu Pengguna, edit dosen dan masukkan nama matkul yang diampu agar muncul di dashboard dosen.</div>
-    </div>
-
-    class="toolbar">
+    <div class="toolbar">
       <input type="text" class="search-input" placeholder="Cari nama atau kode mata kuliah..." oninput="filterMatkul(this.value)" id="matkul-search"/>
       <select class="filter-select" onchange="filterMatkul()" id="matkul-jurusan-filter">
         <option value="">Semua Jurusan</option>
@@ -1093,6 +1045,13 @@
       document.getElementById('old-pass').value = document.getElementById('new-pass').value = '';
     } catch(e) { alertEl.textContent=e.message; alertEl.style.display='block'; }
   }
+
+  // Stat cards → navigate
+  document.querySelectorAll('.sc').forEach((el, i) => {
+    const pages = ['users','users','jurusan','matkul'];
+    el.addEventListener('click', () => { if (pages[i]) showPage(pages[i]); });
+  });
+
 </script>
 </body>
 </html>
