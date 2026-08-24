@@ -52,6 +52,8 @@ export default async function handler(req, res) {
       case 'tugas':    return await routeTugas(action, req, res);
       case 'absensi':  return await routeAbsensi(action, req, res);
       case 'diskusi':  return await routeDiskusi(action, req, res);
+      case 'sebaran':  return await routeSebaran(action, req, res);
+      case 'krs':      return await routeKrs(action, req, res);
       default:
         return res.status(404).json({ error: `Module tidak dikenal: ${module || '(kosong)'}` });
     }
@@ -1090,3 +1092,225 @@ async function disHapus(req, res) {
 
   return res.status(200).json({ message: 'Pesan berhasil dihapus.' });
 }
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SEBARAN MATKUL (Admin) + KRS REGISTRASI (Mahasiswa)
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function routeSebaran(action, req, res) {
+  switch (action) {
+    case 'list': return sebaranList(req, res);
+    case 'add': return sebaranAdd(req, res);
+    case 'update': return sebaranUpdate(req, res);
+    case 'delete': return sebaranDelete(req, res);
+    default: return res.status(404).json({ error: `Action sebaran tidak dikenal: ${action}` });
+  }
+}
+
+async function sebaranList(req, res) {
+  try {
+    const result = await ghGet('sebaran.json');
+    let list = result.data.sebaran || [];
+    const { jurusan, status, semester } = req.query || {};
+    if (jurusan) list = list.filter(s => s.jurusan === jurusan);
+    if (status) list = list.filter(s => s.status === status);
+    if (semester) list = list.filter(s => String(s.semester_target) === String(semester));
+    return res.status(200).json({ sebaran: list });
+  } catch (e) {
+    return res.status(500).json({ error: e.message === 'ENV_MISSING' ? 'Konfigurasi server belum diatur.' : 'Gagal membaca sebaran.' });
+  }
+}
+
+async function sebaranAdd(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Gunakan POST.' });
+  if (!(await requireAdmin(req, res))) return;
+  const { judul, jurusan, semester_target, matkul, status } = req.body || {};
+  if (!judul || !jurusan || !semester_target || !Array.isArray(matkul) || !matkul.length) {
+    return res.status(400).json({ error: 'judul, jurusan, semester_target, dan matkul[] wajib.' });
+  }
+  let result;
+  try { result = await ghGet('sebaran.json'); } catch { return res.status(500).json({ error: 'Gagal membaca sebaran.' }); }
+  const { data, sha } = result;
+  const item = {
+    id: `seb_${Date.now()}`,
+    judul: String(judul).trim(),
+    jurusan: String(jurusan).trim(),
+    semester_target: parseInt(semester_target, 10),
+    matkul: matkul.map(m => String(m).trim()).filter(Boolean),
+    status: status === 'tutup' ? 'tutup' : 'buka',
+    created_at: new Date().toISOString(),
+  };
+  data.sebaran = data.sebaran || [];
+  data.sebaran.unshift(item);
+  try { await ghSave('sebaran.json', data, sha); } catch { return res.status(500).json({ error: 'Gagal menyimpan sebaran.' }); }
+  return res.status(200).json({ message: 'Sebaran berhasil dibuat.', sebaran: item });
+}
+
+async function sebaranUpdate(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Gunakan POST.' });
+  if (!(await requireAdmin(req, res))) return;
+  const { id, judul, jurusan, semester_target, matkul, status } = req.body || {};
+  if (!id) return res.status(400).json({ error: 'id diperlukan.' });
+  let result;
+  try { result = await ghGet('sebaran.json'); } catch { return res.status(500).json({ error: 'Gagal membaca sebaran.' }); }
+  const { data, sha } = result;
+  const idx = (data.sebaran || []).findIndex(s => s.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Sebaran tidak ditemukan.' });
+  if (judul) data.sebaran[idx].judul = String(judul).trim();
+  if (jurusan) data.sebaran[idx].jurusan = String(jurusan).trim();
+  if (semester_target) data.sebaran[idx].semester_target = parseInt(semester_target, 10);
+  if (Array.isArray(matkul)) data.sebaran[idx].matkul = matkul.map(m => String(m).trim()).filter(Boolean);
+  if (status) data.sebaran[idx].status = status === 'tutup' ? 'tutup' : 'buka';
+  data.sebaran[idx].updated_at = new Date().toISOString();
+  try { await ghSave('sebaran.json', data, sha); } catch { return res.status(500).json({ error: 'Gagal menyimpan.' }); }
+  return res.status(200).json({ message: 'Sebaran diperbarui.', sebaran: data.sebaran[idx] });
+}
+
+async function sebaranDelete(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Gunakan POST.' });
+  if (!(await requireAdmin(req, res))) return;
+  const { id } = req.body || {};
+  if (!id) return res.status(400).json({ error: 'id diperlukan.' });
+  let result;
+  try { result = await ghGet('sebaran.json'); } catch { return res.status(500).json({ error: 'Gagal membaca sebaran.' }); }
+  const { data, sha } = result;
+  const before = (data.sebaran || []).length;
+  data.sebaran = (data.sebaran || []).filter(s => s.id !== id);
+  if (data.sebaran.length === before) return res.status(404).json({ error: 'Sebaran tidak ditemukan.' });
+  try { await ghSave('sebaran.json', data, sha); } catch { return res.status(500).json({ error: 'Gagal menghapus.' }); }
+  return res.status(200).json({ message: 'Sebaran dihapus.' });
+}
+
+async function routeKrs(action, req, res) {
+  switch (action) {
+    case 'list': return krsList(req, res);
+    case 'submit': return krsSubmit(req, res);
+    case 'approve': return krsApprove(req, res);
+    case 'reject': return krsReject(req, res);
+    default: return res.status(404).json({ error: `Action krs tidak dikenal: ${action}` });
+  }
+}
+
+async function krsList(req, res) {
+  const session = await requireAuth(req, res);
+  if (!session) return;
+  try {
+    const result = await ghGet('krs.json');
+    let list = result.data.registrasi || [];
+    if (session.role === 'mahasiswa') {
+      list = list.filter(r => r.mhs_id === session.id);
+    }
+    // admin & dosen see all (dosen read-only optional)
+    return res.status(200).json({ registrasi: list });
+  } catch (e) {
+    return res.status(500).json({ error: 'Gagal membaca data KRS.' });
+  }
+}
+
+async function krsSubmit(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Gunakan POST.' });
+  const session = await requireAuth(req, res, ['mahasiswa']);
+  if (!session) return;
+  const { sebaran_id, matkul, nama } = req.body || {};
+  if (!sebaran_id || !Array.isArray(matkul) || !matkul.length) {
+    return res.status(400).json({ error: 'sebaran_id dan matkul[] wajib.' });
+  }
+
+  let sebRes;
+  try { sebRes = await ghGet('sebaran.json'); } catch { return res.status(500).json({ error: 'Gagal membaca sebaran.' }); }
+  const seb = (sebRes.data.sebaran || []).find(s => s.id === sebaran_id);
+  if (!seb) return res.status(404).json({ error: 'Sebaran tidak ditemukan.' });
+  if (seb.status !== 'buka') return res.status(400).json({ error: 'Registrasi untuk sebaran ini sudah ditutup.' });
+
+  // validasi matkul subset of sebaran
+  const allowed = new Set(seb.matkul || []);
+  const chosen = matkul.map(m => String(m).trim()).filter(m => allowed.has(m));
+  if (!chosen.length) return res.status(400).json({ error: 'Pilih minimal 1 mata kuliah dari sebaran.' });
+
+  let krsRes;
+  try { krsRes = await ghGet('krs.json'); } catch { return res.status(500).json({ error: 'Gagal membaca KRS.' }); }
+  const { data, sha } = krsRes;
+  data.registrasi = data.registrasi || [];
+
+  // cegah double submit menunggu
+  if (data.registrasi.some(r => r.mhs_id === session.id && r.sebaran_id === sebaran_id && r.status === 'menunggu')) {
+    return res.status(409).json({ error: 'Anda sudah mengajukan registrasi untuk sebaran ini (menunggu verifikasi).' });
+  }
+
+  const item = {
+    id: `krs_${Date.now()}`,
+    mhs_id: session.id,
+    mhs_nim: session.nim_nip,
+    mhs_nama: (nama || session.nim_nip).trim(),
+    sebaran_id,
+    sebaran_judul: seb.judul,
+    jurusan: seb.jurusan,
+    semester_target: seb.semester_target,
+    matkul: chosen,
+    status: 'menunggu',
+    created_at: new Date().toISOString(),
+  };
+  data.registrasi.unshift(item);
+  try { await ghSave('krs.json', data, sha); } catch { return res.status(500).json({ error: 'Gagal menyimpan registrasi.' }); }
+  return res.status(200).json({ message: 'Registrasi terkirim. Menunggu persetujuan admin.', registrasi: item });
+}
+
+async function krsApprove(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Gunakan POST.' });
+  if (!(await requireAdmin(req, res))) return;
+  const { id } = req.body || {};
+  if (!id) return res.status(400).json({ error: 'id registrasi diperlukan.' });
+
+  let krsRes;
+  try { krsRes = await ghGet('krs.json'); } catch { return res.status(500).json({ error: 'Gagal membaca KRS.' }); }
+  const { data, sha } = krsRes;
+  const idx = (data.registrasi || []).findIndex(r => r.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Registrasi tidak ditemukan.' });
+  const reg = data.registrasi[idx];
+  if (reg.status !== 'menunggu') return res.status(400).json({ error: 'Registrasi sudah diproses.' });
+
+  // Update user: semester + mata_kuliah
+  let usersRes;
+  try { usersRes = await ghGet('users.json'); } catch { return res.status(500).json({ error: 'Gagal membaca users.' }); }
+  const uIdx = (usersRes.data.users || []).findIndex(u => u.id === reg.mhs_id);
+  if (uIdx === -1) return res.status(404).json({ error: 'Mahasiswa tidak ditemukan.' });
+
+  usersRes.data.users[uIdx].semester = reg.semester_target;
+  usersRes.data.users[uIdx].mata_kuliah = reg.matkul;
+  usersRes.data.users[uIdx].updated_at = new Date().toISOString();
+
+  try {
+    await ghSave('users.json', usersRes.data, usersRes.sha);
+  } catch {
+    return res.status(500).json({ error: 'Gagal memperbarui data mahasiswa.' });
+  }
+
+  data.registrasi[idx].status = 'disetujui';
+  data.registrasi[idx].verified_at = new Date().toISOString();
+  try { await ghSave('krs.json', data, sha); } catch { return res.status(500).json({ error: 'Gagal menyimpan status KRS.' }); }
+
+  return res.status(200).json({
+    message: `Disetujui. Semester mahasiswa naik ke ${reg.semester_target}.`,
+    registrasi: data.registrasi[idx],
+  });
+}
+
+async function krsReject(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Gunakan POST.' });
+  if (!(await requireAdmin(req, res))) return;
+  const { id, alasan } = req.body || {};
+  if (!id) return res.status(400).json({ error: 'id registrasi diperlukan.' });
+  let krsRes;
+  try { krsRes = await ghGet('krs.json'); } catch { return res.status(500).json({ error: 'Gagal membaca KRS.' }); }
+  const { data, sha } = krsRes;
+  const idx = (data.registrasi || []).findIndex(r => r.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Registrasi tidak ditemukan.' });
+  if (data.registrasi[idx].status !== 'menunggu') return res.status(400).json({ error: 'Registrasi sudah diproses.' });
+  data.registrasi[idx].status = 'ditolak';
+  data.registrasi[idx].alasan = (alasan || '').trim();
+  data.registrasi[idx].verified_at = new Date().toISOString();
+  try { await ghSave('krs.json', data, sha); } catch { return res.status(500).json({ error: 'Gagal menyimpan.' }); }
+  return res.status(200).json({ message: 'Registrasi ditolak.', registrasi: data.registrasi[idx] });
+}
+
