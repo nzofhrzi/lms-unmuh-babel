@@ -1,0 +1,200 @@
+{
+  "pertemuan": [
+    {
+      "id": "abs_1781059625157",
+      "matkul": "Atletik",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-10T02:46",
+      "keterangan": "Kontrak Kuliah",
+      "dosen_id": "usr_1781006363866",
+      "status": "ditutup",
+      "created_at": "2026-06-10T02:47:05.157Z",
+      "kehadiran": [
+        {
+          "mhs_id": "usr_1781006438509",
+          "nim": "250241114",
+          "nama": "Enzo Fahrezi",
+          "status": "hadir",
+          "keterangan": "250241114",
+          "submitted_at": "2026-06-10T03:08:24.295Z",
+          "verified_at": "2026-06-10T04:00:35.207Z"
+        },
+        {
+          "mhs_id": "usr_1781059243684",
+          "nim": "usr_1781059243684",
+          "nama": "Novia Savira",
+          "status": "izin",
+          "keterangan": "",
+          "keterangan_dosen": "",
+          "submitted_at": null,
+          "verified_at": "2026-06-10T04:00:42.476Z"
+        }
+      ],
+      "ditutup_at": "2026-06-10T04:00:54.195Z"
+    },
+    {
+      "id": "abs_1781065249527",
+      "matkul": "Atletik",
+      "judul": "Pertemuan 2",
+      "tanggal": "2026-06-11T04:20",
+      "keterangan": "asas",
+      "dosen_id": "usr_1781006363866",
+      "status": "aktif",
+      "created_at": "2026-06-10T04:20:49.527Z",
+      "kehadiran": []
+    },
+    {
+      "id": "abs_1781065262587",
+      "matkul": "Atletik",
+      "judul": "Pertemuan 3",
+      "tanggal": "2026-06-10T04:20",
+      "keterangan": "sasa",
+      "dosen_id": "usr_1781006363866",
+      "status": "ditutup",
+      "created_at": "2026-06-10T04:21:02.587Z",
+      "kehadiran": [
+        {
+          "mhs_id": "usr_1781006438509",
+          "nim": "250241114",
+          "nama": "Enzo Fahrezi",
+          "status": "hadir",
+          "alasan_tipe": "hadir",
+          "keterangan": "",
+          "submitted_at": "2026-06-10T04:21:39.239Z",
+          "verified_at": "2026-06-10T04:22:37.593Z"
+        },
+        {
+          "mhs_id": "usr_1781059243684",
+          "nim": "usr_1781059243684",
+          "nama": "Novia Savira",
+          "status": "izin",
+          "keterangan": "",
+          "keterangan_dosen": "",
+          "submitted_at": null,
+          "verified_at": "2026-06-10T04:22:57.583Z"
+        }
+      ],
+      "ditutup_at": "2026-06-10T04:23:03.547Z"
+    },
+    {
+      "id": "abs_1781066601833",
+      "matkul": "Pendidikan Agama",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-10T04:43",
+      "keterangan": "",
+      "dosen_id": "usr_1781059403678",
+      "status": "aktif",
+      "created_at": "2026-06-10T04:43:21.833Z",
+      "kehadiran": [
+        {
+          "mhs_id": "usr_1781059243684",
+          "nim": "250241115",
+          "nama": "Novia Savira",
+          "status": "menunggu",
+          "alasan_tipe": "hadir",
+          "keterangan": "",
+          "submitted_at": "2026-06-10T04:46:15.857Z",
+          "verified_at": null
+        }
+      ]
+    },
+    {
+      "id": "abs_1781066615174",
+      "matkul": "Pendidikan Agama",
+      "judul": "Pertemuan 2",
+      "tanggal": "2026-06-12T04:43",
+      "keterangan": "",
+      "dosen_id": "usr_1781059403678",
+      "status": "aktif",
+      "created_at": "2026-06-10T04:43:35.174Z",
+      "kehadiran": []
+    },
+    {
+      "id": "abs_1781070460894",
+      "matkul": "Ekonomi Syariah",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-10T05:47",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T05:47:40.894Z",
+      "kehadiran": [
+        {
+          "mhs_id": "usr_1781069991402",
+          "nim": "250241116",
+          "nama": "Ragil Satria",
+          "status": "hadir",
+          "alasan_tipe": "hadir",
+          "keterangan": "",
+          "submitted_at": "2026-06-10T05:49:11.062Z",
+          "verified_at": "2026-06-10T05:49:37.251Z"
+        }
+      ]
+    },
+    {
+      "id": "abs_1781073421265",
+      "matkul": "Ekonomi Syariah",
+      "judul": "Pertemuan 2",
+      "tanggal": "2026-06-17T06:36",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T06:37:01.265Z",
+      "kehadiran": []
+    },
+    {
+      "id": "abs_1781073437197",
+      "matkul": "Ekonomi Syariah",
+      "judul": "Pertemuan 3",
+      "tanggal": "2026-06-21T06:37",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T06:37:17.197Z",
+      "kehadiran": []
+    },
+    {
+      "id": "abs_1781073467105",
+      "matkul": "Ekonomi Syariah",
+      "judul": "Pertemuan Ekstra 1",
+      "tanggal": "2026-06-11T06:37",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-10T06:37:47.105Z",
+      "kehadiran": []
+    },
+    {
+      "id": "abs_1781140018214",
+      "matkul": "Mikro Ekonomi",
+      "judul": "Pertemuan 1",
+      "tanggal": "2026-06-11T01:06",
+      "keterangan": "",
+      "dosen_id": "usr_1781069582657",
+      "status": "aktif",
+      "created_at": "2026-06-11T01:06:58.214Z",
+      "kehadiran": [
+        {
+          "mhs_id": "usr_1781069991402",
+          "nim": "usr_1781069991402",
+          "nama": "Ragil Satria",
+          "status": "hadir",
+          "keterangan": "",
+          "keterangan_dosen": "",
+          "submitted_at": null,
+          "verified_at": "2026-06-11T01:07:10.245Z"
+        },
+        {
+          "mhs_id": "usr_1781618284940",
+          "nim": "usr_1781618284940",
+          "nama": "Iqbal Ramadhan",
+          "status": "izin",
+          "keterangan": "",
+          "keterangan_dosen": "",
+          "submitted_at": null,
+          "verified_at": "2026-06-11T01:07:12.560Z"
+        }
+      ]
+    }
+  ]
+}
