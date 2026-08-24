@@ -103,6 +103,23 @@
       .content { padding:16px 14px 40px; }
       .chat-messages { height:320px; }
     }
+  
+    .guide-card{background:linear-gradient(135deg,#EFF4FF 0%,#F8FAFC 100%);border:1px solid #BFCFEE;border-radius:16px;padding:20px 22px;margin-bottom:22px}
+    .guide-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:#0F2A5E;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+    .guide-card p.lead{font-size:13px;color:#64748B;margin-bottom:14px;line-height:1.5}
+    .guide-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+    .guide-step{background:white;border:1px solid #E2E8F0;border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .15s;text-align:left;font-family:inherit;width:100%}
+    .guide-step:hover{border-color:#2563EB;box-shadow:0 4px 12px rgba(27,79,191,.1);transform:translateY(-1px)}
+    .guide-step .num{width:24px;height:24px;border-radius:8px;background:#1B4FBF;color:white;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
+    .guide-step .title{font-size:13px;font-weight:700;color:#0F2A5E;margin-bottom:2px}
+    .guide-step .desc{font-size:11px;color:#64748B;line-height:1.4}
+    .tip-bar{display:flex;align-items:flex-start;gap:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:#92400E;line-height:1.45}
+    .tip-bar svg{flex-shrink:0;width:16px;height:16px;margin-top:1px;fill:#D97706}
+    .quick-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+    .qa-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;border:1px solid #E2E8F0;background:white;font-size:12.5px;font-weight:600;color:#0F2A5E;cursor:pointer;font-family:inherit;transition:all .15s}
+    .qa-btn:hover{border-color:#2563EB;background:#EFF4FF;color:#1B4FBF}
+    .guide-dismiss{float:right;background:none;border:none;color:#64748B;cursor:pointer;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px}
+
   </style>
 </head>
 <body>
@@ -354,7 +371,10 @@
       </div>
     </div>
 
-    <div class="row g-3">
+    
+    
+
+<div class="row g-3">
       <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100">
           <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
@@ -382,14 +402,9 @@
 
   <!-- MATA KULIAH -->
   <div class="content" id="page-matkul">
-    <div class="d-flex align-items-start justify-content-between mb-4 flex-wrap gap-2">
-      <div>
-        <h2 class="fw-bold mb-1" style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--navy)">Mata Kuliah</h2>
-        <p class="text-muted small mb-0">Mata kuliah yang Anda ampu</p>
-      </div>
-      <button onclick="showPage('tugas')" class="btn btn-primary d-flex align-items-center gap-2">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Upload Tugas
-      </button>
+    <div class="mb-4">
+      <h2 class="fw-bold mb-1" style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--navy)">Mata Kuliah</h2>
+      <p class="text-muted small mb-0">Pilih aksi langsung di setiap kartu matkul</p>
     </div>
     <div class="row g-3" id="matkul-grid">
       <div class="col-12 text-center text-muted py-5 small">Memuat data mata kuliah...</div>
@@ -401,14 +416,15 @@
     <div class="d-flex align-items-start justify-content-between mb-3 flex-wrap gap-2">
       <div>
         <h2 class="fw-bold mb-1" style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--navy)">Manajemen Tugas</h2>
-        <p class="text-muted small mb-0">Semua tugas yang telah diupload</p>
+        <p class="text-muted small mb-0">Buat, edit, atau tutup tugas per mata kuliah</p>
       </div>
       <button onclick="openModal()" class="btn btn-primary d-flex align-items-center gap-2">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Upload Tugas Baru
       </button>
     </div>
     <div class="d-flex gap-2 mb-3 flex-wrap">
-      <input type="text" class="form-control" style="flex:1;min-width:200px" placeholder="🔍 Cari judul tugas..." oninput="filterTugas()" id="tugas-search"/>
+      <input type="text" class="form-control" style="flex:1;min-width:200px" placeholder="🔍 Cari judul tugas..." oninput="filterTugas()"     </div>
+id="tugas-search"/>
       <select id="tugas-filter-status" onchange="filterTugas()" class="form-select" style="width:auto">
         <option value="">Semua Status</option>
         <option value="aktif">Aktif</option>
@@ -431,7 +447,7 @@
         <h2 class="fw-bold mb-1" style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--navy)">Absensi</h2>
         <p class="text-muted small mb-0">Kelola pertemuan dan verifikasi kehadiran mahasiswa</p>
       </div>
-      <button onclick="openModalPertemuan()" class="btn btn-primary flex-shrink-0">+ Buat Pertemuan</button>
+      <button onclick="openModalPertemuan()" class="btn btn-primary flex-shrink-0">Buat Pertemuan Hari Ini</button>
     </div>
     <div class="mb-3" style="max-width:360px">
       <label class="form-label fw-semibold small text-muted mb-1">Pilih Mata Kuliah</label>
@@ -811,10 +827,12 @@
               <div class="col-4"><div class="bg-light rounded-2 py-2"><div class="fw-bold" style="font-size:16px;color:var(--navy)">${allMhsList.filter(m=>m.jurusan===currentUser.jurusan).length}</div><div class="text-muted" style="font-size:10px">Mahasiswa</div></div></div>
               <div class="col-4"><div class="bg-light rounded-2 py-2"><div class="fw-bold" style="font-size:16px;color:var(--navy)">16</div><div class="text-muted" style="font-size:10px">Pertemuan</div></div></div>
             </div>
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary btn-sm flex-grow-1" onclick="openModal()">+ Tugas</button>
-              <button class="btn btn-light btn-sm" onclick="switchAbsensiByMatkul('${mk}');showPage('absensi')">Absensi</button>
-              <button class="btn btn-light btn-sm" onclick="switchDiskusiByMatkul('${mk}');showPage('diskusi')">Diskusi</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary btn-sm" onclick="switchAbsensiByMatkul('${mk}');showPage('absensi')">Kelola Absensi / Pertemuan</button>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm flex-grow-1" onclick="openModalTugasFor('${mk}')">Buat Tugas</button>
+                <button class="btn btn-outline-secondary btn-sm flex-grow-1" onclick="switchDiskusiByMatkul('${mk}');showPage('diskusi')">Diskusi</button>
+              </div>
             </div>
           </div>
         </div>
