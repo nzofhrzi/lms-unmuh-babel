@@ -643,6 +643,17 @@
       "semester": "1",
       "mata_kuliah": [],
       "created_at": "2026-08-24T03:37:52.341Z"
+    },
+    {
+      "id": "usr_1787647361950",
+      "nim_nip": "12121212",
+      "nama": "Cisenzo",
+      "password": "000bbf84715b00e6b11411ce7f038d720ae699b7f784edfdcb864ae04fb5cb40",
+      "role": "mahasiswa",
+      "jurusan": "Pendidikan Jasmani Kesehatan dan Rekreasi",
+      "semester": "1",
+      "mata_kuliah": [],
+      "created_at": "2026-08-25T08:42:41.951Z"
     }
   ]
 }
